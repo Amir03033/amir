@@ -270,6 +270,16 @@ body, html {
 }
 
 @media screen and (max-width: 768px) {
+    body{
+        height: 100vh;
+        width: 100vh;
+    }
+    #grad{
+        background: rgb(2, 0, 36);
+        background: linear-gradient(135deg, rgba(2, 0, 36, 1) 50%, rgba(245, 179, 0, 1) 100%);
+        height: 100%;
+        width: 100%;
+    }
     .container {
         flex-direction: column;
     }
@@ -289,10 +299,14 @@ body, html {
     .sidebar a i {
         width: 50px;
         height: 50px;
+
+    }
+    .sidebar a i:hover{
+        border: solid 2px #f5b300;
     }
 
     .sidebar a span {
-        display: none;
+        display: flex;
     }
 
 
@@ -317,9 +331,10 @@ body, html {
 
 
     .buttons > .btn {
-        width: 100%;
+        width: 70%;
         padding: 12px;
         margin: 10px 0;
+        display: inline-block;
     }
 
 
@@ -327,6 +342,8 @@ body, html {
         bottom: 10px;
         right: 10px;
         padding: 10px 20px;
+        display: flex;
+        align-content: flex-end;
     }
 
     .email, .phonenumer {
