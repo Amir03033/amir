@@ -174,11 +174,6 @@ body, html {
 .size-6{
     width: 20px;
 }
-@media screen and (max-width: 767px){
-    .slide-button{
-
-    }
-}
 /*.socials{*/
 /*    display: flex;*/
 /*    justify-content: space-between;*/
@@ -257,4 +252,70 @@ body, html {
 }
 .contactmain{
     font-size: 30px;
+}
+@media screen and (max-width: 768px) {
+    /* Ensure the container takes full width and height */
+    .container {
+        flex-direction: column; /* Stack the sidebar and content vertically */
+    }
+
+    /* Sidebar should collapse */
+    .sidebar {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 0;
+    }
+
+    .sidebar ul {
+        display: flex;
+        justify-content: space-around; /* Spread items across the width */
+    }
+
+    .sidebar a i {
+        width: 50px; /* Larger icons for easier tap on phones */
+        height: 50px;
+    }
+
+    .sidebar a span {
+        display: none; /* Hide text next to icons for a cleaner look on mobile */
+    }
+
+    /* Adjust the main content */
+    .main-content {
+        flex-direction: column; /* Stack the image and text */
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .text-content h1 {
+        font-size: 32px; /* Smaller font size for headers */
+    }
+
+    .text-content p {
+        font-size: 16px; /* Adjust paragraph font size */
+    }
+
+    .image-content img {
+        width: 250px; /* Smaller image for mobile */
+    }
+
+    /* Adjust button sizes for mobile */
+    .buttons > .btn {
+        width: 100%; /* Full-width buttons */
+        padding: 12px;
+        margin: 10px 0;
+    }
+
+    /* Slide button adjust */
+    .slide-button {
+        bottom: 10px; /* Adjust positioning */
+        right: 10px;
+        padding: 10px 20px;
+    }
+
+    .email, .phonenumer {
+        width: 100%; /* Full width for email and phone buttons */
+        justify-content: center; /* Center align the text */
+    }
 }
