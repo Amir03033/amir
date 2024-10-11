@@ -319,3 +319,85 @@ body, html {
         justify-content: center; /* Center align the text */
     }
 }
+@media screen and (max-width: 768px) {
+    /* Sidebar items in mobile view */
+    .sidebar ul {
+        display: flex;
+        justify-content: space-around; /* Spread icons evenly across the width */
+    }
+
+    /* Style the icons as circles in the responsive view */
+    .sidebar a i {
+        background-color: #616161;
+        height: 60px;
+        width: 60px;
+        border-radius: 50%; /* Creates the circular shape */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Hide the text next to the icons for a cleaner mobile look */
+    .sidebar a span {
+        display: none;
+    }
+
+    /* Optional: Add some margin between the circles if needed */
+    .sidebar li {
+        margin: 10px;
+    }
+}
+
+@media screen and (min-width: 1536px) {
+    /* Adjust container for 16-inch laptop */
+    .container {
+        padding: 20px;
+        flex-direction: row; /* Ensure normal row layout for larger screens */
+    }
+
+    /* Increase sidebar width and spacing */
+    .sidebar {
+        width: 300px;
+        margin-left: 50px;
+        margin-top: 80px;
+    }
+
+    /* Adjust sidebar icon sizes */
+    .sidebar a i {
+        height: 70px;
+        width: 70px;
+        font-size: 20px;
+    }
+
+    /* Main content adjustments */
+    .main-content {
+        padding: 80px;
+        justify-content: space-between; /* Ensure proper spacing */
+    }
+
+    .text-content h1 {
+        font-size: 60px; /* Increase header size */
+    }
+
+    .text-content p {
+        font-size: 20px; /* Increase paragraph size */
+    }
+
+    .image-content img {
+        width: 500px; /* Larger image for bigger screens */
+    }
+
+    /* Adjust buttons for larger view */
+    .buttons > .btn {
+        padding: 20px 40px;
+        font-size: 18px;
+    }
+
+    .slide-button {
+        font-size: 20px;
+        padding: 20px 40px;
+        bottom: 40px;
+        right: 40px;
+    }
+}
+
