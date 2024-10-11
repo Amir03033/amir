@@ -367,6 +367,8 @@ body, html {
         height: 70px;
         width: 70px;
         font-size: 20px;
+        display: flex;
+        text-align: center;
     }
 
     /* Main content adjustments */
