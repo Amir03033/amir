@@ -1,7 +1,8 @@
-#grad{
-    background: rgb(2,0,36);
-    background: linear-gradient(135deg, rgba(2,0,36,1) 50%, rgba(245,179,0,1) 100%);
+#grad {
+    background: rgb(2, 0, 36);
+    background: linear-gradient(135deg, rgba(2, 0, 36, 1) 50%, rgba(245, 179, 0, 1) 100%);
 }
+
 * {
     margin: 0;
     padding: 0;
@@ -19,7 +20,6 @@ body, html {
     height: 100vh;
     width: 100vw;
 }
-
 
 
 .sidebar {
@@ -50,18 +50,22 @@ body, html {
     border-top-right-radius: 30px;
     height: 60px;
 }
+
 .sidebar li:first-child span {
     padding-top: 20px;
 }
-.sidebar li:last-child i{
+
+.sidebar li:last-child i {
     padding-bottom: 30px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
     height: 60px;
 }
-.sidebar li:last-child span{
+
+.sidebar li:last-child span {
     padding-bottom: 20px;
 }
+
 .sidebar a i {
     background-color: #616161;
     padding: 10px;
@@ -88,9 +92,11 @@ body, html {
 .sidebar ul li a:hover i, .sidebar ul li a:hover span {
     color: #f5b300;
 }
-.sidebar span{
+
+.sidebar span {
     color: white;
 }
+
 .main-content {
     flex: 1;
     color: #fff;
@@ -136,7 +142,8 @@ body, html {
     background-color: #333;
     color: #f5b300;
 }
-.buttons >  .btn-portofolio{
+
+.buttons > .btn-portofolio {
     border: 2px solid #f5b300;
     border-radius: 30px;
     background-color: #333;
@@ -148,9 +155,11 @@ body, html {
     width: 350px;
     border-radius: 10px;
 }
-.btn i{
+
+.btn i {
     padding: 10px;
 }
+
 .slide-button {
     position: absolute;
     bottom: 20px;
@@ -171,9 +180,11 @@ body, html {
     color: #333; /* Changes the text color on hover */
     border-color: #f5b300; /* Keeps the border color on hover */
 }
-.size-6{
+
+.size-6 {
     width: 20px;
 }
+
 /*.socials{*/
 /*    display: flex;*/
 /*    justify-content: space-between;*/
@@ -217,7 +228,7 @@ body, html {
 /*.socials a:hover{*/
 /*    color: #f5b300;*/
 /*}*/
-.email{
+.email {
     display: inline-block;
     background-color: #f5b300;
     color: white;
@@ -229,12 +240,14 @@ body, html {
     transition: background-color 0.3s ease;
 
 }
-.email:hover{
+
+.email:hover {
     background-color: #333333;
     color: #f5b300;
     border: solid 2px #f5b300;
 }
-.phonenumer{
+
+.phonenumer {
     display: inline-block;
     background-color: #f5b300;
     color: white;
@@ -245,21 +258,23 @@ body, html {
     transition: background-color 0.3s ease;
     display: flex;
 }
-.phonenumer:hover{
+
+.phonenumer:hover {
     background-color: #333333;
     color: #f5b300;
     border: solid 2px #f5b300;
 }
-.contactmain{
+
+.contactmain {
     font-size: 30px;
 }
+
 @media screen and (max-width: 768px) {
-    /* Ensure the container takes full width and height */
     .container {
-        flex-direction: column; /* Stack the sidebar and content vertically */
+        flex-direction: column;
     }
 
-    /* Sidebar should collapse */
+
     .sidebar {
         width: 100%;
         margin-left: 0;
@@ -268,101 +283,102 @@ body, html {
 
     .sidebar ul {
         display: flex;
-        justify-content: space-around; /* Spread items across the width */
+        justify-content: space-around;
     }
 
     .sidebar a i {
-        width: 50px; /* Larger icons for easier tap on phones */
+        width: 50px;
         height: 50px;
     }
 
     .sidebar a span {
-        display: none; /* Hide text next to icons for a cleaner look on mobile */
+        display: none;
     }
 
-    /* Adjust the main content */
+
     .main-content {
-        flex-direction: column; /* Stack the image and text */
+        flex-direction: column;
         align-items: center;
         text-align: center;
         padding: 20px;
     }
 
     .text-content h1 {
-        font-size: 32px; /* Smaller font size for headers */
+        font-size: 32px;
     }
 
     .text-content p {
-        font-size: 16px; /* Adjust paragraph font size */
+        font-size: 16px;
     }
 
     .image-content img {
-        width: 250px; /* Smaller image for mobile */
+        width: 250px;
     }
 
-    /* Adjust button sizes for mobile */
+
     .buttons > .btn {
-        width: 100%; /* Full-width buttons */
+        width: 100%;
         padding: 12px;
         margin: 10px 0;
     }
 
-    /* Slide button adjust */
+
     .slide-button {
-        bottom: 10px; /* Adjust positioning */
+        bottom: 10px;
         right: 10px;
         padding: 10px 20px;
     }
 
     .email, .phonenumer {
-        width: 100%; /* Full width for email and phone buttons */
-        justify-content: center; /* Center align the text */
+        width: 100%;
+        justify-content: center;
     }
 }
+
 @media screen and (max-width: 768px) {
-    /* Sidebar items in mobile view */
+
     .sidebar ul {
         display: flex;
-        justify-content: space-around; /* Spread icons evenly across the width */
+        justify-content: space-around;
     }
 
-    /* Style the icons as circles in the responsive view */
+
     .sidebar a i {
         background-color: #616161;
         height: 60px;
         width: 60px;
-        border-radius: 50%; /* Creates the circular shape */
+        border-radius: 50%;
         display: flex;
         justify-content: center;
         align-items: center;
     }
 
-    /* Hide the text next to the icons for a cleaner mobile look */
+
     .sidebar a span {
         display: none;
     }
 
-    /* Optional: Add some margin between the circles if needed */
+
     .sidebar li {
         margin: 10px;
     }
 }
 
 @media screen and (min-width: 1536px) {
-    /* Adjust container for 16-inch laptop */
+
     .container {
         padding: 20px;
-        flex-direction: row; /* Ensure normal row layout for larger screens */
+        flex-direction: row;
     }
 
-    /* Increase sidebar width and spacing */
+
     .sidebar {
         width: 300px;
         margin-left: 50px;
         margin-top: 80px;
     }
 
-    /* Adjust sidebar icon sizes */
+
     .sidebar a i {
         height: 70px;
         width: 70px;
@@ -371,25 +387,25 @@ body, html {
         text-align: center;
     }
 
-    /* Main content adjustments */
+
     .main-content {
         padding: 80px;
-        justify-content: space-between; /* Ensure proper spacing */
+        justify-content: space-between;
     }
 
     .text-content h1 {
-        font-size: 60px; /* Increase header size */
+        font-size: 60px;
     }
 
     .text-content p {
-        font-size: 20px; /* Increase paragraph size */
+        font-size: 20px;
     }
 
     .image-content img {
-        width: 500px; /* Larger image for bigger screens */
+        width: 500px;
     }
 
-    /* Adjust buttons for larger view */
+
     .buttons > .btn {
         padding: 20px 40px;
         font-size: 18px;
