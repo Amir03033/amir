@@ -8,7 +8,7 @@ Route::get('/', function () {   // URL
 
 
 Route::get('/en', function () {   // URL
-    return view('indexEN');       // VIEW
+    return view('indexen');       // VIEW
 })->name('index-en');          // NAME
 
 Route::get('/home', function () {
