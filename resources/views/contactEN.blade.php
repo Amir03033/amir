@@ -7,9 +7,9 @@
         <a  class="email" href="snapzakaria69@gmail.com">Email Me</a>
         <a  class="phonenumer" href="tel:+31639685314">Call Us</a>
         <div class="buttons">
-            <a href="#" class="btn"><i class="fa-brands fa-instagram"></i>Instagram</a>
-            <a href="#" class="btn"><i class="fa-solid fa-x"></i>Twitter</a>
-            <a href="#" class="btn"> <i class="fa-brands fa-linkedin"></i>Linkdn</a>
+            <a href="https://www.instagram.com/ar.zk12/" class="btn"><i class="fa-brands fa-instagram"></i>Instagram</a>
+            <a href="https://x.com/Amir1378804" class="btn"><i class="fa-solid fa-x"></i>Twitter</a>
+            <a href="https://www.linkedin.com/in/amir-jebbari-19a63b330/" class="btn"> <i class="fa-brands fa-linkedin"></i>Linkdn</a>
         </div>
     </div>
     <a href="{{ route('contact') }}">
