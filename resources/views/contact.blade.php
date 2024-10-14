@@ -4,7 +4,7 @@
 
     <div class="text-content">
         <p class="contactmain">Contact</p>
-        <a  class="email" href="snapzakaria69@gmail.com">Email Me</a>
+        <a  class="email" href="mailto:snapzakaria69@gmail.com">Email Me</a>
         <a  class="phonenumer" href="tel:+31639685314">Bel Ons</a>
         <div class="buttons">
             <a href="https://www.instagram.com/ar.zk12/" class="btn"><i class="fa-brands fa-instagram"></i>Instagram</a>

@@ -272,7 +272,6 @@ body, html {
 @media screen and (max-width: 768px) {
     body{
         min-height: 100vh;
-        width: 100vh;
     }
     .container {
         flex-direction: column;
