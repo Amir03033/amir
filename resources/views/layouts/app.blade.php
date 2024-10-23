@@ -11,9 +11,9 @@
     <title>@yield("title")</title>
     @vite(['resources/css/app.css'])
 
-@if(Route::currentRouteName() === 'home')
-    @vite(['resources/css/home.css'])
-    @endif
+{{--@if(Route::currentRouteName() === 'home')--}}
+{{--    @vite(['resources/css/home.css'])--}}
+{{--    @endif--}}
 
 </head>
 <body id="grad">
