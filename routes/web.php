@@ -58,5 +58,8 @@ Route::get('/blogEN', function () {
     return view('blogEN');
 })->name('blogEN');
 
+Route::get('/appEn', function () {
+    return view('appEN');
+})->name('appEn');
 
 
