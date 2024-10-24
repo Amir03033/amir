@@ -223,6 +223,58 @@ body, html {
 .contactmain {
     font-size: 30px;
 }
+.textbackground{
+    display: flex;
+    background-color: black;
+    opacity: 0.8;
+    border: 20px solid;
+    border-image: linear-gradient(to right, #020024, #f5b300) 5;
+    height: 600px;
+}
+.text-contentabout{
+    max-width: 600px;
+    opacity: 1;
+}
+.text-contentabout p{
+    margin-bottom: 20px;
+}
+.text-contentabout h1{
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+.text-contentabout h1 span{
+    color: #f5b300;
+}
+input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+}
+
+input[type=submit] {
+    background-color: #f5b300;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #333333;
+}
+.formsubmit {
+    border-radius: 5px;
+    background-color: #333333;
+    padding-top: 20px;
+    height: 500px;
+}
+
 
 @media screen and (max-width: 768px) {
     body {
