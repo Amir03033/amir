@@ -13,24 +13,6 @@
                         class="fa-brands fa-linkedin"></i>Linkdn</a>
         </div>
     </div>
-{{--    <div class="formsubmit">--}}
-{{--        <form action="action_page.php">--}}
-{{--    <label for="fname">Voornaam</label>--}}
-{{--            <input type="text" id="vname" name="voornaam" placeholder="uw voornaam.."--}}
-
-{{--                   <label for="lname">Achternaam</label>--}}
-{{--            <input type="text" id="anaam" name="anaam" placeholder="uw achternaam.."--}}
-{{--                   <label for="language">taal</label>--}},./
-{{--            <select id="taal" name="taal"--}}
-{{--                    <option value="dutch">Nederlands</option>--}}
-{{--            <option value="english">english</option>--}}
-{{--            <option value="german">German</option>--}}
-{{--        </select>--}}
-{{--            <label for="subject">Versturen</label>--}}
-{{--            <textarea id="subject" name="subject" placeholder="extra informatie" style="height: 100px"></textarea>--}}
-{{--            <input type="submit" value="submit">--}}
-{{--        </form>--}}
-{{--    </div>--}}
     <a href="{{ route('contactEN') }}">
         <button class="slide-button">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

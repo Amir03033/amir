@@ -12,7 +12,7 @@
         geavanceerde programmeertalen en frameworks. Met een sterke nieuwsgierigheid en drang om te verbeteren,
         ben ik vastberaden om te groeien in de tech-industrie.</p>
     <div class="buttons">
-        <a href="{{ route('aboutme') }}" class="btn"><i class="fas fa-user"></i> More About Me</a>
+        <a href="{{ route('aboutme') }}" class="btn"><i class="fas fa-user"></i> Over mij</a>
         <a href="{{ route('portfolio') }}" class=" btn-portofolio btn"><i class="fas fa-briefcase"></i>Portfolio</a>
     </div>
     <a href="{{ route('index-en') }}">

@@ -225,55 +225,68 @@ body, html {
 }
 .textbackground{
     display: flex;
-    background-color: black;
-    opacity: 0.8;
-    border: 20px solid;
-    border-image: linear-gradient(to right, #020024, #f5b300) 5;
+    background-color: #0000040;
+    border: 3px solid #f5b30040;
     height: 600px;
+    width: 800px;
 }
-.text-contentabout{
+.textcontentabout{
     max-width: 600px;
     opacity: 1;
 }
-.text-contentabout p{
+.textcontentabout p{
     margin-bottom: 20px;
 }
-.text-contentabout h1{
+.textcontentabout h1{
     font-size: 48px;
     margin-bottom: 20px;
 }
-.text-contentabout h1 span{
+.textcontentabout h1 span{
     color: #f5b300;
 }
-input[type=text], select, textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-top: 6px;
-    margin-bottom: 16px;
-    resize: vertical;
+.textcontentportofolio{
+    max-width: 600px;
+    opacity: 1;
 }
+.textcontentportofolio p{
+    margin-bottom: 20px;
+}
+.textcontentportofolio h1{
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+.textcontentportofolio h1 span {
+    color: #f5b300;
+}
+/*input[type=text], select, textarea {*/
+/*    width: 100%;*/
+/*    padding: 12px;*/
+/*    border: 1px solid #ccc;*/
+/*    border-radius: 4px;*/
+/*    box-sizing: border-box;*/
+/*    margin-top: 6px;*/
+/*    margin-bottom: 16px;*/
+/*    resize: vertical;*/
+/*}*/
 
-input[type=submit] {
-    background-color: #f5b300;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+/*input[type=submit] {*/
+/*    background-color: #f5b300;*/
+/*    color: white;*/
+/*    padding: 12px 20px;*/
+/*    border: none;*/
+/*    border-radius: 4px;*/
+/*    cursor: pointer;*/
+/*}*/
 
-input[type=submit]:hover {
-    background-color: #333333;
-}
-.formsubmit {
-    border-radius: 5px;
-    background-color: #333333;
-    padding-top: 20px;
-    height: 500px;
-}
+/*input[type=submit]:hover {*/
+/*    background-color: #333333;*/
+/*}*/
+/*.formsubmit {*/
+/*    border-radius: 5px;*/
+/*    background-color: #333333;*/
+/*    padding-top: 20px;*/
+/*    height: 500px;*/
+/*}*/
 
 
 @media screen and (max-width: 768px) {
@@ -396,60 +409,3 @@ input[type=submit]:hover {
         margin: 0 auto;
         max-width: 1400px;
     }
-
-/*    .container {*/
-/*        padding: 20px;*/
-/*        flex-direction: row;*/
-/*    }*/
-
-
-/*    .sidebar {*/
-/*        width: 300px;*/
-/*        margin-left: 50px;*/
-/*        margin-top: 80px;*/
-/*    }*/
-
-
-/*    .sidebar a i {*/
-/*        height: 70px;*/
-/*        width: 70px;*/
-/*        font-size: 20px;*/
-/*        display: flex;*/
-/*        text-align: center;*/
-/*        justify-content: center;*/
-/*        align-items: center;*/
-/*    }*/
-
-
-/*    .main-content {*/
-/*        padding: 80px;*/
-/*        justify-content: space-between;*/
-/*        max-width: 75%;*/
-/*    }*/
-
-/*    .text-content h1 {*/
-/*        font-size: 60px;*/
-/*    }*/
-
-/*    .text-content p {*/
-/*        font-size: 20px;*/
-/*    }*/
-
-/*    .image-content img {*/
-/*        width: 500px;*/
-/*    }*/
-
-
-/*    .buttons > .btn {*/
-/*        padding: 20px 40px;*/
-/*        font-size: 18px;*/
-/*    }*/
-
-/*    .slide-button {*/
-/*        font-size: 20px;*/
-/*        padding: 20px 40px;*/
-/*        bottom: 40px;*/
-/*        right: 40px;*/
-/*    }*/
-}
-

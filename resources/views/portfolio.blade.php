@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('title', 'Amir Jebbari:home')
 @section('content')
-
-    <div class="text-content">
+    <div class="textbackground">
+    <div class="textcontentportofolio">
         <p>Portfolio</p><style>
             .text-content{
                 margin-right: 100px;
@@ -15,6 +15,7 @@
             <a href="#" class=" btn-portofolio btn"><i class="fas fa-user"></i>project 2</a>
         </div>
     </div>
+</div>
     <a href="{{ route('portfolioEN') }}">
         <button class="slide-button">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

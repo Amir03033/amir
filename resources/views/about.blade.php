@@ -2,7 +2,7 @@
 @section('title', 'Over mij')
 @section('content')
     <div class="textbackground">
-        <div class="text-contentabout">
+        <div class="textcontentabout">
             <p>Hallo!</p>
             <h1>Ik ben <span>Amir Jebbari</span></h1>
             <p>

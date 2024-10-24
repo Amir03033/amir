@@ -1,18 +1,17 @@
 @extends('layouts.app')
 @section('title', 'Amir Jebbari:home')
 @section('content')
-    <div class="text-content">
+    <div class="textbackground">
+    <div class="textcontentblog">
         <p></p>
-        <h1> <span>Komt nog</span></h1><style>
-            .text-content{
-                margin-right: 200px;
+        <h1> <span id="blogs">Komt nog</span></h1><style>
+            #blogs{
+                display: flex;
+                justify-items: center;
             }
         </style>
         <p></p>
-{{--        <div class="buttons">--}}
-{{--            <a href="#" class="btn"><i class="fas fa-user"></i> More About Me</a>--}}
-{{--            <a href="#" class=" btn-portofolio btn"><i class="fas fa-briefcase"></i>Portfolio</a>--}}
-{{--        </div>--}}
+    </div>
     </div>
     <a href="{{ route('blogEN') }}">
         <button class="slide-button">
