@@ -11,7 +11,7 @@
         <h1>Dit zijn mijn<span>projecten</span></h1>
         <p></p>
         <div class="buttons">
-            <a href="#" class="btn"><i class="fas fa-user"></i>project 1</a>
+            <a href="https://amir-sadik-pecunia.newdeveloper.nl" class="btn"><i class="fas fa-user"></i>project 1</a>
             <a href="#" class=" btn-portofolio btn"><i class="fas fa-user"></i>project 2</a>
         </div>
     </div>
