@@ -3,16 +3,15 @@
 @section('content')
     <div class="textbackground">
     <div class="textcontentportofolio">
-        <p>Portfolio</p><style>
-            .text-content{
-                margin-right: 100px;
-            }
         </style>
         <h1>Dit zijn mijn<span>projecten</span></h1>
         <p></p>
         <div class="buttons">
-            <a href="https://amir-sadik-pecunia.newdeveloper.nl" class="btn"><i class="fas fa-user"></i>project 1</a>
-            <a href="#" class=" btn-portofolio btn"><i class="fas fa-user"></i>project 2</a>
+            <a href="https://amir-sadik-pecunia.newdeveloper.nl" class="btn"><i class="fas fa-user"></i>A&S Wealth <strong>Under Development</strong></a>
+            <a href="https://spelletjes.newdeveloper.nl" class=" btn-portofolio btn"><i class="fas fa-user"></i>Spelletjes eiland <strong>Under Development</strong></a>
+            <a href="#" class="btn-portofolio btn"><i class="fas fa-user"></i>Project 3 under development</a>
+            <a href="#" class="btn-portofolio btn"><i class="fas fa-user"></i>Project 4 under development</a>
+            <a href="#" class="btn-portofolio btn"><i class="fas fa-user"></i>Project 5 under development</a>
         </div>
     </div>
 </div>
