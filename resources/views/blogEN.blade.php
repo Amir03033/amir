@@ -2,6 +2,7 @@
 @section('title', 'Amir Jebbari:home')
 @section('content')
     <div class="textbackground">
+
         <div class="text-content">
             <p></p>
             <h1><span>Still in development</span></h1>
@@ -10,7 +11,7 @@
                     margin-right: 200px;
                 }
             </style>
-            <p></p>
+
         </div>
     </div>
     <a href="{{ route('blog') }}">
