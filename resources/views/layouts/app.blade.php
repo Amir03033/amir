@@ -10,14 +10,10 @@
 
     <title>@yield("title")</title>
     @vite(['resources/css/app.css'])
-
-{{--@if(Route::currentRouteName() === 'home')--}}
-{{--    @vite(['resources/css/home.css'])--}}
-{{--    @endif--}}
-
 </head>
 <body id="grad">
 <div class="container">
+
 <nav class="sidebar">
     <ul>
         <li><a href="{{ route('home') }}" class="active"><i class="fas fa-home"></i> <span>Home</span></a></li>

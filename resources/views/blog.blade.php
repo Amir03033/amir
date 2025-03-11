@@ -41,7 +41,6 @@
 
         <p>🚀 Heb jij tips of ervaringen met Laravel en frontend development? Laat het me weten!</p>
     </div>
-
     </div>
     <a href="{{ route('blogEN') }}">
         <button class="slide-button">
