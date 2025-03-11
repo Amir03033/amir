@@ -37,7 +37,7 @@
         <p>Het werken met Git maakt samenwerken en versiebeheer een stuk overzichtelijker.</p>
 
         <h2>Wat komt hierna?</h2><br>
-        <p>Ik kijk ernaar uit om <strong>meer te leren over databases, API’s en complexe projecten</strong>. Mijn doel is om een volledig werkende webapplicatie te maken waarin <strong>Laravel en JavaScript samenkomen</strong>. Misschien schrijf ik daar binnenkort een update over!</p>
+        <p>Ik kijk ernaar uit om <strong>meer te leren over databases, API’s en complexe projecten</strong>. Mijn doel is om een volledig werkende webapplicatie te maken waarin <strong>Laravel en JavaScript samenkomen</strong>. Misschien schrijf ik daar binnenkort een update over!</p><br>
 
         <p>🚀 Heb jij tips of ervaringen met Laravel en frontend development? Laat het me weten!</p>
     </div>

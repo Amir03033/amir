@@ -265,6 +265,7 @@ body, html {
 /*}*/
 
 code {
+    color: #2E86C1;
     background: black;
     padding: 5px;
     display: block;
