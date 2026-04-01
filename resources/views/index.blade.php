@@ -4,12 +4,24 @@
 <div class="text-content">
     <h1>Ik ben <span>Amir Jebbari</span></h1>
     <p>
-        Ik ben Amir Jebbari, een gepassioneerde softwareontwikkelaar aan het begin van mijn reis. Momenteel ben
-        ik bezig met het beheersen van de basis van webontwikkeling met HTML en CSS, en ik ben enthousiast om te
-        leren hoe ik functionele en visueel aantrekkelijke websites kan maken. Terwijl ik mijn opleiding
-        voortzet, kijk ik ernaar uit om mijn vaardigheden uit te breiden en dieper in te gaan op meer
-        geavanceerde programmeertalen en frameworks. Met een sterke nieuwsgierigheid en drang om te verbeteren,
-        ben ik vastberaden om te groeien in de tech-industrie.</p>
+        Ik ben <strong>Amir Jebbari</strong>, een gedreven softwareontwikkelaar aan het begin van mijn carrière.
+        Momenteel ben ik actief bezig met het ontwikkelen van mijn vaardigheden binnen webontwikkeling,
+        waarbij ik werk met HTML en CSS als basis, maar ook steeds meer ervaring opdoe met moderne
+        technologieën zoals Node.js, Vue.js en Laravel.
+    </p>
+
+    <p>
+        Ik vind het interessant om te werken met <strong>API’s</strong> en leer hoe ik dynamische en interactieve
+        applicaties kan bouwen die zowel functioneel als gebruiksvriendelijk zijn. Door praktijkgericht
+        te werken aan projecten blijf ik mezelf continu uitdagen en verbeteren.
+    </p>
+
+    <p>
+        Terwijl ik mijn opleiding voortzet, richt ik me op het verdiepen van mijn kennis en het verbreden
+        van mijn technische stack. Met een sterke nieuwsgierigheid en een duidelijke motivatie om te groeien,
+        ben ik vastberaden om mezelf te ontwikkelen tot een professionele developer en een waardevolle
+        bijdrage te leveren binnen de tech-industrie.
+    </p>
     <div class="buttons">
         <a href="{{ route('aboutme') }}" class="btn"><i class="fas fa-user"></i> Over mij</a>
         <a href="{{ route('portfolio') }}" class=" btn-portofolio btn"><i class="fas fa-briefcase"></i>Portfolio</a>

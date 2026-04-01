@@ -25,11 +25,24 @@
         <div class="text-content">
             <h1>I'm<span>Amir Jebbari</span></h1>
             <p>
-                I am Amir Jebbari, a passionate software developer at the beginning of my journey. Currently, I am
-                working on mastering the basics of web development with HTML and CSS, and I am excited to learn how to
-                create functional and visually appealing websites. As I continue my education, I look forward to
-                expanding my skills and delving deeper into more advanced programming languages and frameworks. With a
-                strong curiosity and drive to improve, I am determined to grow in the tech industry.</p>
+                Ik ben <strong>Amir Jebbari</strong>, een gedreven softwareontwikkelaar aan het begin van mijn carrière.
+                Momenteel ben ik actief bezig met het ontwikkelen van mijn vaardigheden binnen webontwikkeling,
+                waarbij ik werk met HTML en CSS als basis, maar ook steeds meer ervaring opdoe met moderne
+                technologieën zoals Node.js, Vue.js en Laravel.
+            </p>
+
+            <p>
+                Ik vind het interessant om te werken met <strong>API’s</strong> en leer hoe ik dynamische en interactieve
+                applicaties kan bouwen die zowel functioneel als gebruiksvriendelijk zijn. Door praktijkgericht
+                te werken aan projecten blijf ik mezelf continu uitdagen en verbeteren.
+            </p>
+
+            <p>
+                Terwijl ik mijn opleiding voortzet, richt ik me op het verdiepen van mijn kennis en het verbreden
+                van mijn technische stack. Met een sterke nieuwsgierigheid en een duidelijke motivatie om te groeien,
+                ben ik vastberaden om mezelf te ontwikkelen tot een professionele developer en een waardevolle
+                bijdrage te leveren binnen de tech-industrie.
+            </p>
             <div class="buttons">
                 <a href="#" class="btn"><i class="fas fa-user"></i> More About Me</a>
                 <a href="#" class=" btn-portofolio btn"><i class="fas fa-briefcase"></i>Portfolio</a>
