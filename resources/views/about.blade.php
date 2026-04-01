@@ -3,14 +3,34 @@
 @section('content')
     <div class="textbackground">
         <div class="textcontentabout">
-            <p>Hallo!</p>
-            <h1>Ik ben <span>Amir Jebbari</span></h1>
+            <h1>Ik ben <span> Amir Jebbari</span></h1>
+
             <p>
-                Mijn naam is Amir Jebbari, ik ben 16 jaar en woon in Zwolle. Als enig kind heb ik altijd de ruimte gehad
-                om
-                mijn passies te ontwikkelen. Mijn hobby's zijn fitness, het ondernemen van activiteiten met vrienden, en
-                natuurlijk programmeren. Daarnaast heb ik een Iraanse achtergrond, iets waar ik trots op ben en wat een
-                belangrijke rol speelt in mijn identiteit.</p>
+                Mijn naam is <strong>Amir Jebbari</strong>, ik ben 18 jaar oud en woon in Zwolle.
+                Als enig kind heb ik altijd veel ruimte en vrijheid gehad om mezelf te ontdekken
+                en mijn interesses te ontwikkelen. Hierdoor heb ik een brede kijk op het leven
+                gekregen en weet ik goed wat mij motiveert.
+            </p>
+
+            <p>
+                In mijn vrije tijd ben ik veel bezig met <strong>fitness</strong>. Ik vind het belangrijk
+                om zowel fysiek als mentaal sterk te blijven. Daarnaast onderneem ik graag activiteiten
+                met vrienden — van samen sporten tot gewoon gezellig tijd doorbrengen. Deze sociale
+                momenten geven mij energie en zorgen voor een goede balans in mijn leven.
+            </p>
+
+            <p>
+                Een grote passie van mij is <strong>programmeren</strong>. Ik werk graag aan projecten en
+                los technische problemen op. Het geeft mij voldoening om iets vanaf nul op te bouwen
+                en mezelf steeds verder te ontwikkelen. Ik zie hierin ook veel kansen voor mijn toekomst.
+            </p>
+
+            <p>
+                Daarnaast heb ik een <strong>Iraanse achtergrond</strong>, waar ik erg trots op ben.
+                Mijn cultuur en afkomst spelen een belangrijke rol in wie ik ben. Het heeft mij gevormd,
+                mijn normen en waarden beïnvloed en geeft mij een unieke identiteit die ik overal met
+                me meedraag.
+            </p>
         </div>
     </div>
     <a href="{{ route('aboutEN') }}">

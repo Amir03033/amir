@@ -7,11 +7,11 @@
         <h1>Dit zijn mijn<span> projecten</span></h1>
         <p></p>
         <div class="buttons">
-            <a href="https://klus-klaar.newdeveloper.nl" class="btn"><i class="fas fa-user"></i>KlusKlaar<strong></strong></a>
-            <a href="https://mastermindglow.newdeveloper.nl/login" class=" btn-portofolio btn"><i class="fas fa-user"></i>MasterMind<strong></strong></a>
-            <a href="#" class="btn-portofolio btn"><i class="fas fa-user"></i>Project 3 under development</a>
-            <a href="#" class="btn-portofolio btn"><i class="fas fa-user"></i>Project 4 under development</a>
-            <a href="#" class="btn-portofolio btn"><i class="fas fa-user"></i>Project 5 under development</a>
+            <a href="https://klus-klaar.newdeveloper.nl" class="btn"><i class="fas fa-user"></i>KlusKlaar <strong>Under Development</strong></a>
+            <a href="https://mastermindglow.newdeveloper.nl/login" class=" btn-portofolio btn"><i class="fas fa-user"></i>MasterMind <strong>Under Development</strong></a>
+            <a href="https://steadyrides.newdeveloper.nl/login" class="btn-portofolio btn"><i class="fas fa-user"></i>SteadyRides <strong>Finished Development</strong></a>
+{{--            <a href="#" class="btn-portofolio btn"><i class="fas fa-user"></i>Project 4 under development</a>--}}
+{{--            <a href="#" class="btn-portofolio btn"><i class="fas fa-user"></i>Project 5 under development</a>--}}
         </div>
     </div>
 </div>

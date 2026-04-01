@@ -23,7 +23,6 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="text-content">
-            <p>Hi there!</p>
             <h1>I'm<span>Amir Jebbari</span></h1>
             <p>
                 I am Amir Jebbari, a passionate software developer at the beginning of my journey. Currently, I am

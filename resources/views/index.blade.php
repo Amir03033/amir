@@ -2,7 +2,6 @@
 @section('title', 'Amir Jebbari')
 @section('content')
 <div class="text-content">
-    <p>Hallo!</p>
     <h1>Ik ben <span>Amir Jebbari</span></h1>
     <p>
         Ik ben Amir Jebbari, een gepassioneerde softwareontwikkelaar aan het begin van mijn reis. Momenteel ben
