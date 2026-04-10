@@ -8,7 +8,7 @@
                     margin-right: 80px;
                 }
             </style>
-            <h1>These are my<span>projects</span></h1>
+            <h1>These are my<span> recent projects</span></h1>
             <p></p>
             <div class="buttons">
                 <a href="https://klus-klaar.newdeveloper.nl" class="btn"><i class="fas fa-user"></i>KlusKlaar <strong>Under Development</strong></a>

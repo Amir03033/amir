@@ -24,7 +24,7 @@
         bijdrage te leveren binnen de tech-industrie.
     </p>
     <div class="buttons">
-        <a href="{{ route('aboutme') }}" class="btn"><i class="fas fa-user"></i> Over mij</a>
+        <a href="{{ route('contact') }}" class="btn"><i class="fas fa-user"></i> Contact</a>
         <a href="{{ route('portfolio') }}" class=" btn-portofolio btn"><i class="fas fa-briefcase"></i>Portfolio</a>
     </div>
     <a href="{{ route('index-en') }}">

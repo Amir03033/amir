@@ -43,8 +43,8 @@
                 and make a valuable contribution to the tech industry.
             </p>
             <div class="buttons">
-                <a href="#" class="btn"><i class="fas fa-user"></i> More About Me</a>
-                <a href="#" class=" btn-portofolio btn"><i class="fas fa-briefcase"></i>Portfolio</a>
+                <a href="{{ route('contact') }}" class="btn"><i class="fas fa-user"></i> Contact</a>
+                <a href="{{ route('portfolio') }}" class=" btn-portofolio btn"><i class="fas fa-briefcase"></i>Portfolio</a>
             </div>
         </div>
 {{--        <div class="image-content">--}}

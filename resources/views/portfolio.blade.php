@@ -4,7 +4,7 @@
     <div class="textbackground">
     <div class="textcontentportofolio">
         </style>
-        <h1>Dit zijn mijn<span> projecten</span></h1>
+        <h1>Dit zijn mijn<span>  recente projecten</span></h1>
         <p></p>
         <div class="buttons">
             <a target="_blank" href="https://klus-klaar.newdeveloper.nl" class="btn"><i class="fas fa-user"></i>KlusKlaar <strong>Under Development</strong></a>
