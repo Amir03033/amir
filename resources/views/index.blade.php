@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Amir Jebbari')
 @section('content')
+    <div class="BackgroundIndex">
 <div class="text-content">
     <h1>Ik ben <span>Amir Jebbari</span></h1>
     <p>
@@ -36,7 +37,8 @@
 {{--    <li><a href="{{ route('home') }}" class="active"><i class="fas fa-home"></i> <span>Home</span></a></li>--}}
 
 </div>
-<div class="image-content">
-    <img src="Amirfoto%20copy.png" alt="Amirfoto">
-</div>
+    </div>
+{{--<div class="image-content">--}}
+{{--    <img src="Amirfoto%20copy.png" alt="Amirfoto">--}}
+{{--</div>--}}
 @endsection

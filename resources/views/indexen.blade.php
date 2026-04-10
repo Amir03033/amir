@@ -22,46 +22,37 @@
 
     <!-- Main Content -->
     <div class="main-content">
+        <div class="BackgroundIndex">
         <div class="text-content">
-            <h1>I'm<span>Amir Jebbari</span></h1>
+            <h1>I'm<span> Amir Jebbari</span></h1>
             <p>
-                Ik ben <strong>Amir Jebbari</strong>, een gedreven softwareontwikkelaar aan het begin van mijn carrière.
-                Momenteel ben ik actief bezig met het ontwikkelen van mijn vaardigheden binnen webontwikkeling,
-                waarbij ik werk met HTML en CSS als basis, maar ook steeds meer ervaring opdoe met moderne
-                technologieën zoals Node.js, Vue.js en Laravel.
+                I am <strong>Amir Jebbari</strong>, a motivated software developer at the beginning of my career.
+                I am currently actively developing my skills in web development, where I work with HTML and CSS as a foundation,
+                while also gaining more experience with modern technologies such as Node.js, Vue.js, and Laravel.
             </p>
 
             <p>
-                Ik vind het interessant om te werken met <strong>API’s</strong> en leer hoe ik dynamische en interactieve
-                applicaties kan bouwen die zowel functioneel als gebruiksvriendelijk zijn. Door praktijkgericht
-                te werken aan projecten blijf ik mezelf continu uitdagen en verbeteren.
+                I enjoy working with <strong>APIs</strong> and learning how to build dynamic and interactive applications
+                that are both functional and user-friendly. By working on practical projects, I continuously challenge
+                myself and improve my skills.
             </p>
 
             <p>
-                Terwijl ik mijn opleiding voortzet, richt ik me op het verdiepen van mijn kennis en het verbreden
-                van mijn technische stack. Met een sterke nieuwsgierigheid en een duidelijke motivatie om te groeien,
-                ben ik vastberaden om mezelf te ontwikkelen tot een professionele developer en een waardevolle
-                bijdrage te leveren binnen de tech-industrie.
+                While continuing my studies, I focus on deepening my knowledge and expanding my technical stack.
+                With a strong curiosity and a clear motivation to grow, I am determined to develop into a professional developer
+                and make a valuable contribution to the tech industry.
             </p>
             <div class="buttons">
                 <a href="#" class="btn"><i class="fas fa-user"></i> More About Me</a>
                 <a href="#" class=" btn-portofolio btn"><i class="fas fa-briefcase"></i>Portfolio</a>
             </div>
         </div>
-        <div class="image-content">
-            <img src="Amirfoto%20copy.png" alt="Amirfoto">
-        </div>
+{{--        <div class="image-content">--}}
+{{--            <img src="Amirfoto%20copy.png" alt="Amirfoto">--}}
+{{--        </div>--}}
     </div>
-    <!--    <div class="socials">-->
-    <!--        <a href="https://www.instagram.com/ar.zk12/" target="_blank">-->
-    <!--            <i class="fa-brands fa-instagram"></i>-->
-    <!--        </a>-->
-    <!--        <a href="https://x.com/Amir1378804" target="_blank">-->
-    <!--            <i class="fa-solid fa-x"></i>-->
-    <!--        </a>-->
-    <!--        <a href="https://www.linkedin.com/in/amir-jebbari-19a63b330/" target="_blank">-->
-    <!--            <i class="fa-brands fa-linkedin"></i>-->
-    <!--        </a>-->
+    </div>
+
 
     <!--    </div>-->
     <a href="{{ route('index') }}">
