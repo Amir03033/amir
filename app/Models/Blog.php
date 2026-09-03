@@ -1,9 +1,10 @@
 <?php
-// app/Models/Blog.php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
 
 class Blog extends Model
 {
@@ -13,6 +14,17 @@ class Blog extends Model
     public function getTranslation($field)
     {
         $locale = App::getLocale();
-        return $this->$field[$locale] ?? $this->$field['en'] ?? '';
+        $value = $this->$field;
+
+        if (is_array($value)) {
+            return $value[$locale] ?? $value['en'] ?? $value['nl'] ?? '';
+        }
+
+        return $value ?? '';
+    }
+
+    public function excerpt(int $limit = 180): string
+    {
+        return Str::limit(preg_replace('/\s+/', ' ', strip_tags(Str::markdown($this->getTranslation('content')))), $limit);
     }
 }

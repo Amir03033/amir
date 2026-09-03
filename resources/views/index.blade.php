@@ -1,193 +1,169 @@
-{{--@extends('layouts.app')--}}
-{{--@section('title', 'Amir Jebbari')--}}
-{{--@section('content')--}}
-{{--    <div class="BackgroundIndex">--}}
-{{--<div class="text-content">--}}
-{{--    <h1>Ik ben <span>Amir Jebbari</span></h1>--}}
-{{--    <p>--}}
-{{--        Ik ben <strong>Amir Jebbari</strong>, een gedreven softwareontwikkelaar aan het begin van mijn carrière.--}}
-{{--        Momenteel ben ik actief bezig met het ontwikkelen van mijn vaardigheden binnen webontwikkeling,--}}
-{{--        waarbij ik werk met HTML en CSS als basis, maar ook steeds meer ervaring opdoe met moderne--}}
-{{--        technologieën zoals Node.js, Vue.js en Laravel.--}}
-{{--    </p>--}}
-
-{{--    <p>--}}
-{{--        Ik vind het interessant om te werken met <strong>API’s</strong> en leer hoe ik dynamische en interactieve--}}
-{{--        applicaties kan bouwen die zowel functioneel als gebruiksvriendelijk zijn. Door praktijkgericht--}}
-{{--        te werken aan projecten blijf ik mezelf continu uitdagen en verbeteren.--}}
-{{--    </p>--}}
-
-{{--    <p>--}}
-{{--        Terwijl ik mijn opleiding voortzet, richt ik me op het verdiepen van mijn kennis en het verbreden--}}
-{{--        van mijn technische stack. Met een sterke nieuwsgierigheid en een duidelijke motivatie om te groeien,--}}
-{{--        ben ik vastberaden om mezelf te ontwikkelen tot een professionele developer en een waardevolle--}}
-{{--        bijdrage te leveren binnen de tech-industrie.--}}
-{{--    </p>--}}
-{{--    <div class="buttons">--}}
-{{--        <a href="{{ route('contact') }}" class="btn"><i class="fas fa-user"></i> Contact</a>--}}
-{{--        <a href="{{ route('portfolio') }}" class=" btn-portofolio btn"><i class="fas fa-briefcase"></i>Portfolio</a>--}}
-{{--    </div>--}}
-{{--    <a href="{{ route('index-en') }}">--}}
-{{--        <button class="slide-button">--}}
-{{--            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">--}}
-{{--                <path stroke-linecap="round" stroke-linejoin="round" d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802" />--}}
-{{--            </svg>--}}
-{{--        </button>--}}
-{{--    </a>--}}
-{{--    <li><a href="{{ route('home') }}" class="active"><i class="fas fa-home"></i> <span>Home</span></a></li>--}}
-
-{{--</div>--}}
-{{--    </div>--}}
-{{--<div class="image-content">--}}
-{{--    <img src="Amirfoto%20copy.png" alt="Amirfoto">--}}
-{{--</div>--}}
-{{--@endsection--}}
 @extends('layouts.layout')
 
 @section('nav')
-    <nav class="fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b border-slate-900/50 bg-cyber-bg/70">
-        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-            <a href="#home" class="text-lg font-mono font-bold tracking-wider bg-gradient-to-r from-cyan-400 to-violet-500 bg-clip-text text-transparent">AMIR<span class="text-white">_</span></a>
-            <div class="flex items-center space-x-8">
-                <div class="hidden md:flex space-x-6 text-xs uppercase tracking-widest font-mono text-slate-400">
-                    <a href="#home" class="hover:text-cyan-400 transition" x-text="messages.nav.home"></a>
-                    <a href="#about" class="hover:text-cyan-400 transition" x-text="messages.nav.about"></a>
-                    <a href="#portfolio" class="hover:text-cyan-400 transition" x-text="messages.nav.portfolio"></a>
-                    <a href="#blog" class="hover:text-cyan-400 transition" x-text="messages.nav.blog"></a>
-                    <a href="#contact" class="hover:text-cyan-400 transition" x-text="messages.nav.contact"></a>
-                </div>
-                <button @click="switchLanguage(locale === 'nl' ? 'en' : 'nl')" class="relative inline-flex items-center justify-between w-14 h-7 p-1 rounded-full bg-slate-900 border border-slate-800 cursor-pointer">
-                    <span class="text-[9px] font-bold z-10 pl-1" :class="locale === 'nl' ? 'text-slate-900' : 'text-slate-500'">EN</span>
-                    <span class="text-[9px] font-bold z-10 pr-1" :class="locale === 'en' ? 'text-slate-900' : 'text-slate-500'">NL</span>
-                    <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 transition-transform duration-300" :class="locale === 'nl' ? 'transform translate-x-7' : ''"></span>
-                </button>
-            </div>
-        </div>
-    </nav>
+    <x-site-nav :on-home="true" />
 @endsection
 
 @section('content')
-    <!-- HOME / HERO -->
     <x-section id="home" class="min-h-screen flex items-center justify-center pt-16">
-        <div class="text-center space-y-6 max-w-3xl">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/20 bg-cyan-500/5 text-cyan-400 text-xs font-mono tracking-widest uppercase">
-                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span> Level 18 Dev Located in Zwolle
+        <div class="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] gap-12 items-center w-full">
+            <div class="space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/20 bg-cyan-500/5 text-cyan-400 text-xs font-mono tracking-widest uppercase">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                    {{ __('messages.home.badge') }}
+                </div>
+                <h1 class="text-5xl md:text-6xl font-black tracking-tight text-white">{{ config('site.name') }}</h1>
+                <p class="text-lg md:text-xl font-medium text-cyan-400/90">{{ __('messages.home.subtitle') }}</p>
+                <p class="text-slate-400 leading-relaxed text-sm md:text-base max-w-xl">{{ __('messages.home.text') }}</p>
+                <div class="pt-2 flex flex-wrap gap-3">
+                    <a href="#portfolio" class="btn-primary">{{ __('messages.home.cta') }}</a>
+                    <a href="{{ route('cv') }}" class="btn-secondary">{{ __('messages.home.cta_cv') }}</a>
+                    <a href="{{ config('site.linkedin') }}" target="_blank" rel="noopener noreferrer" class="btn-secondary">LinkedIn</a>
+                </div>
             </div>
-            <h1 class="text-5xl md:text-7xl font-black tracking-tight text-white">Amir Jebbari</h1>
-            <p class="text-lg md:text-xl font-mono text-cyan-400/80" x-text="messages.home.subtitle"></p>
-            <p class="text-slate-400 leading-relaxed text-sm md:text-base" x-text="messages.home.text"></p>
-            <div class="pt-4">
-                <a href="#portfolio" class="px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/30 transition transform hover:-translate-y-0.5 text-sm" x-text="messages.home.cta"></a>
+            <div class="justify-self-center md:justify-self-end">
+                <div class="relative">
+                    <div class="absolute -inset-1 rounded-2xl bg-gradient-to-br from-cyan-500/30 to-violet-600/20 blur-lg"></div>
+                    <img src="{{ asset(config('site.photo')) }}" alt="{{ config('site.name') }}" class="relative w-64 md:w-72 h-80 object-cover rounded-2xl border border-slate-800 shadow-2xl">
+                </div>
             </div>
         </div>
     </x-section>
 
-    <!-- OVER MIJ -->
-    <x-section id="about" bg="card">
+    <x-section id="about" bg="card" :title="__('messages.about.title')">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
-            <div class="border border-slate-800 bg-cyber-card p-6 rounded-xl space-y-4 font-mono text-xs relative">
-                <h3 class="text-sm font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800 pb-2" x-text="messages.about.details"></h3>
-                <div><span class="text-slate-500 block" x-text="messages.about.age"></span><span class="text-cyan-400 text-sm font-bold">18</span></div>
-                <div><span class="text-slate-500 block" x-text="messages.about.location"></span><span class="text-slate-300 text-sm">Zwolle</span></div>
-                <div><span class="text-slate-500 block">Culture / Roots</span><span class="text-violet-400 text-sm">Iranian Pride 🇮🇷</span></div>
-                <div><span class="text-slate-500 block" x-text="messages.about.interests"></span><span class="text-slate-300 text-xs" x-text="messages.about.interests_list"></span></div>
+            <div class="border border-slate-800 bg-cyber-card p-6 rounded-xl space-y-4 text-sm">
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider border-b border-slate-800 pb-2">{{ __('messages.about.details') }}</h3>
+                <div>
+                    <span class="text-slate-500 block text-xs">{{ __('messages.about.age') }}</span>
+                    <span class="text-cyan-400 font-semibold">{{ __('messages.about.age_value') }}</span>
+                </div>
+                <div>
+                    <span class="text-slate-500 block text-xs">{{ __('messages.about.location') }}</span>
+                    <span class="text-slate-200">{{ config('site.location') }}</span>
+                </div>
+                <div>
+                    <span class="text-slate-500 block text-xs">{{ __('messages.about.role') }}</span>
+                    <span class="text-slate-200">{{ __('messages.about.role_value') }}</span>
+                </div>
+                <div>
+                    <span class="text-slate-500 block text-xs">{{ __('messages.about.availability') }}</span>
+                    <span class="text-slate-200">{{ __('messages.about.availability_value') }}</span>
+                </div>
             </div>
-            <div class="md:col-span-2 space-y-4">
-                <h2 class="text-2xl font-bold font-mono text-white flex items-center gap-2"><span class="text-cyan-500">//</span><span x-text="messages.about.title"></span></h2>
-                <p class="text-slate-400 text-sm md:text-base leading-relaxed" x-text="messages.about.text"></p>
+            <div class="md:col-span-2">
+                <p class="text-slate-300 text-sm md:text-base leading-relaxed">{{ __('messages.about.text') }}</p>
             </div>
         </div>
     </x-section>
 
-    <!-- PORTFOLIO -->
-    <x-section id="portfolio" cyberTitle="messages.nav.portfolio">
+    <x-section id="skills" :title="__('messages.skills.title')" :intro="__('messages.skills.intro')">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            @forelse($projects as $project)
-                <div class="border border-slate-900 bg-cyber-card p-5 rounded-xl group hover:border-cyan-500/40 transition-all duration-300">
-                    <div class="h-40 bg-slate-950 rounded-lg mb-4 overflow-hidden flex items-center justify-center border border-slate-900 text-slate-700 font-mono text-xs">
-                        @if($project->image) <img src="{{ asset('storage/' . $project->image) }}" class="w-full h-full object-cover"> @else [img_placeholder] @endif
-                    </div>
-                    <h3 class="text-md font-bold text-white mb-1">{{ $project->getTranslation('title') }}</h3>
-                    <p class="text-slate-400 text-xs mb-4 line-clamp-2">{{ $project->getTranslation('description') }}</p>
-                    <div class="flex items-center justify-between text-xs font-mono">
-                        <span class="text-cyan-400/80">{{ $project->tags }}</span>
-                        <div class="flex space-x-2">
-                            @if($project->github_url)<a href="{{ $project->github_url }}" target="_blank" class="text-slate-500 hover:text-white">Git</a>@endif
-                            @if($project->demo_url)<a href="{{ $project->demo_url }}" target="_blank" class="text-cyan-400 hover:underline">Live</a>@endif
-                        </div>
+            @foreach(__('messages.skills.groups') as $group)
+                <div class="border border-slate-800 bg-cyber-card p-6 rounded-xl">
+                    <h3 class="text-sm font-semibold text-white mb-4">{{ $group['label'] }}</h3>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach($group['items'] as $item)
+                            <span class="px-2.5 py-1 rounded-md bg-slate-950 border border-slate-800 text-xs text-slate-300">{{ $item }}</span>
+                        @endforeach
                     </div>
                 </div>
-            @empty
-                <div class="col-span-3 text-center py-12 text-xs font-mono text-slate-600">[ Geen projecten gevonden in database. Draai seeders of voeg data toe. ]</div>
-            @endforelse
+            @endforeach
         </div>
     </x-section>
 
-    <!-- BLOGS -->
-    <x-section id="blog" bg="card" cyberTitle="messages.nav.blog">
-        <div class="space-y-4">
-            @forelse($blogs as $blog)
-                <a href="{{ route('blog.show', $blog->slug) }}" class="block p-5 border border-slate-900 bg-cyber-card/50 rounded-xl hover:border-violet-500/40 transition duration-300 flex justify-between items-center group">
-                    <div>
-                        <span class="text-[10px] font-mono text-slate-500">{{ $blog->created_at->format('Y-m-d') }}</span>
-                        <h3 class="text-md font-semibold text-slate-200 group-hover:text-violet-400 transition">{{ $blog->getTranslation('title') }}</h3>
-                    </div>
-                    <span class="text-slate-600 text-xs font-mono group-hover:translate-x-1 transition-transform">READ_LOG -></span>
-                </a>
-            @empty
-                <div class="text-center py-12 text-xs font-mono text-slate-600">[ Geen logs geschreven. ]</div>
-            @endforelse
-        </div>
-    </x-section>
+    @if($projects->isNotEmpty())
+        <x-section id="portfolio" bg="card" :title="__('messages.portfolio.title')" :intro="__('messages.portfolio.intro')">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach($projects as $project)
+                    <x-project-card :project="$project" />
+                @endforeach
+            </div>
+        </x-section>
+    @endif
 
-    <!-- CONTACT FORMULIER (Met AJAX & Alpine validation) -->
+    @if($blogs->isNotEmpty())
+        <x-section id="blog" :title="__('messages.blog.title')" :intro="__('messages.blog.intro')">
+            <div class="space-y-4">
+                @foreach($blogs as $blog)
+                    <a href="{{ route('blog.show', $blog->slug) }}" class="block p-5 border border-slate-800 bg-cyber-card/50 rounded-xl hover:border-violet-500/40 transition flex justify-between items-start gap-6 group">
+                        <div>
+                            <span class="text-[11px] font-mono text-slate-500">{{ $blog->created_at->format('d M Y') }}</span>
+                            <h3 class="text-base font-semibold text-slate-100 group-hover:text-violet-300 transition mt-1">{{ $blog->getTranslation('title') }}</h3>
+                            <p class="text-slate-400 text-sm mt-2 leading-relaxed">{{ $blog->excerpt() }}</p>
+                        </div>
+                        <span class="text-slate-500 text-xs font-mono whitespace-nowrap mt-1 group-hover:text-violet-300">{{ __('messages.blog.read') }} →</span>
+                    </a>
+                @endforeach
+            </div>
+        </x-section>
+    @endif
+
     <x-section id="contact">
         <div x-data="{
             form: { name: '', email: '', message: '' },
             errors: {},
             success: false,
+            failed: false,
             loading: false,
             async submit() {
-                this.loading = true; this.errors = {}; this.success = false;
-                let response = await fetch('{{ route('contact.send') }}', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
-                    body: JSON.stringify(this.form)
-                });
-                let data = await response.json();
-                this.loading = false;
-                if(data.success) { this.success = true; this.form = { name: '', email: '', message: '' }; }
-                else { this.errors = data.errors; }
+                this.loading = true; this.errors = {}; this.success = false; this.failed = false;
+                try {
+                    let response = await fetch('{{ route('contact.send') }}', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
+                        body: JSON.stringify(this.form)
+                    });
+                    let data = await response.json();
+                    this.loading = false;
+                    if (data.success) { this.success = true; this.form = { name: '', email: '', message: '' }; }
+                    else { this.errors = data.errors || {}; this.failed = !data.errors; }
+                } catch (e) {
+                    this.loading = false;
+                    this.failed = true;
+                }
             }
-        }" class="max-w-xl mx-auto border border-slate-900 bg-gradient-to-b from-cyber-card to-slate-950 p-8 rounded-2xl relative shadow-2xl">
+        }" class="max-w-xl mx-auto border border-slate-800 bg-gradient-to-b from-cyber-card to-slate-950 p-8 rounded-2xl shadow-2xl">
             <div class="text-center space-y-2 mb-8">
-                <h2 class="text-2xl font-bold font-mono text-white" x-text="messages.contact.title"></h2>
-                <p class="text-xs text-slate-400 leading-relaxed" x-text="messages.contact.subtitle"></p>
+                <h2 class="text-2xl font-bold text-white">{{ __('messages.contact.title') }}</h2>
+                <p class="text-sm text-slate-400 leading-relaxed">{{ __('messages.contact.subtitle') }}</p>
             </div>
 
-            <div x-show="success" x-cloak class="p-4 mb-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs rounded-lg font-mono" x-text="messages.contact.success"></div>
+            <div x-show="success" x-cloak class="p-4 mb-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm rounded-lg">{{ __('messages.contact.success') }}</div>
+            <div x-show="failed" x-cloak class="p-4 mb-4 bg-rose-500/10 border border-rose-500/30 text-rose-400 text-sm rounded-lg">{{ __('messages.contact.error') }}</div>
 
-            <form @submit.prevent="submit" class="space-y-4 font-mono text-xs">
+            <form @submit.prevent="submit" class="space-y-4 text-sm">
                 <div>
-                    <label class="block text-slate-400 mb-1" x-text="messages.contact.label_name"></label>
-                    <input type="text" x-model="form.name" class="w-full bg-slate-950 border border-slate-900 rounded-lg p-3 text-slate-200 focus:outline-none focus:border-cyan-500 transition">
-                    <span class="text-rose-500 mt-1 block" x-text="errors.name ? errors.name[0] : ''"></span>
+                    <label class="block text-slate-400 mb-1">{{ __('messages.contact.label_name') }}</label>
+                    <input type="text" x-model="form.name" class="input-field" autocomplete="name">
+                    <span class="text-rose-500 mt-1 block text-xs" x-text="errors.name ? errors.name[0] : ''"></span>
                 </div>
                 <div>
-                    <label class="block text-slate-400 mb-1" x-text="messages.contact.label_email"></label>
-                    <input type="email" x-model="form.email" class="w-full bg-slate-950 border border-slate-900 rounded-lg p-3 text-slate-200 focus:outline-none focus:border-cyan-500 transition">
-                    <span class="text-rose-500 mt-1 block" x-text="errors.email ? errors.email[0] : ''"></span>
+                    <label class="block text-slate-400 mb-1">{{ __('messages.contact.label_email') }}</label>
+                    <input type="email" x-model="form.email" class="input-field" autocomplete="email">
+                    <span class="text-rose-500 mt-1 block text-xs" x-text="errors.email ? errors.email[0] : ''"></span>
                 </div>
                 <div>
-                    <label class="block text-slate-400 mb-1" x-text="messages.contact.label_message"></label>
-                    <textarea x-model="form.message" rows="4" class="w-full bg-slate-950 border border-slate-900 rounded-lg p-3 text-slate-200 focus:outline-none focus:border-cyan-500 transition"></textarea>
-                    <span class="text-rose-500 mt-1 block" x-text="errors.message ? errors.message[0] : ''"></span>
+                    <label class="block text-slate-400 mb-1">{{ __('messages.contact.label_message') }}</label>
+                    <textarea x-model="form.message" rows="4" class="input-field"></textarea>
+                    <span class="text-rose-500 mt-1 block text-xs" x-text="errors.message ? errors.message[0] : ''"></span>
                 </div>
-                <button type="submit" :disabled="loading" class="w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg text-white font-bold hover:opacity-90 transition flex items-center justify-center gap-2">
+                <button type="submit" :disabled="loading" class="btn-primary w-full">
                     <span x-show="loading" class="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                    <span x-text="messages.contact.btn_send"></span>
+                    <span>{{ __('messages.contact.btn_send') }}</span>
                 </button>
             </form>
+
+            <div class="mt-6 pt-6 border-t border-slate-800 text-center text-xs text-slate-500 space-y-2">
+                <p>{{ __('messages.contact.or') }}</p>
+                <p>
+                    <a class="text-cyan-400 hover:underline" href="mailto:{{ config('site.email') }}">{{ config('site.email') }}</a>
+                    ·
+                    <a class="text-cyan-400 hover:underline" href="{{ config('site.linkedin') }}" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    ·
+                    <a class="text-cyan-400 hover:underline" href="tel:{{ config('site.phone_href') }}">{{ config('site.phone') }}</a>
+                </p>
+            </div>
         </div>
     </x-section>
 @endsection

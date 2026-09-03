@@ -28,15 +28,22 @@ class ProjectResource extends Resource
                 Tabs::make('Translations')->tabs([
                     Tabs\Tab::make('Nederlands')->schema([
                         TextInput::make('title.nl')->label('Titel (NL)')->required(),
-                        Textarea::make('description.nl')->label('Omschrijving (NL)')->required(),
+                        Textarea::make('description.nl')->label('Omschrijving (NL)')->required()->rows(8),
                     ]),
                     Tabs\Tab::make('English')->schema([
                         TextInput::make('title.en')->label('Title (EN)')->required(),
-                        Textarea::make('description.en')->label('Description (EN)')->required(),
+                        Textarea::make('description.en')->label('Description (EN)')->required()->rows(8),
                     ]),
                 ])->columnSpanFull(),
-                TextInput::make('tags')->required(),
-                FileUpload::make('image')->image()->directory('projects'),
+                TextInput::make('tags')
+                    ->required()
+                    ->helperText('Komma-gescheiden, bijvoorbeeld: Laravel, PHP, JavaScript'),
+                FileUpload::make('image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('projects')
+                    ->visibility('public')
+                    ->maxSize(4096),
                 TextInput::make('github_url')->url(),
                 TextInput::make('demo_url')->url(),
             ]);

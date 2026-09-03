@@ -37,7 +37,12 @@ class BlogResource extends Resource
                     ]),
                 ])->columnSpanFull(),
                 TextInput::make('slug')->required()->unique(ignoreRecord: true),
-                FileUpload::make('image')->image()->directory('blogs'),
+                FileUpload::make('image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('blogs')
+                    ->visibility('public')
+                    ->maxSize(4096),
             ]);
     }
 
