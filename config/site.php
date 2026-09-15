@@ -8,5 +8,5 @@ return [
     'location' => 'Zwolle',
     'linkedin' => 'https://www.linkedin.com/in/amir-jebbari-19a63b330/',
     'github' => env('SITE_GITHUB'),
-    'photo' => 'images/amir2.png',
+    'photo' => 'images/amir3.png',
 ];
