@@ -24,7 +24,7 @@ class AmirPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
-            ->id('amir')
+            ->id('Admin')
             ->path('amir')
             ->login()
             ->colors([
