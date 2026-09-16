@@ -5,7 +5,7 @@
     <div class="text-content">
         <p class="contactmain">Contact</p>
         <a class="email" href="mailto:snapzakaria69@gmail.com">Email Me</a>
-        <a class="phonenumer" href="tel:+31639685313">Bel Mij</a>
+        <a class="phonenumer" href="tel:+31613101525">Bel Mij</a>
         <div class="buttons">
             <a href="https://www.instagram.com/ar.zk12/" class="btn"><i class="fa-brands fa-instagram"></i>Instagram</a>
             <a href="https://x.com/Amir1378804" class="btn"><i class="fa-solid fa-x"></i>Twitter</a>
