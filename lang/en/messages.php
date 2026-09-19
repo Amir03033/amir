@@ -14,7 +14,7 @@ return [
         'close' => 'Close',
     ],
     'home' => [
-        'badge' => 'Software developer · Zwolle',
+        'badge' => 'Software developer · Overijsel',
         'subtitle' => 'Laravel and Vue developer',
         'text' => 'I build web apps with PHP, Laravel and JavaScript: authentication, forms, admin panels, and frontends that talk to APIs. I am looking for an internship or junior role where I can do that in a team.',
         'cta' => 'View my work',
@@ -22,7 +22,7 @@ return [
     ],
     'about' => [
         'title' => 'About',
-        'text' => 'I am Amir Jebbari, 18, a software development student in Zwolle. I like working end-to-end: Laravel on the backend, Blade or Vue on the frontend, and a site that is actually live. KlusKlaar, Jungle Tuinen and MasterMind are not homework sitting in a folder; they have login, content and a public URL. I train regularly and have Iranian roots — that keeps me focused, but this site is about the work.',
+        'text' => 'I am Amir Jebbari, 18, a software development student in Overijsel. I like working end-to-end: Laravel on the backend, Blade or Vue on the frontend, and a site that is actually live. KlusKlaar, Jungle Tuinen and MasterMind are not homework sitting in a folder; they have login, content and a public URL. I train regularly and have Iranian roots — that keeps me focused, but this site is about the work.',
         'details' => 'Profile',
         'age' => 'Age',
         'age_value' => '18',
@@ -75,7 +75,7 @@ return [
         'print' => 'Print / save as PDF',
         'intro' => 'A short overview of education, stack and projects. Use print to save this as a PDF.',
         'education' => 'Education',
-        'education_item' => 'Software Development — Zwolle',
+        'education_item' => 'Software Development — Overijsel',
         'projects' => 'Projects',
         'contact' => 'Contact',
     ],

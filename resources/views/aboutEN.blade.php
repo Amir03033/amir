@@ -5,7 +5,7 @@
         <div class="text-content">
             <h1>I am<span> Amir Jebbari</span></h1>
             <p>
-                My name is <strong>Amir Jebbari</strong>, I am 18 years old and live in Zwolle.
+                My name is <strong>Amir Jebbari</strong>, I am 18 years old and live in Overijsel.
                 As an only child, I have always had the space and freedom to discover myself
                 and develop my interests. This has given me a broad perspective on life and
                 a clear understanding of what motivates me.

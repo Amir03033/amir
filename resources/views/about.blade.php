@@ -6,7 +6,7 @@
             <h1>Ik ben <span> Amir Jebbari</span></h1>
 
             <p>
-                Mijn naam is <strong>Amir Jebbari</strong>, ik ben 18 jaar oud en woon in Zwolle.
+                Mijn naam is <strong>Amir Jebbari</strong>, ik ben 18 jaar oud en woon in Overijsel.
                 Als enig kind heb ik altijd veel ruimte en vrijheid gehad om mezelf te ontdekken
                 en mijn interesses te ontwikkelen. Hierdoor heb ik een brede kijk op het leven
                 gekregen en weet ik goed wat mij motiveert.
