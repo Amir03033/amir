@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Jobs\ResolveVisitCountry;
 use App\Models\Visit;
 use Closure;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class TrackVisit
             $agent = new Agent();
             $agent->setUserAgent($request->userAgent());
 
-            Visit::create([
+            $visit = Visit::create([
                 'ip_hash'     => hash('sha256', $request->ip() . config('app.key')),
                 'ip_address'  => $request->ip(),
                 'url'         => $request->path(),
@@ -28,6 +29,8 @@ class TrackVisit
                 'utm_campaign'=> $request->query('utm_campaign'),
                 'session_id'  => $request->session()->getId(),
             ]);
+
+            ResolveVisitCountry::dispatch($visit->id, $request->ip());
         }
 
         return $next($request);

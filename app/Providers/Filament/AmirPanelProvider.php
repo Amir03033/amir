@@ -40,6 +40,10 @@ class AmirPanelProvider extends PanelProvider
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
                 \App\Filament\Admin\Widgets\VisitsOverview::class,
+                \App\Filament\Admin\Widgets\VisitsChart::class,
+                \App\Filament\Admin\Widgets\TopReferrers::class,
+
+
 
             ])
             ->middleware([

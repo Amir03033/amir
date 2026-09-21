@@ -6,9 +6,12 @@ use App\Filament\Admin\Resources\VisitResource\Pages;
 use App\Filament\Admin\Resources\VisitResource\RelationManagers;
 use App\Models\Visit;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -64,7 +67,26 @@ class VisitResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                //
+                SelectFilter::make('device_type')
+                    ->label('Apparaat')
+                    ->options([
+                        'desktop' => 'Desktop',
+                        'mobile' => 'Mobiel',
+                        'tablet' => 'Tablet',
+                    ]),
+                SelectFilter::make('browser')
+                    ->label('Browser')
+                    ->options(fn () => Visit::query()->distinct()->pluck('browser', 'browser')->filter()->toArray()),
+                Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('van'),
+                        DatePicker::make('tot'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when($data['van'], fn (Builder $q) => $q->whereDate('created_at', '>=', $data['van']))
+                            ->when($data['tot'], fn (Builder $q) => $q->whereDate('created_at', '<=', $data['tot']));
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
