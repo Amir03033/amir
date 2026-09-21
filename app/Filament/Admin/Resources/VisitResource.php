@@ -23,7 +23,16 @@ class VisitResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('url')->label('Pagina')->disabled(),
+                Forms\Components\TextInput::make('browser')->label('Browser')->disabled(),
+                Forms\Components\TextInput::make('platform')->label('OS')->disabled(),
+                Forms\Components\TextInput::make('device_type')->label('Apparaat')->disabled(),
+                Forms\Components\TextInput::make('referrer')->label('Referrer')->disabled(),
+                Forms\Components\TextInput::make('user_agent')->label('User agent')->disabled()->columnSpanFull(),
+                Forms\Components\TextInput::make('ip_hash')->label('IP-hash (versleuteld)')->disabled(),
+                Forms\Components\TextInput::make('session_id')->label('Sessie-ID')->disabled(),
+                Forms\Components\TextInput::make('utm_source')->label('UTM Source')->disabled(),
+                Forms\Components\TextInput::make('utm_campaign')->label('UTM Campaign')->disabled(),
             ]);
     }
 
