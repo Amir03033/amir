@@ -1,0 +1,49 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::table('blogs', function (Blueprint $table) {
+            $table->string('meta_title')->nullable()->after('image');
+
+            $table->text('meta_description')
+                ->nullable()
+                ->after('meta_title');
+
+            $table->string('status')
+                ->default('draft')
+                ->after('meta_description');
+
+            $table->timestamp('published_at')
+                ->nullable()
+                ->after('status');
+
+            $table->string('category')
+                ->nullable()
+                ->after('published_at');
+
+            $table->json('tags')
+                ->nullable()
+                ->after('category');
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::table('blogs', function (Blueprint $table) {
+            $table->dropColumn([
+                'meta_title',
+                'meta_description',
+                'status',
+                'published_at',
+                'category',
+                'tags',
+            ]);
+        });
+    }
+};

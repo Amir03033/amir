@@ -18,4 +18,25 @@ class ContactMessage extends Model
         'mail_sent' => 'boolean',
         'read_at' => 'datetime',
     ];
+
+    public function isRead(): bool
+    {
+        return $this->read_at !== null;
+    }
+
+    public function markAsRead(): void
+    {
+        if (! $this->isRead()) {
+            $this->update([
+                'read_at' => now(),
+            ]);
+        }
+    }
+
+    public function markAsUnread(): void
+    {
+        $this->update([
+            'read_at' => null,
+        ]);
+    }
 }
