@@ -31,8 +31,25 @@ class VisitResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('url')
+                    ->label('Pagina')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('browser')
+                    ->label('Browser'),
+                Tables\Columns\TextColumn::make('platform')
+                    ->label('OS'),
+                Tables\Columns\TextColumn::make('device_type')
+                    ->label('Apparaat')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('referrer')
+                    ->label('Referrer')
+                    ->limit(30),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Bezocht op')
+                    ->dateTime('d-m-Y H:i')
+                    ->sortable(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
