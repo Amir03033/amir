@@ -17,6 +17,7 @@ class TrackVisit
 
             Visit::create([
                 'ip_hash'     => hash('sha256', $request->ip() . config('app.key')),
+                'ip_address'  => $request->ip(),
                 'url'         => $request->path(),
                 'referrer'    => $request->headers->get('referer'),
                 'user_agent'  => $request->userAgent(),

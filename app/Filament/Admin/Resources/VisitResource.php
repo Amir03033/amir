@@ -30,6 +30,7 @@ class VisitResource extends Resource
                 Forms\Components\TextInput::make('referrer')->label('Referrer')->disabled(),
                 Forms\Components\TextInput::make('user_agent')->label('User agent')->disabled()->columnSpanFull(),
                 Forms\Components\TextInput::make('ip_hash')->label('IP-hash (versleuteld)')->disabled(),
+                Forms\Components\TextInput::make('ip_address')->label('IP-adres')->disabled(),
                 Forms\Components\TextInput::make('session_id')->label('Sessie-ID')->disabled(),
                 Forms\Components\TextInput::make('utm_source')->label('UTM Source')->disabled(),
                 Forms\Components\TextInput::make('utm_campaign')->label('UTM Campaign')->disabled(),
@@ -53,6 +54,9 @@ class VisitResource extends Resource
                 Tables\Columns\TextColumn::make('referrer')
                     ->label('Referrer')
                     ->limit(30),
+                Tables\Columns\TextColumn::make('ip_address')
+                    ->label('IP-adres')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Bezocht op')
                     ->dateTime('d-m-Y H:i')
