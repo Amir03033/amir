@@ -6,6 +6,7 @@ return [
         'about' => 'About',
         'skills' => 'Stack',
         'portfolio' => 'Work',
+        'certificates' => 'Certificaten',
         'blog' => 'Blog',
         'contact' => 'Contact',
         'cv' => 'CV',
@@ -52,6 +53,13 @@ return [
         'built' => 'What I built',
         'empty' => 'New cases will show up here once they are live.',
     ],
+
+    'certificates' => [
+        'title' => 'Certificates',
+        'intro' => 'Certifications and courses I have completed.',
+        'view' => 'View certificate',
+    ],
+
     'blog' => [
         'title' => 'Notes from projects',
         'intro' => 'Short pieces about what I ran into while building, not tutorials.',

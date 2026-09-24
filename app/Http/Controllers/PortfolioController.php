@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Certificate;
 use App\Models\Project;
 
 class PortfolioController extends Controller
@@ -12,6 +13,7 @@ class PortfolioController extends Controller
         return view('index', [
             'projects' => Project::latest()->get(),
             'blogs' => Blog::latest()->take(3)->get(),
+            'certificates' => Certificate::orderBy('sort_order')->get(),
         ]);
     }
 

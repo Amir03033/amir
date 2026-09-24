@@ -82,6 +82,28 @@
         </x-section>
     @endif
 
+    @if($certificates->isNotEmpty())
+        <x-section id="certificates" :title="__('messages.certificates.title')" :intro="__('messages.certificates.intro')">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach($certificates as $cert)
+                    <div class="border border-slate-800 bg-cyber-card p-6 rounded-xl space-y-2">
+                        <h3 class="text-sm font-semibold text-white">{{ $cert->getTranslation('title') }}</h3>
+                        @if($cert->issuer)
+                            <p class="text-xs text-slate-400">{{ $cert->issuer }}</p>
+                        @endif
+                        @if($cert->issued_at)
+                            <p class="text-[11px] font-mono text-slate-500">{{ $cert->issued_at->format('M Y') }}</p>
+                        @endif
+                        @if($cert->fileUrl())
+                            <a href="{{ $cert->fileUrl() }}" target="_blank" class="text-cyan-400 text-xs hover:underline">{{ __('messages.certificates.view') }} →</a>
+                        @endif
+                    </div>
+                @endforeach
+            </div>
+        </x-section>
+    @endif
+
+
     @if($blogs->isNotEmpty())
         <x-section id="blog" :title="__('messages.blog.title')" :intro="__('messages.blog.intro')">
             <div class="space-y-4">

@@ -6,6 +6,7 @@ return [
         'about' => 'Over mij',
         'skills' => 'Stack',
         'portfolio' => 'Werk',
+        'certificates' => 'Certificaten',
         'blog' => 'Blog',
         'contact' => 'Contact',
         'cv' => 'CV',
@@ -52,6 +53,13 @@ return [
         'built' => 'Wat ik bouwde',
         'empty' => 'Nieuwe cases volgen hier zodra ze live staan.',
     ],
+
+    'certificates' => [
+        'title' => 'Certificaten',
+        'intro' => 'Certificeringen en cursussen die ik heb afgerond.',
+        'view' => 'Bekijk certificaat',
+    ],
+
     'blog' => [
         'title' => 'Notities uit projecten',
         'intro' => 'Korte stukken over wat ik onderweg tegenkwam, niet over tutorials.',

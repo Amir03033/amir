@@ -13,6 +13,7 @@
             <a href="{{ $link('about') }}" class="hover:text-cyan-400 transition">{{ __('messages.nav.about') }}</a>
             <a href="{{ $link('skills') }}" class="hover:text-cyan-400 transition">{{ __('messages.nav.skills') }}</a>
             <a href="{{ $link('portfolio') }}" class="hover:text-cyan-400 transition">{{ __('messages.nav.portfolio') }}</a>
+            <a href="{{ $link('certificates') }}" class="hover:text-cyan-400 transition">{{ __('messages.nav.certificates') }}</a>
             <a href="{{ $link('blog') }}" class="hover:text-cyan-400 transition">{{ __('messages.nav.blog') }}</a>
             <a href="{{ $link('contact') }}" class="hover:text-cyan-400 transition">{{ __('messages.nav.contact') }}</a>
             <a href="{{ route('cv') }}" class="hover:text-cyan-400 transition">{{ __('messages.nav.cv') }}</a>
@@ -34,6 +35,7 @@
             <a href="{{ $link('about') }}" @click="mobileOpen = false" class="py-1">{{ __('messages.nav.about') }}</a>
             <a href="{{ $link('skills') }}" @click="mobileOpen = false" class="py-1">{{ __('messages.nav.skills') }}</a>
             <a href="{{ $link('portfolio') }}" @click="mobileOpen = false" class="py-1">{{ __('messages.nav.portfolio') }}</a>
+            <a href="{{ $link('certificates') }}" @click="mobileOpen = false" class="py-1">{{ __('messages.nav.certificates') }}</a>
             <a href="{{ $link('blog') }}" @click="mobileOpen = false" class="py-1">{{ __('messages.nav.blog') }}</a>
             <a href="{{ $link('contact') }}" @click="mobileOpen = false" class="py-1">{{ __('messages.nav.contact') }}</a>
             <a href="{{ route('cv') }}" @click="mobileOpen = false" class="py-1">{{ __('messages.nav.cv') }}</a>
