@@ -58,6 +58,11 @@ class PortfolioController extends Controller
 
     public function cvPdf()
     {
+        // Without the PDF package (e.g. a deploy where composer did not run) fall back to the printable CV page.
+        if (! class_exists(\Barryvdh\DomPDF\Facade\Pdf::class)) {
+            return redirect()->route('cv');
+        }
+
         $projects = Project::orderByDesc('featured')->orderBy('sort_order')->get();
 
         return \Barryvdh\DomPDF\Facade\Pdf::loadView('cv-pdf', compact('projects'))
