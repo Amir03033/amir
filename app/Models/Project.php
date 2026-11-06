@@ -82,10 +82,10 @@ class Project extends Model
         );
 
         $fallbacks = [
-            'klus' => 'images/projects/klusklaar.png',
-            'jungle' => 'images/projects/jungletuin.jpg',
-            'master' => 'images/projects/mastermind.jpg',
-            'mind' => 'images/projects/mastermind.jpg',
+            'klus' => 'images/projects/klusklaar.webp',
+            'jungle' => 'images/projects/jungletuin.webp',
+            'master' => 'images/projects/mastermind.webp',
+            'mind' => 'images/projects/mastermind.webp',
         ];
 
         foreach ($fallbacks as $needle => $path) {

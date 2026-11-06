@@ -31,6 +31,24 @@ class BlogResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Blogs';
 
+    protected static ?string $navigationGroup = 'Content';
+
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $recordTitleAttribute = 'slug';
+
+    public static function getNavigationBadge(): ?string
+    {
+        $drafts = Blog::count() - Blog::published()->count();
+
+        return $drafts ? (string) $drafts : null;
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'Concepten en geplande blogs (nog niet zichtbaar op de site)';
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -77,7 +95,12 @@ class BlogResource extends Resource
                     ->disk('public')
                     ->directory('blogs')
                     ->visibility('public')
-                    ->maxSize(4096),
+                    ->imageEditor()
+                    ->imageResizeMode('contain')
+                    ->imageResizeTargetWidth('1600')
+                    ->imageResizeTargetHeight('1600')
+                    ->maxSize(8192)
+                    ->helperText('Wordt bij uploaden automatisch verkleind tot max. 1600px.'),
 
                 Forms\Components\Section::make('Publicatie')
                     ->schema([
@@ -214,6 +237,21 @@ class BlogResource extends Resource
             ])
 
             ->actions([
+                Tables\Actions\Action::make('publish')
+                    ->label('Publiceer nu')
+                    ->icon('heroicon-o-rocket-launch')
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->visible(fn (Blog $record): bool => ! $record->isPublished())
+                    ->action(fn (Blog $record) => $record->update(['status' => 'published', 'published_at' => now()])),
+
+                Tables\Actions\Action::make('view')
+                    ->label('Bekijk')
+                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->color('gray')
+                    ->url(fn (Blog $record): string => route('blog.show', $record->slug), true)
+                    ->visible(fn (Blog $record): bool => $record->isPublished()),
+
                 Tables\Actions\EditAction::make(),
             ])
 

@@ -1,17 +1,23 @@
 @php
-    $email = config('site.email');
-    $linkedin = config('site.linkedin');
     $github = config('site.github');
 @endphp
 
-<footer class="border-t border-slate-800/80 py-10 text-center text-xs font-mono text-slate-500 relative z-10">
-    <div class="flex justify-center gap-5 mb-4 text-slate-400">
-        <a href="mailto:{{ $email }}" class="hover:text-cyan-400 transition">E-mail</a>
-        <a href="{{ $linkedin }}" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition">LinkedIn</a>
-        @if($github)
-            <a href="{{ $github }}" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition">GitHub</a>
-        @endif
-        <a href="{{ route('cv') }}" class="hover:text-cyan-400 transition">{{ __('messages.nav.cv') }}</a>
+<footer class="relative border-t border-ink-line">
+    <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 text-xs text-ink-muted md:flex-row md:items-center md:justify-between">
+        <div class="flex items-center gap-3">
+            <span class="dot bg-scope-green"></span>
+            <span>&copy; {{ date('Y') }} {{ config('site.name') }} · {{ __('messages.footer.line') }}</span>
+        </div>
+        <div class="flex flex-wrap gap-x-5 gap-y-2">
+            <a href="mailto:{{ config('site.email') }}" class="transition-colors hover:text-scope-accent">E-mail</a>
+            <a href="{{ config('site.linkedin') }}" target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-scope-accent">LinkedIn</a>
+            @if($github)
+                <a href="{{ $github }}" target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-scope-accent">GitHub</a>
+            @endif
+            @if(config('site.serverscope.url'))
+                <a href="{{ config('site.serverscope.url') }}" target="_blank" rel="noopener" class="transition-colors hover:text-scope-accent">ServerScope</a>
+            @endif
+            <a href="{{ route('cv') }}" class="transition-colors hover:text-scope-accent">{{ __('messages.nav.cv') }}</a>
+        </div>
     </div>
-    <p>&copy; {{ date('Y') }} {{ config('site.name') }}. {{ __('messages.footer.line') }}</p>
 </footer>

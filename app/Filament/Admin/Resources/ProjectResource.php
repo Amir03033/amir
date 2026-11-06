@@ -29,6 +29,20 @@ class ProjectResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Projecten';
 
+    protected static ?string $navigationGroup = 'Content';
+
+    protected static ?int $navigationSort = 1;
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['title', 'tags'];
+    }
+
+    public static function getGlobalSearchResultTitle(\Illuminate\Database\Eloquent\Model $record): string
+    {
+        return $record->getTranslation('title');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -61,30 +75,47 @@ class ProjectResource extends Resource
                     ])
                     ->columnSpanFull(),
 
-                TextInput::make('tags')
-                    ->label('Tags')
-                    ->required()
-                    ->helperText(
-                        'Komma-gescheiden, bijvoorbeeld: Laravel, PHP, JavaScript'
-                    ),
+                Forms\Components\Section::make('Media & stack')
+                    ->schema([
+                        FileUpload::make('image')
+                            ->label('Afbeelding')
+                            ->image()
+                            ->disk('public')
+                            ->directory('projects')
+                            ->visibility('public')
+                            ->imageEditor()
+                            ->imageEditorAspectRatios(['16:10', '16:9', null])
+                            ->imageResizeMode('contain')
+                            ->imageResizeTargetWidth('1600')
+                            ->imageResizeTargetHeight('1600')
+                            ->maxSize(8192)
+                            ->helperText('Wordt bij uploaden automatisch verkleind tot max. 1600px, zodat de site snel blijft.')
+                            ->columnSpanFull(),
 
-                FileUpload::make('image')
-                    ->label('Afbeelding')
-                    ->image()
-                    ->disk('public')
-                    ->directory('projects')
-                    ->visibility('public')
-                    ->maxSize(4096),
+                        TextInput::make('tags')
+                            ->label('Tags')
+                            ->required()
+                            ->helperText('Komma-gescheiden, bijvoorbeeld: Laravel, PHP, JavaScript. De eerste tags worden filters op de site.')
+                            ->columnSpanFull(),
+                    ])
+                    ->columns(2),
 
-                TextInput::make('github_url')
-                    ->label('GitHub URL')
-                    ->url()
-                    ->nullable(),
+                Forms\Components\Section::make('Links')
+                    ->description('Een demo-URL wordt automatisch elke 10 minuten gecontroleerd en verschijnt in het live-dashboard op de homepage.')
+                    ->schema([
+                        TextInput::make('demo_url')
+                            ->label('Live URL')
+                            ->url()
+                            ->prefixIcon('heroicon-m-globe-alt')
+                            ->nullable(),
 
-                TextInput::make('demo_url')
-                    ->label('Demo URL')
-                    ->url()
-                    ->nullable(),
+                        TextInput::make('github_url')
+                            ->label('GitHub URL')
+                            ->url()
+                            ->prefixIcon('heroicon-m-code-bracket')
+                            ->nullable(),
+                    ])
+                    ->columns(2),
 
                 Forms\Components\Toggle::make('featured')
                     ->label('Uitgelicht project')
@@ -109,21 +140,25 @@ class ProjectResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('image')
-                    ->label('Afbeelding')
-                    ->circular(),
+                    ->label('')
+                    ->height(44)
+                    ->extraImgAttributes(['class' => 'rounded-lg object-cover aspect-[16/10]'])
+                    ->defaultImageUrl(fn (Project $record) => $record->coverUrl()),
 
                 TextColumn::make('title.nl')
-                    ->label('Titel (NL)')
+                    ->label('Titel')
+                    ->weight('bold')
+                    ->description(fn (Project $record) => $record->hasDemo() ? parse_url($record->demo_url, PHP_URL_HOST) : 'Geen live URL')
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('tags')
                     ->label('Tags')
-                    ->badge(),
+                    ->badge()
+                    ->separator(','),
 
-                IconColumn::make('featured')
-                    ->label('Featured')
-                    ->boolean(),
+                Tables\Columns\ToggleColumn::make('featured')
+                    ->label('Uitgelicht'),
 
                 TextColumn::make('sort_order')
                     ->label('Volgorde')
@@ -140,6 +175,12 @@ class ProjectResource extends Resource
             ->defaultSort('sort_order', 'asc')
 
             ->actions([
+                Tables\Actions\Action::make('view')
+                    ->label('Bekijk')
+                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->color('gray')
+                    ->url(fn (Project $record): string => route('project.show', $record), true),
+
                 Tables\Actions\EditAction::make(),
             ])
 
