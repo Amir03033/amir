@@ -55,6 +55,10 @@ class CheckSites extends Command
     {
         $targets = config('site.status_targets', []);
 
+        if ($serverscope = config('site.serverscope.url')) {
+            $targets['ServerScope'] = $serverscope;
+        }
+
         foreach (Project::orderBy('sort_order')->get() as $project) {
             if ($project->hasDemo()) {
                 $targets[$project->title['en'] ?? $project->getTranslation('title')] ??= $project->demo_url;

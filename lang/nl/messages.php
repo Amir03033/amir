@@ -16,6 +16,7 @@ return [
         'back' => 'Terug naar home',
         'menu' => 'Menu',
         'close' => 'Sluiten',
+        'proof' => 'Bewijs',
         'skip' => 'Naar de inhoud',
     ],
     'boot' => [
@@ -95,6 +96,57 @@ return [
         'copied' => 'Gekopieerd',
         'hint' => 'om te navigeren',
     ],
+    'booking' => [
+        'cta' => 'Plan een gesprek',
+        'hint' => '15 minuten, vrijblijvend',
+    ],
+    'testimonials' => [
+        'label' => 'Reviews',
+        'title' => 'Wat opdrachtgevers zeggen',
+    ],
+    'case' => [
+        'problem' => 'Het probleem',
+        'solution' => 'Wat ik bouwde',
+        'result' => 'Het resultaat',
+        'gallery' => 'Screenshots',
+    ],
+    'confirmation' => [
+        'subject' => 'Bedankt voor je bericht',
+        'greeting' => 'Hoi :name,',
+        'body' => 'Bedankt voor je bericht. Het is goed aangekomen en ik reageer binnen een paar werkdagen.',
+        'your_message' => 'Je bericht',
+        'signoff' => 'Groet,',
+    ],
+    'theme' => [
+        'toggle' => 'Licht/donker thema wisselen',
+    ],
+    'two_factor' => [
+        'title' => 'Tweestapsverificatie',
+        'code_hint' => 'Vul de 6-cijferige code uit je authenticator-app in.',
+        'recovery_hint' => 'Vul een van je herstelcodes in. Elke code werkt één keer.',
+        'code' => 'Code',
+        'recovery' => 'Herstelcode',
+        'verify' => 'Controleren',
+        'use_code' => 'Code uit app gebruiken',
+        'use_recovery' => 'Herstelcode gebruiken',
+        'logout' => 'Uitloggen',
+        'invalid' => 'Deze code klopt niet.',
+    ],
+    'privacy' => [
+        'title' => 'Privacy',
+        'intro' => 'Deze site verzamelt zo weinig mogelijk en er gaat niets naar derden om je te volgen. Op deze pagina staat precies wat er wordt opgeslagen en waarom.',
+        'updated' => 'Laatst bijgewerkt: :date',
+        'sections' => [
+            ['title' => 'Wie is verantwoordelijk', 'body' => ':name, bereikbaar via :email.'],
+            ['title' => 'Bezoekstatistieken', 'body' => 'Per paginabezoek sla ik op: de pagina, de verwijzende site, browser, besturingssysteem en type apparaat (afgeleid van de user agent van je browser, die ook wordt opgeslagen), je land, je IP-adres met het laatste deel weggehaald, een onomkeerbare hash van je IP-adres (om unieke bezoekers te tellen), je sessie-ID en eventuele campagnelabels in de URL. Bekende bots en scanners worden niet meegeteld. Er zijn geen analyse- of advertentietrackers van derden.'],
+            ['title' => 'Hoe lang', 'body' => 'Losse paginabezoeken worden na :days dagen automatisch verwijderd. Daarna blijven alleen dagtotalen over (aantal weergaven en unieke bezoekers per dag), die niet naar een persoon te herleiden zijn.'],
+            ['title' => 'Land bepalen', 'body' => 'Je land wordt op deze server opgezocht in een lokale kopie van de gratis DB-IP Lite-database. Je IP-adres wordt hiervoor nergens heen gestuurd. IP-naar-landgegevens van DB-IP (db-ip.com), onder licentie CC BY 4.0.'],
+            ['title' => 'Cookies en lokale opslag', 'body' => 'Alleen functionele cookies: een sessiecookie en een beveiligingstoken (nodig voor het contactformulier en je taalkeuze). Je themakeuze wordt in je browser bewaard (localStorage), en of je de intro-animatie al zag (sessionStorage). Niets hiervan wordt gebruikt om je te volgen.'],
+            ['title' => 'Contactformulier', 'body' => 'Je naam, e-mailadres en bericht worden op deze server bewaard en naar mij gemaild, en je krijgt een bevestigingsmail. Ik gebruik ze alleen om te reageren. Vraag het en ik verwijder ze.'],
+            ['title' => 'Andere partijen', 'body' => 'Lettertypen staan op deze server. Als de ServerScope-statusbadge wordt getoond, laadt je browser die van ServerScope, mijn eigen monitoringdienst. Links naar LinkedIn, GitHub of een afsprakenpagina maken pas contact met die sites als je erop klikt.'],
+            ['title' => 'Je rechten', 'body' => 'Je kunt vragen welke gegevens ik van je heb, ze laten corrigeren of verwijderen, of bezwaar maken tegen het gebruik. Mail naar :email. Je kunt ook een klacht indienen bij de Autoriteit Persoonsgegevens.'],
+        ],
+    ],
     'status' => [
         'title' => 'status.live',
         'operational' => 'operationeel',
@@ -109,6 +161,8 @@ return [
         'intro' => 'Ik heb ServerScope van begin tot eind ontworpen en gebouwd: de Laravel-applicatie, de beheerkant, een serveragent die metingen doorstuurt en de publieke documentatiesite. Het is mijn grootste project en het project waar ik het meeste van heb geleerd.',
         'stack' => ['Laravel', 'Filament', 'Livewire', 'Tailwind CSS', 'Python-agent', 'Queues', 'Webhooks'],
         'visit' => 'Bekijk ServerScope',
+        'monitored' => 'Bewaakt door ServerScope',
+        'monitored_hint' => 'live status van mijn sites',
         'docs' => 'Lees de documentatie',
         'screenshot_pending' => 'Screenshot volgt',
         'features' => [
@@ -201,7 +255,9 @@ return [
     ],
     'cv' => [
         'title' => 'Curriculum vitae',
-        'print' => 'Print / sla op als PDF',
+        'print' => 'Printen',
+        'download' => 'Download cv (PDF)',
+        'generated' => 'Gegenereerd op :date vanaf',
         'intro' => 'Kort overzicht van opleiding, stack en projecten. Via print bewaar je het als PDF.',
         'education' => 'Opleiding',
         'education_item' => 'Software Development — Overijssel',
@@ -210,6 +266,7 @@ return [
     ],
     'footer' => [
         'line' => 'Gebouwd met Laravel, Tailwind en GSAP.',
+        'privacy' => 'Privacy',
     ],
     'errors' => [
         'not_found' => 'Deze pagina bestaat niet',

@@ -14,7 +14,10 @@
         ['name' => __('messages.palette.notes'), 'items' => $paletteItems['notes']],
         ['name' => __('messages.palette.actions'), 'items' => [
             ['title' => __('messages.palette.copy_email'), 'hint' => config('site.email'), 'action' => 'copy'],
+            ['title' => __('messages.cv.download'), 'hint' => 'PDF', 'url' => route('cv.pdf')],
+            ['title' => __('messages.theme.toggle'), 'hint' => '☾ / ☀', 'action' => 'theme'],
             ['title' => 'LinkedIn', 'hint' => '↗', 'url' => config('site.linkedin'), 'external' => true],
+            ...(config('site.booking_url') ? [['title' => __('messages.booking.cta'), 'hint' => '↗', 'url' => config('site.booking_url'), 'external' => true]] : []),
         ]],
     ];
 @endphp
@@ -36,6 +39,7 @@
         show() { this.open = true; this.q = ''; this.active = 0; this.$nextTick(() => this.$refs.input.focus()); },
         go(item) {
             if (!item) return;
+            if (item.action === 'theme') { window.toggleTheme(); this.open = false; return; }
             if (item.action === 'copy') {
                 navigator.clipboard?.writeText(@js(config('site.email')));
                 this.copied = true; setTimeout(() => { this.copied = false; this.open = false; }, 900);

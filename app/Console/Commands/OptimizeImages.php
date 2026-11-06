@@ -18,7 +18,7 @@ class OptimizeImages extends Command
         $max = (int) $this->option('max');
         $saved = 0;
 
-        foreach (['projects', 'blogs', 'site'] as $dir) {
+        foreach (['projects', 'projects/gallery', 'blogs', 'site', 'testimonials'] as $dir) {
             foreach ($disk->files($dir) as $file) {
                 $path = $disk->path($file);
                 [$w, $h, $type] = @getimagesize($path) ?: [0, 0, 0];

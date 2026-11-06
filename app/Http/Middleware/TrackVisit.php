@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Jobs\ResolveVisitCountry;
 use App\Models\Visit;
+use App\Support\GeoIp;
 use Closure;
 use Illuminate\Http\Request;
 use Jaybizzle\CrawlerDetect\CrawlerDetect;
@@ -61,9 +61,10 @@ class TrackVisit
             $agent = new Agent();
             $agent->setUserAgent($userAgent);
 
-            $visit = Visit::create([
+            Visit::create([
                 'ip_hash'     => hash('sha256', $request->ip() . config('app.key')),
-                'ip_address'  => $request->ip(),
+                'ip_address'  => GeoIp::anonymize($request->ip()),
+                'country'     => GeoIp::country($request->ip()),
                 'url'         => $request->path(),
                 'referrer'    => $request->headers->get('referer'),
                 'user_agent'  => $userAgent,
@@ -75,7 +76,6 @@ class TrackVisit
                 'session_id'  => $request->session()->getId(),
             ]);
 
-            ResolveVisitCountry::dispatch($visit->id, $request->ip());
         }
 
         return $next($request);

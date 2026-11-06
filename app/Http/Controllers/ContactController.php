@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactConfirmation;
 use App\Mail\ContactMessage as ContactMessageMail;
 use App\Models\ContactMessage;
 use Illuminate\Http\Request;
@@ -18,6 +19,11 @@ class ContactController extends Controller
             'email' => 'required|email|max:255',
             'message' => 'required|string|min:10|max:5000',
         ]);
+
+        // Honeypot: real visitors never see or fill this field. Pretend it worked so bots learn nothing.
+        if (filled($request->input('website'))) {
+            return response()->json(['success' => true]);
+        }
 
         if ($validator->fails()) {
             return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
@@ -39,6 +45,15 @@ class ContactController extends Controller
             $contactMessage->update(['mail_sent' => true]);
         } catch (\Throwable $e) {
             Log::warning('Contact mail kon niet verstuurd worden, bericht wel opgeslagen in DB.', [
+                'contact_message_id' => $contactMessage->id,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        try {
+            Mail::to($email, $name)->send(new ContactConfirmation($name, $message));
+        } catch (\Throwable $e) {
+            Log::warning('Bevestigingsmail aan afzender kon niet verstuurd worden.', [
                 'contact_message_id' => $contactMessage->id,
                 'error' => $e->getMessage(),
             ]);

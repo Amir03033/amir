@@ -17,9 +17,14 @@ class AdminPanelTest extends TestCase
 {
     use RefreshDatabase;
 
+    /** Admin with 2FA set up; actingAs() alone is not enough, the session also needs the passed-2FA flag. */
     private function admin(): User
     {
-        return User::factory()->create(['email' => config('site.admin_email'), 'email_verified_at' => now()]);
+        $user = User::factory()->create(['email' => config('site.admin_email'), 'email_verified_at' => now()]);
+        $user->forceFill(['two_factor_secret' => encrypt('JBSWY3DPEHPK3PXP'), 'two_factor_confirmed_at' => now()])->save();
+        $this->withSession([\App\Http\Middleware\RequireTwoFactor::SESSION_KEY => $user->id]);
+
+        return $user;
     }
 
     public function test_admin_pages_render(): void
@@ -29,7 +34,7 @@ class AdminPanelTest extends TestCase
 
         $this->actingAs($this->admin());
 
-        foreach (['/admin', '/admin/projects', '/admin/projects/create', "/admin/projects/{$project->id}/edit", '/admin/blogs', "/admin/blogs/{$blog->id}/edit", '/admin/contact-messages', '/admin/certificates', '/admin/visits', '/admin/site-media', '/admin/fail2ban-status'] as $url) {
+        foreach (['/admin', '/admin/projects', '/admin/projects/create', "/admin/projects/{$project->id}/edit", '/admin/blogs', "/admin/blogs/{$blog->id}/edit", '/admin/contact-messages', '/admin/certificates', '/admin/visits', '/admin/site-media', '/admin/fail2ban-status', '/admin/site-settings', '/admin/two-factor', '/admin/testimonials', '/admin/testimonials/create'] as $url) {
             $this->get($url)->assertOk();
         }
     }

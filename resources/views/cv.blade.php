@@ -17,7 +17,13 @@
                     <p data-reveal class="mt-2 text-scope-accent">{{ __('messages.home.subtitle') }} · {{ config('site.location') }}</p>
                     <p data-reveal class="mt-4 max-w-xl text-sm leading-relaxed text-ink-soft">{{ __('messages.cv.intro') }}</p>
                 </div>
-                <button type="button" onclick="window.print()" class="btn-secondary no-print">{{ __('messages.cv.print') }}</button>
+                <div class="no-print flex flex-wrap gap-2">
+                    <a href="{{ route('cv.pdf') }}" data-magnetic class="btn-primary">
+                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>
+                        {{ __('messages.cv.download') }}
+                    </a>
+                    <button type="button" onclick="window.print()" class="btn-secondary">{{ __('messages.cv.print') }}</button>
+                </div>
             </header>
 
             @foreach([

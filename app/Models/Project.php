@@ -17,6 +17,10 @@ class Project extends Model
         'demo_url',
         'featured',
         'sort_order',
+        'problem',
+        'solution',
+        'result',
+        'gallery',
     ];
 
     protected $casts = [
@@ -24,7 +28,31 @@ class Project extends Model
         'description' => 'array',
         'featured' => 'boolean',
         'sort_order' => 'integer',
+        'problem' => 'array',
+        'solution' => 'array',
+        'result' => 'array',
+        'gallery' => 'array',
     ];
+
+    public function testimonials(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Testimonial::class);
+    }
+
+    /** Filled case sections (problem → solution → result) in the current language. */
+    public function caseBlocks(): array
+    {
+        return collect(['problem', 'solution', 'result'])
+            ->mapWithKeys(fn ($field) => [$field => trim((string) $this->getTranslation($field))])
+            ->filter()
+            ->all();
+    }
+
+    /** @return list<string> */
+    public function galleryUrls(): array
+    {
+        return collect($this->gallery ?? [])->filter()->map(fn ($path) => asset('storage/'.$path))->values()->all();
+    }
 
     public function getTranslation($field)
     {

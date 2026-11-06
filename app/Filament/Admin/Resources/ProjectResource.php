@@ -100,6 +100,40 @@ class ProjectResource extends Resource
                     ])
                     ->columns(2),
 
+                Forms\Components\Section::make('Case')
+                    ->description('Optioneel maar sterk: vertel het verhaal in drie stappen. Lege velden worden niet getoond; zonder case wordt alleen de omschrijving gebruikt.')
+                    ->collapsible()
+                    ->schema([
+                        Tabs::make('CaseTranslations')->tabs([
+                            Tabs\Tab::make('Nederlands')->schema([
+                                Textarea::make('problem.nl')->label('Het probleem (NL)')->rows(3)->placeholder('Wat wilde de klant, en wat ging er mis zonder deze site?'),
+                                Textarea::make('solution.nl')->label('Wat ik bouwde (NL)')->rows(4)->placeholder('Welke onderdelen, welke technische keuzes?'),
+                                Textarea::make('result.nl')->label('Resultaat (NL)')->rows(3)->placeholder('Wat is er nu beter? Liefst concreet en controleerbaar.'),
+                            ]),
+                            Tabs\Tab::make('English')->schema([
+                                Textarea::make('problem.en')->label('The problem (EN)')->rows(3),
+                                Textarea::make('solution.en')->label('What I built (EN)')->rows(4),
+                                Textarea::make('result.en')->label('Result (EN)')->rows(3),
+                            ]),
+                        ]),
+                        FileUpload::make('gallery')
+                            ->label('Galerij')
+                            ->helperText('Extra screenshots voor de casepagina. Sleep om de volgorde te wijzigen.')
+                            ->image()
+                            ->multiple()
+                            ->reorderable()
+                            ->appendFiles()
+                            ->maxFiles(12)
+                            ->disk('public')
+                            ->directory('projects/gallery')
+                            ->visibility('public')
+                            ->imageResizeMode('contain')
+                            ->imageResizeTargetWidth('1600')
+                            ->imageResizeTargetHeight('1600')
+                            ->maxSize(8192)
+                            ->panelLayout('grid'),
+                    ]),
+
                 Forms\Components\Section::make('Links')
                     ->description('Een demo-URL wordt automatisch elke 10 minuten gecontroleerd en verschijnt in het live-dashboard op de homepage.')
                     ->schema([

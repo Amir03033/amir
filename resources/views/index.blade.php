@@ -58,6 +58,12 @@
                         {{ __('messages.hero.last_check') }}<br>
                         <span class="font-semibold text-ink-text">{{ $lastCheck ? $lastCheck->diffForHumans() : __('messages.hero.never') }}</span>
                     </span>
+                    @if(config('site.booking_url'))
+                        <a href="{{ config('site.booking_url') }}" target="_blank" rel="noopener" data-magnetic class="btn-secondary">
+                            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+                            {{ __('messages.booking.cta') }}
+                        </a>
+                    @endif
                     <a href="#contact" data-magnetic class="btn-primary">
                         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
                         {{ __('messages.hero.contact') }}
@@ -68,6 +74,22 @@
             <div class="mt-10">
                 <x-health-dashboard :d="$dashboard" />
             </div>
+
+            @if($statusUrl = config('site.serverscope.status_url'))
+                {{-- Official, documented ServerScope badge (public status page, no token). --}}
+                <a data-reveal href="{{ $statusUrl }}" target="_blank" rel="noopener" class="panel group mt-4 flex flex-wrap items-center justify-between gap-3 px-5 py-3.5 transition-colors hover:border-ink-strong">
+                    <span class="flex items-center gap-3 text-sm">
+                        <svg class="h-5 w-5 text-scope-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12h4l3-8 4 16 3-8h6"/></svg>
+                        <span><span class="font-semibold">{{ __('messages.serverscope.monitored') }}</span> <span class="text-ink-muted">· {{ __('messages.serverscope.monitored_hint') }}</span></span>
+                    </span>
+                    <span class="flex items-center gap-3">
+                        <img data-theme-src="{{ rtrim($statusUrl, '/') }}/badge.svg?lang={{ app()->getLocale() }}&theme=" alt="ServerScope status" height="20" class="h-5 w-auto">
+                        <script>document.currentScript.previousElementSibling.src = document.currentScript.previousElementSibling.dataset.themeSrc + document.documentElement.dataset.theme;</script>
+                        <noscript><img src="{{ rtrim($statusUrl, '/') }}/badge.svg?lang={{ app()->getLocale() }}&theme=dark" alt="ServerScope status" height="20" class="h-5 w-auto"></noscript>
+                        <span class="text-xs text-ink-muted transition-transform group-hover:translate-x-1">↗</span>
+                    </span>
+                </a>
+            @endif
         </div>
     </section>
 
@@ -117,9 +139,9 @@
                 <div data-reveal data-tilt class="panel overflow-hidden shadow-[0_40px_100px_-40px_rgb(110_156_247/.35)]">
                     <div class="flex items-center gap-3 border-b border-ink-line px-4 py-3">
                         <span class="flex items-center gap-1.5" aria-hidden="true">
-                            <span class="h-2.5 w-2.5 rounded-full bg-[#3a3a40]"></span>
-                            <span class="h-2.5 w-2.5 rounded-full bg-[#3a3a40]"></span>
-                            <span class="h-2.5 w-2.5 rounded-full bg-[#3a3a40]"></span>
+                            <span class="h-2.5 w-2.5 rounded-full bg-ink-strong"></span>
+                            <span class="h-2.5 w-2.5 rounded-full bg-ink-strong"></span>
+                            <span class="h-2.5 w-2.5 rounded-full bg-ink-strong"></span>
                         </span>
                         <span class="mx-auto flex items-center gap-2 rounded-lg border border-ink-line bg-ink-panel2 px-3 py-1 text-[11px] text-ink-muted">
                             <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
@@ -184,6 +206,33 @@
             <p class="text-sm text-ink-muted">{{ __('messages.portfolio.empty') }}</p>
         @endif
     </x-section>
+
+    {{-- Reviews: only real ones, managed in Filament; hidden until there is at least one --}}
+    @if($testimonials->isNotEmpty())
+        <x-section id="reviews" :label="__('messages.testimonials.label')" :title="__('messages.testimonials.title')" class="border-t border-ink-line/60">
+            <div class="grid gap-4 {{ $testimonials->count() > 1 ? 'md:grid-cols-2' : '' }} {{ $testimonials->count() > 2 ? 'lg:grid-cols-3' : '' }}" data-reveal-group>
+                @foreach($testimonials as $t)
+                    <figure data-reveal class="panel spotlight flex flex-col p-6 md:p-7">
+                        <svg class="h-6 w-6 text-scope-accent" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 6C6.5 7.3 4.5 10 4.5 13.6V18h5.4v-5.4H7.2c0-2.2 1.2-3.9 3.3-4.8L9.6 6Zm9 0c-3.1 1.3-5.1 4-5.1 7.6V18h5.4v-5.4h-2.7c0-2.2 1.2-3.9 3.3-4.8L18.6 6Z"/></svg>
+                        <blockquote class="mt-4 flex-1 text-[15px] leading-relaxed text-ink-soft md:text-base">{{ $t->getTranslation('quote') }}</blockquote>
+                        <figcaption class="mt-6 flex items-center gap-3 border-t border-ink-line pt-4">
+                            @if($t->avatarUrl())
+                                <img src="{{ $t->avatarUrl() }}" alt="" loading="lazy" class="h-10 w-10 rounded-full object-cover">
+                            @else
+                                <span class="grid h-10 w-10 place-items-center rounded-full bg-scope-accent/15 text-sm font-semibold text-scope-accent">{{ $t->initials() }}</span>
+                            @endif
+                            <span class="min-w-0">
+                                <span class="block truncate font-semibold">
+                                    @if($t->url)<a href="{{ $t->url }}" target="_blank" rel="noopener noreferrer" class="hover:text-scope-accent">{{ $t->name }}</a>@else{{ $t->name }}@endif
+                                </span>
+                                <span class="block truncate text-xs text-ink-muted">{{ collect([$t->role, $t->company])->filter()->implode(' · ') }}@if($t->project) · {{ $t->project->getTranslation('title') }}@endif</span>
+                            </span>
+                        </figcaption>
+                    </figure>
+                @endforeach
+            </div>
+        </x-section>
+    @endif
 
     {{-- Proof: real numbers + how I work --}}
     <x-section id="proof" index="3" :label="__('messages.proof.label')" :title="__('messages.proof.title')" :intro="__('messages.proof.intro')" class="border-t border-ink-line/60">
@@ -275,7 +324,10 @@
                         </div>
                     @endforeach
                 </dl>
-                <a href="{{ route('cv') }}" class="btn-secondary w-full">{{ __('messages.nav.cv') }} →</a>
+                <a href="{{ route('cv.pdf') }}" class="btn-secondary w-full">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>
+                    {{ __('messages.cv.download') }}
+                </a>
             </div>
 
             <div>
@@ -347,6 +399,12 @@
                         <span class="flex items-center gap-3"><span class="dot bg-scope-accent"></span>LinkedIn</span>
                         <span class="text-ink-muted transition-transform group-hover:translate-x-1">↗</span>
                     </a>
+                    @if(config('site.booking_url'))
+                        <a href="{{ config('site.booking_url') }}" target="_blank" rel="noopener" class="panel group flex items-center justify-between border-scope-accent/40 bg-scope-accent/10 px-4 py-3 text-sm font-medium transition-colors hover:border-scope-accent">
+                            <span class="flex items-center gap-3"><span class="dot bg-scope-accent"></span>{{ __('messages.booking.cta') }} <span class="text-ink-muted">· {{ __('messages.booking.hint') }}</span></span>
+                            <span class="text-ink-muted transition-transform group-hover:translate-x-1">↗</span>
+                        </a>
+                    @endif
                     @if(config('site.phone'))
                         <a href="tel:{{ config('site.phone_href') }}" class="panel group flex items-center justify-between px-4 py-3 text-sm font-medium transition-colors hover:border-ink-strong">
                             <span class="flex items-center gap-3"><span class="dot bg-scope-accent"></span>{{ config('site.phone') }}</span>
@@ -357,7 +415,7 @@
             </div>
 
             <div data-reveal x-data="{
-                form: { name: '', email: '', message: '' },
+                form: { name: '', email: '', message: '', website: '' },
                 errors: {},
                 success: false,
                 failed: false,
@@ -372,7 +430,8 @@
                         });
                         let data = await response.json();
                         this.loading = false;
-                        if (data.success) { this.success = true; this.form = { name: '', email: '', message: '' }; }
+                        if (data.success) { this.success = true; this.form = { name: '', email: '', message: '', website: '' }; }
+                        else if (response.status === 429) { this.failed = true; }
                         else { this.errors = data.errors || {}; this.failed = !data.errors; }
                     } catch (e) {
                         this.loading = false;
@@ -391,6 +450,12 @@
                 <form @submit.prevent="submit" class="space-y-4 p-5 md:p-6" novalidate>
                     <div x-show="success" x-cloak x-transition class="rounded-xl border border-scope-green/30 bg-scope-green/10 p-3.5 text-sm text-scope-green" role="status">{{ __('messages.contact.success') }}</div>
                     <div x-show="failed" x-cloak x-transition class="rounded-xl border border-scope-red/30 bg-scope-red/10 p-3.5 text-sm text-scope-red" role="alert">{{ __('messages.contact.error') }}</div>
+
+                    {{-- Honeypot for bots: hidden from people and screen readers. --}}
+                    <div class="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+                        <label for="c-website">Website</label>
+                        <input id="c-website" type="text" x-model="form.website" tabindex="-1" autocomplete="off">
+                    </div>
 
                     <div class="grid gap-4 sm:grid-cols-2">
                         <div>

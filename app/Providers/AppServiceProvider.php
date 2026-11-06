@@ -23,6 +23,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Links managed in Filament override .env. Skipped before the settings table exists (fresh install, tests booting).
+        try {
+            \App\Filament\Admin\Pages\SiteSettings::applyToConfig();
+        } catch (\Throwable) {
+        }
+
         foreach ([Project::class, Blog::class] as $model) {
             $model::saved(fn () => Cache::forget('palette-nl') | Cache::forget('palette-en'));
             $model::deleted(fn () => Cache::forget('palette-nl') | Cache::forget('palette-en'));

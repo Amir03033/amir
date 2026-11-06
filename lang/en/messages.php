@@ -16,6 +16,7 @@ return [
         'back' => 'Back to home',
         'menu' => 'Menu',
         'close' => 'Close',
+        'proof' => 'Proof',
         'skip' => 'Skip to content',
     ],
     'boot' => [
@@ -95,6 +96,57 @@ return [
         'copied' => 'Copied',
         'hint' => 'to navigate',
     ],
+    'booking' => [
+        'cta' => 'Book a call',
+        'hint' => '15 minutes, no strings attached',
+    ],
+    'testimonials' => [
+        'label' => 'Reviews',
+        'title' => 'What clients say',
+    ],
+    'case' => [
+        'problem' => 'The problem',
+        'solution' => 'What I built',
+        'result' => 'The result',
+        'gallery' => 'Screenshots',
+    ],
+    'confirmation' => [
+        'subject' => 'Thanks for your message',
+        'greeting' => 'Hi :name,',
+        'body' => 'Thanks for reaching out. Your message arrived safely and I will reply within a few working days.',
+        'your_message' => 'Your message',
+        'signoff' => 'Kind regards,',
+    ],
+    'theme' => [
+        'toggle' => 'Toggle light/dark theme',
+    ],
+    'two_factor' => [
+        'title' => 'Two-step verification',
+        'code_hint' => 'Enter the 6-digit code from your authenticator app.',
+        'recovery_hint' => 'Enter one of your recovery codes. Each code works once.',
+        'code' => 'Code',
+        'recovery' => 'Recovery code',
+        'verify' => 'Verify',
+        'use_code' => 'Use authenticator code',
+        'use_recovery' => 'Use a recovery code',
+        'logout' => 'Log out',
+        'invalid' => 'That code is not valid.',
+    ],
+    'privacy' => [
+        'title' => 'Privacy',
+        'intro' => 'This site collects as little as possible and nothing leaves my own server for tracking. This page explains exactly what is stored and why.',
+        'updated' => 'Last updated: :date',
+        'sections' => [
+            ['title' => 'Who is responsible', 'body' => ':name, reachable at :email.'],
+            ['title' => 'Visit statistics', 'body' => "For each page view I store: the page, the referring site, browser, operating system and device type (derived from your browser's user agent, which is stored too), your country, your IP address with the last part removed, a one-way hash of your IP address (to count unique visitors), your session ID and any campaign tags in the URL. Known bots and scanners are not counted. There are no third-party analytics or advertising trackers."],
+            ['title' => 'How long', 'body' => 'Individual page views are deleted automatically after :days days. After that only daily totals remain (number of views and unique visitors per day), which cannot be traced back to a person.'],
+            ['title' => 'Country lookup', 'body' => 'Your country is looked up on this server in a local copy of the free DB-IP Lite database. Your IP address is not sent anywhere for this. IP to country data by DB-IP (db-ip.com), licensed under CC BY 4.0.'],
+            ['title' => 'Cookies and local storage', 'body' => 'Only functional cookies: a session cookie and a security token (needed for the contact form and your language choice). Your theme choice is stored in your browser (localStorage) and whether you already saw the intro animation (sessionStorage). Nothing is used for tracking.'],
+            ['title' => 'Contact form', 'body' => 'Your name, email address and message are stored on this server and emailed to me, and you receive a confirmation email. I only use them to reply. Ask me and I will delete them.'],
+            ['title' => 'Other parties', 'body' => 'Fonts are hosted on this server. If the ServerScope status badge is shown, your browser loads it from ServerScope, my own monitoring service. Links to LinkedIn, GitHub or a booking page only contact those sites when you click them.'],
+            ['title' => 'Your rights', 'body' => 'You can ask which data I have about you, ask me to correct or delete it, or object to its use. Email :email. You can also file a complaint with the Dutch Data Protection Authority (Autoriteit Persoonsgegevens).'],
+        ],
+    ],
     'status' => [
         'title' => 'status.live',
         'operational' => 'operational',
@@ -109,6 +161,8 @@ return [
         'intro' => 'I designed and built ServerScope end-to-end: the Laravel application, the admin side, a server agent that reports metrics, and the public docs site. It is my largest project and the one I learned the most from.',
         'stack' => ['Laravel', 'Filament', 'Livewire', 'Tailwind CSS', 'Python agent', 'Queues', 'Webhooks'],
         'visit' => 'Visit ServerScope',
+        'monitored' => 'Monitored by ServerScope',
+        'monitored_hint' => 'live status of my sites',
         'docs' => 'Read the docs',
         'screenshot_pending' => 'Screenshot coming soon',
         'features' => [
@@ -201,7 +255,9 @@ return [
     ],
     'cv' => [
         'title' => 'Curriculum vitae',
-        'print' => 'Print / save as PDF',
+        'print' => 'Print',
+        'download' => 'Download CV (PDF)',
+        'generated' => 'Generated on :date from',
         'intro' => 'A short overview of education, stack and projects. Use print to save it as a PDF.',
         'education' => 'Education',
         'education_item' => 'Software Development — Overijssel',
@@ -210,6 +266,7 @@ return [
     ],
     'footer' => [
         'line' => 'Built with Laravel, Tailwind and GSAP.',
+        'privacy' => 'Privacy',
     ],
     'errors' => [
         'not_found' => 'This page does not exist',
