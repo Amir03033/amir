@@ -66,7 +66,7 @@
                 <span class="kbd">esc</span>
             </div>
 
-            <div x-ref="list" class="max-h-[50vh] overflow-y-auto p-2" data-lenis-prevent>
+            <div x-ref="list" class="max-h-[50vh] overflow-y-auto p-2">
                 <template x-for="group in results" :key="group.name">
                     <div class="mb-1">
                         <p class="px-3 pb-1 pt-3 text-[10px] font-semibold uppercase tracking-[.2em] text-ink-muted" x-text="group.name"></p>

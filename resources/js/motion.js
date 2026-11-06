@@ -1,9 +1,11 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Flip } from 'gsap/Flip';
-import Lenis from 'lenis';
 
 gsap.registerPlugin(ScrollTrigger, Flip);
+
+// Performance rules for this file: animate only transform/opacity, never touch styles on <html>,
+// and let canvases sleep when nothing changes, when they are off-screen or when the tab is hidden.
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -21,7 +23,6 @@ export function initMotion() {
         return;
     }
 
-    smoothScroll();
     splitWords();
     progressBar();
     boot().then(() => {
@@ -33,51 +34,39 @@ export function initMotion() {
         drawLines();
         scramble();
     });
-    backgroundCanvas();
 
     if (finePointer) {
+        dotField();
         cursorGlow();
         spotlight();
         tilt();
         magnetic();
-        imageParallax();
     }
 
     document.documentElement.classList.add('motion-ready');
 }
 
-/* ---------- smooth scroll ---------- */
-let lenis;
+/* Runs `draw` on animation frames, at most `fps` times per second, only while `isActive()` is true. */
+function loop(draw, fps = 60, isActive = () => true) {
+    const min = 1000 / fps - 1;
+    let last = 0;
+    const tick = (t) => {
+        requestAnimationFrame(tick);
+        if (document.hidden || !isActive() || t - last < min) return;
+        last = t;
+        draw(t);
+    };
+    requestAnimationFrame(tick);
+}
 
-function smoothScroll() {
-    lenis = new Lenis({ duration: 1.1, easing: (t) => 1 - Math.pow(1 - t, 4) });
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
-
-    // Arriving from another page with a hash (e.g. "/#work"): land on it once layout has settled.
-    if (location.hash.length > 1) {
-        const target = document.getElementById(location.hash.slice(1));
-        if (target) window.addEventListener('load', () => lenis.scrollTo(target, { offset: -72, immediate: true }), { once: true });
-    }
-
-    $$('a[href^="#"], a[href*="/#"]').forEach((a) => {
-        a.addEventListener('click', (e) => {
-            const url = new URL(a.href, location.href);
-            if (url.pathname !== location.pathname || !url.hash) return;
-            const target = document.querySelector(url.hash);
-            if (!target) return;
-            e.preventDefault();
-            lenis.scrollTo(target, { offset: -72 });
-            history.replaceState(null, '', url.hash);
-        });
-    });
+function onScreen(el, cb) {
+    new IntersectionObserver(([e]) => cb(e.isIntersecting)).observe(el);
 }
 
 function progressBar() {
     const bar = document.querySelector('[data-progress]');
     if (!bar) return;
-    gsap.to(bar, { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
+    gsap.to(bar, { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: true } });
 }
 
 /* ---------- boot sequence (once per session, skippable) ---------- */
@@ -101,7 +90,7 @@ function boot() {
 
         if (pulse) {
             const len = pulse.getTotalLength();
-            tl.fromTo(pulse, { strokeDasharray: len, strokeDashoffset: len }, { strokeDashoffset: 0, duration: 0.5, ease: 'power2.inOut' });
+            tl.fromTo(pulse, { strokeDasharray: len, strokeDashoffset: len }, { strokeDashoffset: 0, duration: 0.4, ease: 'power2.inOut' });
         }
 
         lines.forEach((line) => {
@@ -111,13 +100,13 @@ function boot() {
             tl.set(line, { opacity: 1 })
                 .to({ n: 0 }, {
                     n: text.length,
-                    duration: Math.min(text.length * 0.012, 0.26),
+                    duration: Math.min(text.length * 0.01, 0.2),
                     ease: 'none',
                     onUpdate() { out.textContent = text.slice(0, Math.round(this.targets()[0].n)); },
                 })
-                .set(ok, { opacity: 1 }, '+=0.03');
+                .set(ok, { opacity: 1 }, '+=0.02');
         });
-        tl.to(el, { clipPath: 'inset(0 0 100% 0)', duration: 0.6, ease: 'expo.inOut' }, '+=0.15');
+        tl.to(el, { yPercent: -100, duration: 0.55, ease: 'expo.inOut' }, '+=0.1');
 
         const skip = () => tl.progress(1);
         window.addEventListener('keydown', skip, { once: true });
@@ -132,7 +121,7 @@ function boot() {
     });
 }
 
-/* ---------- headings: word-by-word with blur ---------- */
+/* ---------- headings: word-by-word ---------- */
 function splitWords() {
     $$('[data-split]').forEach((el) => {
         const words = el.textContent.trim().split(/\s+/);
@@ -148,31 +137,43 @@ function heroIn() {
     if (!hero) return;
 
     const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
-    tl.to($$('[data-split] .word > span', hero), { opacity: 1, yPercent: 0, filter: 'blur(0px)', duration: 1.2, stagger: 0.07, startAt: { yPercent: 110, filter: 'blur(8px)' } })
-        .fromTo($$('.text-gradient', hero), { backgroundPosition: '100% 0' }, { backgroundPosition: '0% 0', duration: 2.2, ease: 'power2.inOut' }, 0.1)
-        .to($$('[data-reveal]', hero), { opacity: 1, y: 0, scale: 1, duration: 1, stagger: 0.08, startAt: { y: 30, scale: 0.985 } }, 0.2);
+    tl.to($$('[data-split] .word > span', hero), { opacity: 1, yPercent: 0, rotate: 0, duration: 1.1, stagger: 0.06, startAt: { yPercent: 110, rotate: 4 } })
+        .fromTo($$('.text-gradient', hero), { backgroundPosition: '100% 0' }, { backgroundPosition: '0% 0', duration: 2, ease: 'power2.inOut' }, 0.1)
+        .to($$('[data-reveal]', hero), { opacity: 1, y: 0, duration: 0.9, stagger: 0.07, startAt: { y: 28 } }, 0.15);
 }
 
-/* ---------- scroll reveals ---------- */
+/* ---------- scroll reveals (one trigger per group, not per element) ---------- */
 function reveals() {
     $$('[data-split]').forEach((el) => {
         if (el.closest('[data-hero]')) return;
         gsap.to($$('.word > span', el), {
-            opacity: 1, yPercent: 0, filter: 'blur(0px)', duration: 1, ease: 'expo.out', stagger: 0.05,
-            startAt: { yPercent: 110, filter: 'blur(6px)' },
+            opacity: 1, yPercent: 0, rotate: 0, duration: 0.9, ease: 'expo.out', stagger: 0.045,
+            startAt: { yPercent: 110, rotate: 3 },
             scrollTrigger: { trigger: el, start: 'top 88%', once: true },
         });
     });
 
+    const loose = [];
+    const groups = new Map();
     $$('[data-reveal]').forEach((el) => {
         if (el.closest('[data-hero]')) return;
         const group = el.closest('[data-reveal-group]');
-        const index = group ? $$('[data-reveal]', group).indexOf(el) : 0;
-        gsap.to(el, {
-            opacity: 1, y: 0, duration: 1, ease: 'expo.out', delay: (index % 6) * 0.08,
-            startAt: { y: 40 },
-            scrollTrigger: { trigger: group ?? el, start: 'top 86%', once: true },
+        if (group) (groups.get(group) ?? groups.set(group, []).get(group)).push(el);
+        else loose.push(el);
+    });
+
+    groups.forEach((els, group) => {
+        gsap.to(els, {
+            opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.07,
+            startAt: { y: 36 },
+            scrollTrigger: { trigger: group, start: 'top 86%', once: true },
         });
+    });
+
+    ScrollTrigger.batch(loose, {
+        start: 'top 88%',
+        once: true,
+        onEnter: (batch) => gsap.to(batch, { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.07, startAt: { y: 36 } }),
     });
 }
 
@@ -209,7 +210,7 @@ function ring() {
 function timeline() {
     $$('[data-timeline]').forEach((row) => {
         gsap.from(row.children, {
-            scaleY: 0, transformOrigin: 'bottom', opacity: 0, duration: 0.5, ease: 'back.out(2)', stagger: 0.03,
+            scaleY: 0, transformOrigin: 'bottom', duration: 0.5, ease: 'back.out(2)', stagger: 0.025,
             scrollTrigger: { trigger: row, start: 'top 95%', once: true },
         });
     });
@@ -225,7 +226,7 @@ function timeline() {
 /* ---------- lines that draw themselves (timeline, steps) ---------- */
 function drawLines() {
     $$('[data-draw-line]').forEach((line) => {
-        gsap.from(line, { scaleY: 0, ease: 'none', scrollTrigger: { trigger: line.parentElement, start: 'top 75%', end: 'bottom 60%', scrub: 0.5 } });
+        gsap.from(line, { scaleY: 0, duration: 1.4, ease: 'power2.inOut', scrollTrigger: { trigger: line.parentElement, start: 'top 75%', once: true } });
     });
     $$('[data-steps-line]').forEach((line) => {
         gsap.from(line, { scaleX: 0, duration: 1.6, ease: 'power2.inOut', scrollTrigger: { trigger: line.parentElement, start: 'top 80%', once: true } });
@@ -242,7 +243,7 @@ function scramble() {
             onEnter: () => {
                 const obj = { p: 0 };
                 gsap.to(obj, {
-                    p: 1, duration: 0.9, ease: 'none',
+                    p: 1, duration: 0.8, ease: 'none',
                     onUpdate: () => {
                         const shown = Math.floor(obj.p * text.length);
                         el.textContent = text.slice(0, shown) + text.slice(shown).replace(/\S/g, () => chars[Math.floor(Math.random() * chars.length)]);
@@ -254,27 +255,36 @@ function scramble() {
     });
 }
 
-/* ---------- heartbeat: an ECG line that keeps beating ---------- */
+/* ---------- heartbeat: an ECG line, 30 fps, only while visible ---------- */
 function heartbeat() {
     $$('[data-heartbeat]').forEach((canvas) => {
         const ctx = canvas.getContext('2d');
         const ok = canvas.dataset.heartbeat === 'ok';
-        const color = `rgb(${css(ok ? '--green' : '--yellow')})`;
+        const rgb = css(ok ? '--green' : '--yellow');
         const grid = `rgba(${css('--border')},0.6)`;
-        let w, h, x = 0, visible = true;
+        let w = 0, h = 0, x = 0, visible = false;
         const pts = [];
+        let gridLayer;
 
         const resize = () => {
             const dpr = Math.min(window.devicePixelRatio || 1, 2);
             w = canvas.clientWidth; h = canvas.clientHeight;
             canvas.width = w * dpr; canvas.height = h * dpr;
             ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            // Static grid is drawn once and blitted each frame.
+            gridLayer = document.createElement('canvas');
+            gridLayer.width = canvas.width; gridLayer.height = canvas.height;
+            const g = gridLayer.getContext('2d');
+            g.setTransform(dpr, 0, 0, dpr, 0, 0);
+            g.strokeStyle = grid; g.lineWidth = 1;
+            g.beginPath();
+            for (let gx = 0.5; gx < w; gx += 12) { g.moveTo(gx, 0); g.lineTo(gx, h); }
+            g.stroke();
         };
         resize();
-        window.addEventListener('resize', resize);
-        new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(canvas);
+        window.addEventListener('resize', resize, { passive: true });
+        onScreen(canvas, (v) => (visible = v));
 
-        // One beat: flat, small bump, sharp spike, dip, recovery.
         const beat = (t) => {
             const p = t % 1;
             if (p < 0.08) return Math.sin(p / 0.08 * Math.PI) * 0.12;
@@ -287,24 +297,21 @@ function heartbeat() {
         };
 
         const draw = () => {
-            ctx.clearRect(0, 0, w, h);
-            ctx.strokeStyle = grid;
-            ctx.lineWidth = 1;
-            for (let gx = 0; gx < w; gx += 12) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke(); }
-
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(gridLayer, 0, 0);
+            const dpr = canvas.width / (w || 1);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
             if (!pts.length) return;
-            ctx.lineWidth = 2;
+
+            const path = () => { ctx.beginPath(); pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y))); };
             ctx.lineJoin = 'round';
-            ctx.shadowColor = color;
-            ctx.shadowBlur = 10;
-            ctx.strokeStyle = color;
-            ctx.beginPath();
-            pts.forEach((p, i) => (i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)));
-            ctx.stroke();
-            ctx.shadowBlur = 0;
+            // Cheap glow: a wide translucent stroke under the sharp one (shadowBlur is far more expensive).
+            path(); ctx.strokeStyle = `rgba(${rgb},0.18)`; ctx.lineWidth = 6; ctx.stroke();
+            path(); ctx.strokeStyle = `rgb(${rgb})`; ctx.lineWidth = 2; ctx.stroke();
 
             const head = pts[pts.length - 1];
-            ctx.fillStyle = color;
+            ctx.fillStyle = `rgb(${rgb})`;
             ctx.beginPath(); ctx.arc(head.x, head.y, 3, 0, Math.PI * 2); ctx.fill();
         };
 
@@ -314,83 +321,98 @@ function heartbeat() {
             return;
         }
 
-        gsap.ticker.add(() => {
-            if (!visible || !w) return;
-            for (let s = 0; s < 3; s++) {
+        loop(() => {
+            if (!w) return;
+            for (let s = 0; s < 6; s++) {
                 x += 1;
                 const px = x % w;
                 if (px === 0) pts.length = 0;
                 pts.push({ x: px, y: h / 2 - beat(x / 110) * (h * 0.42) });
             }
-            // Fade the oldest part so the trace looks like it's being written.
             if (pts.length > w * 0.55) pts.splice(0, pts.length - Math.floor(w * 0.55));
             draw();
-        });
+        }, 30, () => visible);
     });
 }
 
-/* ---------- hero canvas: dot field that glows near the cursor ---------- */
-function backgroundCanvas() {
+/* ---------- hero dot field: static grid, only the area around the cursor is redrawn ---------- */
+function dotField() {
     const canvas = document.querySelector('[data-field]');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    const gap = 30;
-    let w, h, dpr, visible = true, t = 0;
+    const gap = 32;
+    const radius = 180;
+    let w = 0, h = 0, dpr = 1, base, visible = false, dirty = true;
     const mouse = { x: -9999, y: -9999 };
 
     const resize = () => {
         dpr = Math.min(window.devicePixelRatio || 1, 2);
-        w = canvas.clientWidth;
-        h = canvas.clientHeight;
-        canvas.width = w * dpr;
-        canvas.height = h * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        w = canvas.clientWidth; h = canvas.clientHeight;
+        canvas.width = w * dpr; canvas.height = h * dpr;
+        base = document.createElement('canvas');
+        base.width = canvas.width; base.height = canvas.height;
+        const b = base.getContext('2d');
+        b.setTransform(dpr, 0, 0, dpr, 0, 0);
+        b.fillStyle = 'rgba(161,161,170,0.16)';
+        for (let x = gap / 2; x < w; x += gap) for (let y = gap / 2; y < h; y += gap) b.fillRect(x - 0.75, y - 0.75, 1.5, 1.5);
+        dirty = true;
     };
     resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize, { passive: true });
+    onScreen(canvas, (v) => { visible = v; dirty = true; });
 
     window.addEventListener('pointermove', (e) => {
+        if (!visible) return;
         const r = canvas.getBoundingClientRect();
         mouse.x = e.clientX - r.left;
         mouse.y = e.clientY - r.top;
-    });
+        dirty = true;
+    }, { passive: true });
 
-    new IntersectionObserver(([e]) => (visible = e.isIntersecting)).observe(canvas);
+    loop(() => {
+        if (!dirty) return;
+        dirty = false;
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(base, 0, 0);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    gsap.ticker.add(() => {
-        if (!visible) return;
-        t += 0.008;
-        ctx.clearRect(0, 0, w, h);
-        for (let x = gap / 2; x < w; x += gap) {
-            for (let y = gap / 2; y < h; y += gap) {
-                const wave = Math.sin(x * 0.01 + t * 2) * Math.cos(y * 0.012 + t) * 0.5 + 0.5;
-                const d = Math.hypot(x - mouse.x, y - mouse.y);
-                const glow = Math.max(0, 1 - d / 200);
-                const a = 0.06 + wave * 0.1 + glow * 0.75;
-                ctx.fillStyle = glow > 0.05 ? `rgba(110,156,247,${a})` : `rgba(161,161,170,${a})`;
-                ctx.beginPath();
-                ctx.arc(x, y, 1 + glow * 1.4, 0, Math.PI * 2);
-                ctx.fill();
+        const x0 = Math.max(gap / 2, Math.floor((mouse.x - radius) / gap) * gap + gap / 2);
+        const y0 = Math.max(gap / 2, Math.floor((mouse.y - radius) / gap) * gap + gap / 2);
+        for (let x = x0; x < Math.min(w, mouse.x + radius); x += gap) {
+            for (let y = y0; y < Math.min(h, mouse.y + radius); y += gap) {
+                const glow = 1 - Math.hypot(x - mouse.x, y - mouse.y) / radius;
+                if (glow <= 0) continue;
+                const s = 1.5 + glow * 2.5;
+                ctx.fillStyle = `rgba(110,156,247,${0.15 + glow * 0.75})`;
+                ctx.fillRect(x - s / 2, y - s / 2, s, s);
             }
         }
-    });
+    }, 60, () => visible);
 }
 
 /* ---------- pointer effects ---------- */
 function cursorGlow() {
-    const root = document.documentElement;
-    const x = gsap.quickTo({ v: 0 }, 'v', { duration: 0.6, ease: 'power3.out', onUpdate() { root.style.setProperty('--gx', `${this.targets()[0].v}px`); } });
-    const y = gsap.quickTo({ v: 0 }, 'v', { duration: 0.6, ease: 'power3.out', onUpdate() { root.style.setProperty('--gy', `${this.targets()[0].v}px`); } });
-    window.addEventListener('pointermove', (e) => { x(e.clientX); y(e.clientY); });
+    const glow = document.querySelector('.cursor-glow');
+    if (!glow) return;
+    const x = gsap.quickTo(glow, 'x', { duration: 0.6, ease: 'power3.out' });
+    const y = gsap.quickTo(glow, 'y', { duration: 0.6, ease: 'power3.out' });
+    window.addEventListener('pointermove', (e) => { x(e.clientX); y(e.clientY); }, { passive: true });
 }
 
 function spotlight() {
     $$('.spotlight').forEach((el) => {
+        let frame = 0, ex = 0, ey = 0;
         el.addEventListener('pointermove', (e) => {
-            const r = el.getBoundingClientRect();
-            el.style.setProperty('--mx', `${e.clientX - r.left}px`);
-            el.style.setProperty('--my', `${e.clientY - r.top}px`);
-        });
+            ex = e.clientX; ey = e.clientY;
+            if (frame) return;
+            frame = requestAnimationFrame(() => {
+                frame = 0;
+                const r = el.getBoundingClientRect();
+                el.style.setProperty('--mx', `${ex - r.left}px`);
+                el.style.setProperty('--my', `${ey - r.top}px`);
+            });
+        }, { passive: true });
     });
 }
 
@@ -399,15 +421,15 @@ function tilt() {
         const max = 4;
         const rx = gsap.quickTo(el, 'rotationX', { duration: 0.5, ease: 'power3.out' });
         const ry = gsap.quickTo(el, 'rotationY', { duration: 0.5, ease: 'power3.out' });
+        let rect;
         gsap.set(el, { transformPerspective: 900 });
+        el.addEventListener('pointerenter', () => (rect = el.getBoundingClientRect()), { passive: true });
         el.addEventListener('pointermove', (e) => {
-            const r = el.getBoundingClientRect();
-            const px = (e.clientX - r.left) / r.width - 0.5;
-            const py = (e.clientY - r.top) / r.height - 0.5;
-            rx(-py * max * 2);
-            ry(px * max * 2);
-        });
-        el.addEventListener('pointerleave', () => { rx(0); ry(0); });
+            rect ??= el.getBoundingClientRect();
+            rx(-((e.clientY - rect.top) / rect.height - 0.5) * max * 2);
+            ry(((e.clientX - rect.left) / rect.width - 0.5) * max * 2);
+        }, { passive: true });
+        el.addEventListener('pointerleave', () => { rect = null; rx(0); ry(0); });
     });
 }
 
@@ -419,17 +441,8 @@ function magnetic() {
             const r = el.getBoundingClientRect();
             x((e.clientX - r.left - r.width / 2) * 0.25);
             y((e.clientY - r.top - r.height / 2) * 0.35);
-        });
+        }, { passive: true });
         el.addEventListener('pointerleave', () => { x(0); y(0); });
-    });
-}
-
-function imageParallax() {
-    $$('[data-img-parallax]').forEach((img) => {
-        gsap.fromTo(img, { yPercent: -6 }, {
-            yPercent: 0, ease: 'none',
-            scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
-        });
     });
 }
 
@@ -438,7 +451,11 @@ function nav() {
     const bar = document.querySelector('[data-nav]');
     if (!bar) return;
 
-    const onScroll = () => bar.toggleAttribute('data-scrolled', window.scrollY > 24);
+    let scrolled = null;
+    const onScroll = () => {
+        const s = window.scrollY > 24;
+        if (s !== scrolled) bar.toggleAttribute('data-scrolled', (scrolled = s));
+    };
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
 
