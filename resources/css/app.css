@@ -44,10 +44,11 @@
         color: rgb(var(--text));
     }
 
-    /* Lenis handles smooth scrolling when JS runs. */
-    html.lenis, html.lenis body { height: auto; }
-    .lenis.lenis-smooth { scroll-behavior: auto !important; }
-    .lenis.lenis-stopped { overflow: hidden; }
+    /* Native scrolling (no JS scroll smoothing: that is what made the page feel laggy). */
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 80px;
+    }
 }
 
 @layer components {
@@ -154,16 +155,28 @@
     opacity: 0;
 }
 
-/* Page-wide cursor glow (desktop only, set by motion.js). */
+/* Cursor glow (desktop only): a fixed blob that motion.js moves with transform, so it never triggers layout or a page-wide style recalc. */
 .cursor-glow {
     position: fixed;
-    inset: 0;
+    top: -300px;
+    left: -300px;
+    width: 600px;
+    height: 600px;
     z-index: -1;
     pointer-events: none;
-    background: radial-gradient(600px circle at var(--gx, -999px) var(--gy, -999px), rgb(var(--accent) / .06), transparent 40%);
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(var(--accent) / .07), transparent 60%);
+    transform: translate3d(-999px, -999px, 0);
+    will-change: transform;
+}
+
+@media (hover: none) {
+    .cursor-glow { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+
     *, *::before, *::after {
         animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;

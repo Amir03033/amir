@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\SiteCheck;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class PortfolioTest extends TestCase
@@ -79,5 +80,20 @@ class PortfolioTest extends TestCase
         config(['site.phone' => null]);
 
         $this->get('/')->assertDontSee('tel:', false);
+    }
+
+    public function test_media_optimize_shrinks_oversized_uploads(): void
+    {
+        Storage::fake('public');
+        Storage::disk('public')->makeDirectory('projects');
+        $img = imagecreatetruecolor(3000, 2000);
+        imagejpeg($img, Storage::disk('public')->path('projects/big.jpg'));
+        imagejpeg(imagecreatetruecolor(800, 600), Storage::disk('public')->path('projects/small.jpg'));
+
+        $this->artisan('media:optimize')->assertSuccessful();
+
+        [$w, $h] = getimagesize(Storage::disk('public')->path('projects/big.jpg'));
+        $this->assertSame([1600, 1067], [$w, $h]);
+        $this->assertSame(800, getimagesize(Storage::disk('public')->path('projects/small.jpg'))[0]);
     }
 }

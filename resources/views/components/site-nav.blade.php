@@ -14,7 +14,7 @@
 @endphp
 
 <nav data-nav class="group/nav fixed inset-x-0 top-0 z-50 transition-all duration-300">
-    <div class="mx-auto mt-0 flex h-16 max-w-6xl items-center justify-between gap-4 border-b border-transparent px-4 transition-all duration-300 group-data-[scrolled]/nav:mt-3 group-data-[scrolled]/nav:h-12 group-data-[scrolled]/nav:max-w-5xl group-data-[scrolled]/nav:rounded-panel group-data-[scrolled]/nav:border group-data-[scrolled]/nav:border-ink-line group-data-[scrolled]/nav:bg-ink-bg/70 group-data-[scrolled]/nav:shadow-[0_10px_40px_-15px_rgb(0_0_0/.8)] group-data-[scrolled]/nav:backdrop-blur-xl md:px-5">
+    <div class="mx-auto mt-0 flex h-16 max-w-6xl items-center justify-between gap-4 border-b border-transparent px-4 transition-all duration-300 group-data-[scrolled]/nav:mt-3 group-data-[scrolled]/nav:h-12 group-data-[scrolled]/nav:max-w-5xl group-data-[scrolled]/nav:rounded-panel group-data-[scrolled]/nav:border group-data-[scrolled]/nav:border-ink-line group-data-[scrolled]/nav:bg-ink-bg/90 group-data-[scrolled]/nav:shadow-[0_10px_40px_-15px_rgb(0_0_0/.8)] group-data-[scrolled]/nav:backdrop-blur-md md:px-5">
         <a href="{{ $link('home') }}" class="flex shrink-0 items-center gap-2.5" aria-label="{{ config('site.name') }} — home">
             <svg class="h-6 w-6 text-scope-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12h4l3-8 4 16 3-8h6"/></svg>
             <span class="hidden leading-tight sm:block">
@@ -48,7 +48,7 @@
         </div>
     </div>
 
-    <div id="mobile-nav" x-cloak x-show="mobileOpen" x-transition.opacity.duration.200ms @keydown.escape.window="mobileOpen = false" class="mx-4 mt-2 rounded-panel border border-ink-line bg-ink-bg/95 p-3 backdrop-blur-xl lg:hidden">
+    <div id="mobile-nav" x-cloak x-show="mobileOpen" x-transition.opacity.duration.200ms @keydown.escape.window="mobileOpen = false" class="mx-4 mt-2 rounded-panel border border-ink-line bg-ink-bg/95 p-3 backdrop-blur-md lg:hidden">
         @foreach($items as $hash => $label)
             <a href="{{ $link($hash) }}" @click="mobileOpen = false" class="flex items-center justify-between rounded-lg px-3 py-2.5 text-sm text-ink-soft hover:bg-ink-panel hover:text-ink-text">
                 {{ $label }} <span class="text-[11px] text-ink-muted">0{{ $loop->iteration }}</span>

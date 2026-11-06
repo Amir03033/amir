@@ -130,7 +130,7 @@
                     <div class="relative aspect-[16/10] bg-ink-panel2">
                         @foreach($ss['features'] as $key => $feature)
                             @php($src = $screenFor($key))
-                            <figure data-screen class="absolute inset-0 scale-[1.03] opacity-0 blur-[2px] transition-[opacity,transform,filter] duration-700 ease-out data-[active]:scale-100 data-[active]:opacity-100 data-[active]:blur-0">
+                            <figure data-screen class="absolute inset-0 scale-[1.03] opacity-0 transition-[opacity,transform] duration-500 ease-out data-[active]:scale-100 data-[active]:opacity-100">
                                 @if($src)
                                     <img src="{{ $src }}" alt="ServerScope — {{ $feature['title'] }}" loading="lazy" decoding="async" class="h-full w-full object-cover object-top">
                                 @else

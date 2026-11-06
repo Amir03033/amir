@@ -6,13 +6,13 @@
 @endphp
 
 <article data-reveal data-tilt data-project data-tags="{{ strtolower(implode('|', $tags)) }}"
-         class="panel spotlight group flex flex-col overflow-hidden will-change-transform {{ $project->featured ? 'md:col-span-2 md:flex-row' : '' }}">
+         class="panel spotlight group flex flex-col overflow-hidden {{ $project->featured ? 'md:col-span-2 md:flex-row' : '' }}">
     <a href="{{ route('project.show', $project) }}" class="absolute inset-0 z-10 rounded-[inherit]" aria-label="{{ __('messages.portfolio.read_case') }}: {{ $project->getTranslation('title') }}"></a>
 
     <div class="relative overflow-hidden bg-ink-panel2 {{ $project->featured ? 'aspect-[16/10] md:aspect-auto md:w-[58%] md:border-r' : 'aspect-[16/10] border-b' }} border-ink-line">
-        <img src="{{ $project->coverUrl() }}" alt="" loading="lazy" decoding="async" data-img-parallax
+        <img src="{{ $project->coverUrl() }}" alt="" loading="lazy" decoding="async"
              style="view-transition-name: project-{{ $project->id }}"
-             class="absolute inset-0 h-[112%] w-full object-cover object-top transition-[transform,filter] duration-700 ease-out group-hover:scale-[1.05] group-hover:saturate-[1.15]">
+             class="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.05]">
         <div class="absolute inset-0 bg-gradient-to-t from-ink-panel/90 via-transparent to-transparent"></div>
         <span class="absolute left-3 top-3 rounded-lg border border-ink-line bg-ink-bg/80 px-2 py-0.5 text-[10px] font-semibold tabular-nums text-ink-soft backdrop-blur">{{ str_pad($index, 2, '0', STR_PAD_LEFT) }}</span>
         @if($check)
