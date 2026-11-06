@@ -48,6 +48,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return str_ends_with($this->email, 'hosseinjebari@gmail.com') && $this->hasVerifiedEmail();
+        // Exact match: a suffix check would also admit e.g. "xhosseinjebari@gmail.com".
+        return strcasecmp($this->email, config('site.admin_email')) === 0 && $this->hasVerifiedEmail();
     }
 }

@@ -24,6 +24,20 @@ class ContactMessageResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Contactberichten';
 
+    protected static ?string $navigationGroup = 'Inbox';
+
+    public static function getNavigationBadge(): ?string
+    {
+        $unread = ContactMessage::whereNull('read_at')->count();
+
+        return $unread ? (string) $unread : null;
+    }
+
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
+    }
+
     public static function form(Form $form): Form
     {
         return $form->schema([]);

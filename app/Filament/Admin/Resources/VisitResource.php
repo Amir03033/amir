@@ -21,7 +21,16 @@ class VisitResource extends Resource
 {
     protected static ?string $model = Visit::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-chart-bar';
+
+    protected static ?string $navigationGroup = 'Inzichten';
+
+    protected static ?string $navigationLabel = 'Bezoeken';
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
     public static function form(Form $form): Form
     {
@@ -45,26 +54,46 @@ class VisitResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Wanneer')
+                    ->since()
+                    ->dateTimeTooltip('d-m-Y H:i:s')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('url')
                     ->label('Pagina')
+                    ->formatStateUsing(fn ($state) => '/'.ltrim($state, '/'))
+                    ->weight('medium')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('browser')
-                    ->label('Browser'),
-                Tables\Columns\TextColumn::make('platform')
-                    ->label('OS'),
-                Tables\Columns\TextColumn::make('device_type')
-                    ->label('Apparaat')
-                    ->badge(),
                 Tables\Columns\TextColumn::make('referrer')
-                    ->label('Referrer')
-                    ->limit(30),
+                    ->label('Bron')
+                    ->formatStateUsing(fn ($state) => \App\Support\VisitStats::source($state))
+                    ->placeholder('Direct')
+                    ->badge()
+                    ->color(fn ($state) => $state ? 'info' : 'gray'),
+                Tables\Columns\TextColumn::make('country')
+                    ->label('Land')
+                    ->formatStateUsing(fn ($state) => \App\Support\VisitStats::flag($state).' '.$state)
+                    ->placeholder('🌐'),
+                Tables\Columns\IconColumn::make('device_type')
+                    ->label('Apparaat')
+                    ->icon(fn ($state) => match ($state) {
+                        'mobile' => 'heroicon-o-device-phone-mobile',
+                        'tablet' => 'heroicon-o-device-tablet',
+                        default => 'heroicon-o-computer-desktop',
+                    })
+                    ->tooltip(fn ($state) => ucfirst((string) $state)),
+                Tables\Columns\TextColumn::make('browser')
+                    ->label('Browser')
+                    ->description(fn ($record) => $record->platform),
+                Tables\Columns\TextColumn::make('utm_source')
+                    ->label('Campagne')
+                    ->badge()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('ip_address')
                     ->label('IP-adres')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Bezocht op')
-                    ->dateTime('d-m-Y H:i')
-                    ->sortable(),
+                    ->searchable()
+                    ->copyable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
@@ -90,8 +119,10 @@ class VisitResource extends Resource
                     }),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()->iconButton(),
             ])
+            ->poll('60s')
+            ->striped()
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -111,8 +142,6 @@ class VisitResource extends Resource
     {
         return [
             'index' => Pages\ListVisits::route('/'),
-            'create' => Pages\CreateVisit::route('/create'),
-            'edit' => Pages\EditVisit::route('/{record}/edit'),
         ];
     }
 }

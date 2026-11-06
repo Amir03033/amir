@@ -1,6 +1,6 @@
 @extends('layouts.layout', [
-    'title' => $blog->getTranslation('title').' | '.config('site.name'),
-    'description' => $blog->excerpt(200),
+    'title' => ($blog->meta_title ?: $blog->getTranslation('title')).' — '.config('site.name'),
+    'description' => $blog->meta_description ?: $blog->excerpt(200),
 ])
 
 @section('nav')
@@ -8,22 +8,34 @@
 @endsection
 
 @section('content')
-    <article class="max-w-3xl mx-auto px-4 pt-28 pb-24">
-        <a href="{{ route('home') }}#blog" class="text-xs uppercase tracking-widest font-mono text-cyan-400 hover:underline">← {{ __('messages.nav.back') }}</a>
+    <article class="px-4 pb-24 pt-28 md:pt-36">
+        <div class="mx-auto max-w-3xl">
+            <nav data-reveal class="flex flex-wrap items-center gap-2 text-sm text-ink-muted" aria-label="Breadcrumb">
+                <a href="{{ route('home') }}" class="hover:text-ink-text">{{ __('messages.hero.crumb') }}</a>
+                <span>›</span>
+                <a href="{{ route('blog.index') }}" class="hover:text-ink-text">{{ __('messages.nav.blog') }}</a>
+                <span>›</span>
+                <span class="truncate text-ink-soft">{{ $blog->getTranslation('title') }}</span>
+            </nav>
 
-        <p class="mt-8 text-xs font-mono text-slate-500">{{ __('messages.blog.written') }} {{ $blog->created_at->format('d M Y') }}</p>
-        <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight mt-2">
-            {{ $blog->getTranslation('title') }}
-        </h1>
+            <p data-reveal class="mt-8 text-xs text-ink-muted">{{ __('messages.blog.written') }} · <time datetime="{{ $blog->publishedDate()->toDateString() }}">{{ $blog->publishedDate()->format('Y-m-d') }} · {{ __('messages.blog.minutes', ['n' => $blog->readingMinutes()]) }}</time></p>
+            <h1 data-split class="mt-3 text-3xl font-semibold leading-tight tracking-tight md:text-5xl">{{ $blog->getTranslation('title') }}</h1>
 
-        @if($blog->image)
-            <div class="mt-8 w-full h-64 md:h-96 bg-slate-950 rounded-2xl overflow-hidden border border-slate-800">
-                <img src="{{ asset('storage/'.$blog->image) }}" alt="" class="w-full h-full object-cover">
+            @if($blog->image)
+                <div data-reveal class="panel mt-10 overflow-hidden">
+                    <img src="{{ asset('storage/'.$blog->image) }}" alt="" class="aspect-[16/9] w-full object-cover">
+                </div>
+            @endif
+
+            <div data-reveal class="prose-scope mt-12 border-t border-ink-line pt-10 text-ink-soft md:prose-lg">
+                {!! Str::markdown($blog->getTranslation('content')) !!}
             </div>
-        @endif
 
-        <div class="prose prose-invert prose-sm md:prose-base max-w-none mt-10 text-slate-300 leading-relaxed border-t border-slate-800 pt-8 prose-a:text-cyan-400">
-            {!! Str::markdown($blog->getTranslation('content')) !!}
+            <div class="mt-20 border-t border-ink-line pt-8">
+                <a href="{{ route('blog.index') }}" class="group inline-flex items-center gap-2 text-sm text-scope-accent">
+                    <span class="transition-transform group-hover:-translate-x-1">←</span> {{ __('messages.blog.all') }}
+                </a>
+            </div>
         </div>
     </article>
 @endsection

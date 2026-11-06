@@ -1,43 +1,30 @@
-@extends('layouts.layout')
+@extends('layouts.layout', ['title' => '404 — '.config('site.name')])
+
+@section('nav')
+    <x-site-nav />
+@endsection
 
 @section('content')
-<div class="min-h-screen flex items-center justify-center px-6 relative overflow-hidden">
+    <div class="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-4">
+        <div class="grid-bg absolute inset-0" aria-hidden="true"></div>
 
-    <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
-        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl"></div>
-    </div>
-
-    <div class="relative z-10 text-center max-w-xl">
-        <p class="font-mono text-cyan-400 text-sm tracking-widest mb-4">ERROR // NOT_FOUND</p>
-
-        <h1 class="font-mono text-7xl sm:text-9xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-slate-200 to-amber-400 mb-6 tracking-tight">
-            404
-        </h1>
-
-        <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-4">
-            Deze pagina bestaat niet
-        </h2>
-
-        <p class="text-slate-400 mb-10 leading-relaxed">
-            De pagina die je zoekt is verplaatst, verwijderd, of heeft nooit bestaan.
-            Controleer de URL of ga terug naar de homepage.
-        </p>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ url('/') }}"
-               class="inline-flex items-center justify-center px-6 py-3 rounded-lg bg-cyan-500 text-black font-semibold hover:bg-cyan-400 transition-colors">
-                Terug naar home
-            </a>
-            <button onclick="history.back()"
-               class="inline-flex items-center justify-center px-6 py-3 rounded-lg border border-slate-700 text-slate-300 font-semibold hover:border-cyan-400 hover:text-cyan-400 transition-colors">
-                Vorige pagina
-            </button>
+        <div class="relative w-full max-w-lg">
+            <div class="panel overflow-hidden">
+                <div class="panel-head">
+                    <span>incident</span>
+                    <span class="flex items-center gap-2 normal-case tracking-normal text-scope-red"><span class="dot bg-scope-red"></span>404 not found</span>
+                </div>
+                <div class="p-6 md:p-8">
+                    <p class="font-mono text-6xl font-semibold tracking-tight text-ink-text">404</p>
+                    <h1 class="mt-4 text-2xl font-semibold tracking-tight">{{ __('messages.errors.not_found') }}</h1>
+                    <p class="mt-3 leading-relaxed text-ink-soft">{{ __('messages.errors.not_found_text') }}</p>
+                    <p class="mt-6 truncate rounded-[10px] border border-ink-line bg-ink-panel2 px-3 py-2 font-mono text-xs text-ink-muted">GET {{ request()->path() === '/' ? '/' : '/'.request()->path() }}</p>
+                    <div class="mt-8 flex flex-wrap gap-3">
+                        <a href="{{ route('home') }}" class="btn-primary">{{ __('messages.errors.home') }}</a>
+                        <button type="button" onclick="history.back()" class="btn-secondary">{{ __('messages.errors.back') }}</button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <p class="font-mono text-xs text-slate-600 mt-16">
-            {{ url()->current() }}
-        </p>
     </div>
-</div>
 @endsection

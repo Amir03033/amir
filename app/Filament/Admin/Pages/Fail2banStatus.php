@@ -9,7 +9,11 @@ class Fail2banStatus extends Page
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
     protected static ?string $navigationLabel = 'Fail2ban';
     protected static ?string $navigationGroup = 'Beveiliging';
-    protected static ?string $title = 'Fail2ban status';
+    protected static ?string $title = 'Fail2ban';
+
+    protected ?string $subheading = 'Brute-force bescherming op de server: wie probeert in te loggen en wie is geblokkeerd.';
+
+    public bool $autoRefresh = true;
     protected static string $view = 'filament.admin.pages.fail2ban-status';
 
     // Whitelist: alleen deze namen komen ooit in het shell-commando
@@ -33,6 +37,21 @@ class Fail2banStatus extends Page
 
         $this->jails = $result;
         $this->updatedAt = now()->format('H:i:s');
+    }
+
+    /** Totals across all jails that could be read. */
+    public function getTotalsProperty(): array
+    {
+        $ok = collect($this->jails)->reject(fn ($j) => isset($j['error']));
+
+        return [
+            'jails' => $ok->count(),
+            'errors' => count($this->jails) - $ok->count(),
+            'current_banned' => $ok->sum('current_banned'),
+            'total_banned' => $ok->sum('total_banned'),
+            'current_failed' => $ok->sum('current_failed'),
+            'total_failed' => $ok->sum('total_failed'),
+        ];
     }
 
     private function readJail(string $jail): array

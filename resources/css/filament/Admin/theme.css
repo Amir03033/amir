@@ -1,0 +1,10 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@config 'tailwind.config.js';
+
+/* ServerScope look: near-black surfaces, rounder cards, spaced-out labels. */
+.dark .fi-body { background: #09090b; }
+.dark .fi-sidebar, .dark .fi-topbar > nav { background: #0b0b0d; }
+.fi-section, .fi-wi-stats-overview-stat, .fi-ta-ctn { border-radius: 18px !important; }
+.dark .fi-section, .dark .fi-wi-stats-overview-stat, .dark .fi-ta-ctn { background: #111113; --tw-ring-color: #242428; }
+.fi-sidebar-group-label { letter-spacing: .14em; text-transform: uppercase; font-size: 11px !important; }

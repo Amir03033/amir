@@ -1,5 +1,6 @@
-<button type="button" @click="switchLanguage(locale === 'nl' ? 'en' : 'nl')" class="relative inline-flex items-center justify-between w-14 h-7 p-1 rounded-full bg-slate-900 border border-slate-800 cursor-pointer" aria-label="Language">
-    <span class="text-[9px] font-bold z-10 pl-1" :class="locale === 'en' ? 'text-slate-900' : 'text-slate-500'">EN</span>
-    <span class="text-[9px] font-bold z-10 pr-1" :class="locale === 'nl' ? 'text-slate-900' : 'text-slate-500'">NL</span>
-    <span class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 transition-transform duration-300" :class="locale === 'nl' ? 'translate-x-7' : ''"></span>
+@php($nl = app()->getLocale() === 'nl')
+<button type="button" @click="switchLanguage(locale === 'nl' ? 'en' : 'nl')" class="relative inline-flex h-7 items-center rounded-lg border border-ink-line bg-ink-panel2 p-0.5 text-[10px] font-semibold" aria-label="{{ $nl ? 'Switch to English' : 'Schakel naar Nederlands' }}">
+    <span class="absolute top-0.5 h-[calc(100%-4px)] w-8 rounded-md bg-scope-accent/15 ring-1 ring-scope-accent/40 {{ $nl ? 'translate-x-8' : '' }}"></span>
+    <span class="relative z-10 w-8 text-center {{ $nl ? 'text-ink-muted' : 'text-scope-accent' }}">EN</span>
+    <span class="relative z-10 w-8 text-center {{ $nl ? 'text-scope-accent' : 'text-ink-muted' }}">NL</span>
 </button>

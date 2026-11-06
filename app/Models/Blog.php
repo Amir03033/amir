@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
@@ -57,6 +58,26 @@ class Blog extends Model
             ),
             $limit
         );
+    }
+
+    /** Visible on the public site: published, or scheduled with a publish time that has passed. */
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query
+            ->whereIn('status', ['published', 'scheduled'])
+            ->where(fn (Builder $q) => $q
+                ->where(fn (Builder $q) => $q->where('status', 'published')->whereNull('published_at'))
+                ->orWhere('published_at', '<=', now()));
+    }
+
+    public function publishedDate()
+    {
+        return $this->published_at ?? $this->created_at;
+    }
+
+    public function readingMinutes(): int
+    {
+        return max(1, (int) round(str_word_count(strip_tags($this->getTranslation('content'))) / 200));
     }
 
     public function isPublished(): bool

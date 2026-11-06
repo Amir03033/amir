@@ -2,43 +2,184 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ServerScope dashboard palette (neutral black, blue accent, green status), as RGB triplets so Tailwind can apply opacity. */
+:root {
+    color-scheme: dark;
+    --bg: 9 9 11;              /* #09090b */
+    --panel: 17 17 19;         /* #111113 */
+    --panel-2: 13 13 15;       /* #0d0d0f */
+    --border: 36 36 40;        /* #242428 */
+    --border-strong: 52 52 58; /* #34343a */
+    --text: 244 244 245;       /* #f4f4f5 */
+    --muted: 150 150 160;      /* #9696a0 */
+    --soft: 205 205 212;       /* #cdcdd4 */
+    --accent: 110 156 247;     /* #6e9cf7 */
+    --green: 74 222 128;       /* #4ade80 */
+    --yellow: 250 204 21;      /* #facc15 */
+    --red: 248 113 113;        /* #f87171 */
+}
+
+@view-transition {
+    navigation: auto;
+}
+
 @layer base {
     [x-cloak] {
         display: none !important;
     }
 
-    html {
-        scroll-behavior: smooth;
+    body {
+        @apply bg-ink-bg text-ink-text font-sans antialiased;
+        font-feature-settings: 'cv11';
     }
+
+    :focus-visible {
+        outline: 2px solid rgb(var(--accent));
+        outline-offset: 2px;
+        border-radius: 8px;
+    }
+
+    ::selection {
+        background: rgb(var(--accent) / .35);
+        color: rgb(var(--text));
+    }
+
+    /* Lenis handles smooth scrolling when JS runs. */
+    html.lenis, html.lenis body { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto !important; }
+    .lenis.lenis-stopped { overflow: hidden; }
 }
 
 @layer components {
+    .panel {
+        @apply relative rounded-panel border border-ink-line bg-ink-panel;
+    }
+
+    .panel-glow {
+        background-image: radial-gradient(120% 140% at 0% 0%, rgb(var(--green) / .07), transparent 45%);
+    }
+
+    .panel-head {
+        @apply flex items-center justify-between gap-3 border-b border-ink-line px-5 py-3 text-[11px] font-semibold uppercase tracking-[.18em] text-ink-soft;
+    }
+
+    /* Section kicker, like ServerScope's "EVERYTHING AT A GLANCE". */
+    .label {
+        @apply text-[11px] font-semibold uppercase tracking-[.2em] text-ink-soft;
+    }
+
+    .chip {
+        @apply inline-flex items-center rounded-lg border border-ink-line bg-ink-panel2 px-2 py-0.5 text-[11px] font-medium text-ink-soft;
+    }
+
+    .pill {
+        @apply inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold;
+    }
+
     .btn-primary {
-        @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold shadow-lg shadow-cyan-500/10 hover:shadow-cyan-500/30 transition transform hover:-translate-y-0.5 text-sm;
+        @apply relative inline-flex items-center justify-center gap-2 rounded-xl bg-scope-accent px-5 py-2.5 text-sm font-semibold text-white transition-[background-color,box-shadow] duration-200 hover:bg-[#82abf9] hover:shadow-[0_0_0_4px_rgb(110_156_247/.18),0_12px_32px_-12px_rgb(110_156_247/.7)];
     }
 
     .btn-secondary {
-        @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg border border-slate-700 text-slate-200 font-semibold hover:border-cyan-500/50 hover:text-white transition text-sm;
+        @apply relative inline-flex items-center justify-center gap-2 rounded-xl border border-ink-line bg-ink-panel px-5 py-2.5 text-sm font-semibold text-ink-text transition-colors duration-200 hover:border-ink-strong hover:bg-[#18181b];
     }
 
     .input-field {
-        @apply w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-slate-200 focus:outline-none focus:border-cyan-500 transition;
+        @apply w-full rounded-xl border border-ink-line bg-ink-panel2 px-3.5 py-3 text-sm text-ink-text placeholder:text-ink-muted/70 transition-colors focus:border-scope-accent focus:outline-none focus:ring-2 focus:ring-scope-accent/20;
+    }
+
+    .dot {
+        @apply relative inline-flex h-2 w-2 shrink-0 rounded-full;
+    }
+
+    .dot::after {
+        content: '';
+        @apply absolute inset-0 rounded-full bg-inherit motion-safe:animate-pulse-dot;
+    }
+
+    .text-gradient {
+        @apply bg-clip-text text-transparent;
+        background-image: linear-gradient(100deg, rgb(var(--text)) 0%, rgb(var(--text)) 38%, rgb(var(--accent)) 50%, rgb(var(--green)) 58%, rgb(var(--text)) 72%);
+        background-size: 250% 100%;
+        background-position: 0 0;
+    }
+
+    /* Cursor-following spotlight; --mx/--my are set by spotlight() in motion.js. */
+    .spotlight {
+        --mx: 50%;
+        --my: 50%;
+    }
+
+    .spotlight::before {
+        content: '';
+        @apply pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300;
+        background: radial-gradient(420px circle at var(--mx) var(--my), rgb(var(--accent) / .08), transparent 45%);
+    }
+
+    .spotlight::after {
+        content: '';
+        @apply pointer-events-none absolute inset-0 rounded-[inherit] opacity-0 transition-opacity duration-300;
+        padding: 1px;
+        background: radial-gradient(240px circle at var(--mx) var(--my), rgb(var(--accent) / .75), rgb(var(--green) / .25) 45%, transparent 70%);
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+    }
+
+    .spotlight:hover::before,
+    .spotlight:hover::after {
+        @apply opacity-100;
+    }
+
+    .grid-bg {
+        background-image:
+            linear-gradient(to right, rgb(var(--border) / .5) 1px, transparent 1px),
+            linear-gradient(to bottom, rgb(var(--border) / .5) 1px, transparent 1px);
+        background-size: 56px 56px;
+        mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, #000 30%, transparent 75%);
+    }
+
+    .kbd {
+        @apply inline-flex h-5 min-w-5 items-center justify-center rounded-md border border-ink-line bg-ink-panel2 px-1 text-[10px] font-medium text-ink-muted;
+    }
+
+    .prose-scope {
+        @apply prose prose-invert max-w-none prose-headings:tracking-tight prose-a:text-scope-accent prose-code:font-mono prose-code:text-scope-accent prose-pre:border prose-pre:border-ink-line prose-pre:bg-ink-panel2;
+    }
+}
+
+/* Elements that GSAP reveals start hidden only when JS has run and motion is allowed. */
+.js-motion [data-reveal],
+.js-motion [data-split] .word > span {
+    opacity: 0;
+}
+
+/* Page-wide cursor glow (desktop only, set by motion.js). */
+.cursor-glow {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(600px circle at var(--gx, -999px) var(--gy, -999px), rgb(var(--accent) / .06), transparent 40%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+
+    ::view-transition-group(*),
+    ::view-transition-old(*),
+    ::view-transition-new(*) {
+        animation: none !important;
     }
 }
 
 @media print {
-    nav,
-    footer,
-    .fixed {
-        display: none !important;
-    }
-
-    body {
-        background: white !important;
-        color: #111 !important;
-    }
-
-    main {
-        opacity: 1 !important;
-    }
+    nav, footer, .no-print, .fixed, .cursor-glow { display: none !important; }
+    body { background: #fff !important; color: #111 !important; }
+    .panel { border-color: #ddd !important; background: none !important; }
+    * { color: #111 !important; }
 }

@@ -56,7 +56,8 @@ class TrackVisit
             }
         }
 
-        if (!$request->is('amir*') && !$request->is('livewire*')) {
+        // Only real page views: skip the admin panel, Livewire calls, form posts and machine endpoints.
+        if ($request->isMethod('GET') && ! $request->is('admin*', 'amir*', 'livewire*', 'filament*', 'up', 'sitemap.xml', 'storage/*', 'build/*')) {
             $agent = new Agent();
             $agent->setUserAgent($userAgent);
 
