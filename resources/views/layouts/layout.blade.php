@@ -8,7 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="theme-color" content="#070c17">
+    <meta name="theme-color" content="#09090b">
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDescription }}">
     <meta name="author" content="{{ config('site.name') }}">
@@ -24,6 +24,21 @@
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <script>
+        // Theme before first paint (no flash). Dark is the default; a saved choice wins.
+        (function (d) {
+            var t = 'dark';
+            try { t = localStorage.getItem('theme') || 'dark'; } catch (e) {}
+            d.dataset.theme = t;
+            window.toggleTheme = function () {
+                var next = d.dataset.theme === 'light' ? 'dark' : 'light';
+                d.dataset.theme = next;
+                try { localStorage.setItem('theme', next); } catch (e) {}
+                document.querySelectorAll('[data-theme-src]').forEach(function (img) { img.src = img.dataset.themeSrc + next; });
+                document.querySelector('meta[name=theme-color]').content = next === 'light' ? '#fafafa' : '#09090b';
+                window.dispatchEvent(new CustomEvent('themechange', { detail: next }));
+            };
+        })(document.documentElement);
+
         // Hide reveal targets before first paint; un-hide if the animation bundle never starts.
         (function (d) {
             if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;

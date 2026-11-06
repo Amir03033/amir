@@ -260,8 +260,8 @@ function heartbeat() {
     $$('[data-heartbeat]').forEach((canvas) => {
         const ctx = canvas.getContext('2d');
         const ok = canvas.dataset.heartbeat === 'ok';
-        const rgb = css(ok ? '--green' : '--yellow');
-        const grid = `rgba(${css('--border')},0.6)`;
+        let rgb = css(ok ? '--green' : '--yellow');
+        let grid = `rgba(${css('--border')},0.6)`;
         let w = 0, h = 0, x = 0, visible = false;
         const pts = [];
         let gridLayer;
@@ -283,6 +283,11 @@ function heartbeat() {
         };
         resize();
         window.addEventListener('resize', resize, { passive: true });
+        window.addEventListener('themechange', () => {
+            rgb = css(ok ? '--green' : '--yellow');
+            grid = `rgba(${css('--border')},0.6)`;
+            resize();
+        });
         onScreen(canvas, (v) => (visible = v));
 
         const beat = (t) => {

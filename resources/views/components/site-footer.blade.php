@@ -18,6 +18,7 @@
                 <a href="{{ config('site.serverscope.url') }}" target="_blank" rel="noopener" class="transition-colors hover:text-scope-accent">ServerScope</a>
             @endif
             <a href="{{ route('cv') }}" class="transition-colors hover:text-scope-accent">{{ __('messages.nav.cv') }}</a>
+            <a href="{{ route('privacy') }}" class="transition-colors hover:text-scope-accent">{{ __('messages.footer.privacy') }}</a>
         </div>
     </div>
 </footer>

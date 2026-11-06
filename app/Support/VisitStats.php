@@ -41,6 +41,15 @@ class VisitStats
                 ->get()
                 ->keyBy('d');
 
+            // Days whose raw visits were pruned come from the daily totals.
+            $rolled = \Illuminate\Support\Facades\DB::table('visit_days')
+                ->where('date', '>=', now()->subDays($days - 1)->toDateString())
+                ->get()
+                ->keyBy(fn ($r) => (string) $r->date);
+            foreach ($rolled as $d => $r) {
+                $rows[$d] ??= (object) ['views' => $r->views, 'visitors' => $r->visitors];
+            }
+
             $dates = collect(range($days - 1, 0))->map(fn ($i) => now()->subDays($i)->format('Y-m-d'));
 
             return [

@@ -11,9 +11,16 @@ return [
     'github' => env('SITE_GITHUB'),
     'admin_email' => env('ADMIN_EMAIL', 'hosseinjebari@gmail.com'),
 
+    // Raw page views older than this are deleted nightly; daily totals are kept forever.
+    'visits_retention_days' => (int) env('VISITS_RETENTION_DAYS', 90),
+
+    'booking_url' => env('SITE_BOOKING_URL'),
+
+    // These can also be set in Filament under "Links & instellingen", which overrides .env.
     'serverscope' => [
         'url' => env('SERVERSCOPE_URL'),
         'docs_url' => env('SERVERSCOPE_DOCS_URL'),
+        'status_url' => env('SERVERSCOPE_STATUS_URL'),
     ],
 
     // Sites probed by `php artisan site:check` for the live status panel.

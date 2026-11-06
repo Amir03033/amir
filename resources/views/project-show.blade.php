@@ -66,8 +66,47 @@
                     @endif
                 </aside>
 
-                <div data-reveal class="max-w-2xl whitespace-pre-line text-base leading-relaxed text-ink-soft md:text-lg">{{ $project->getTranslation('description') }}</div>
+                <div class="max-w-2xl space-y-12">
+                    <div data-reveal class="whitespace-pre-line text-base leading-relaxed text-ink-soft md:text-lg">{{ $project->getTranslation('description') }}</div>
+
+                    @if($blocks = $project->caseBlocks())
+                        <ol class="relative space-y-10 pl-8" data-reveal-group>
+                            <span data-draw-line class="absolute bottom-2 left-[3px] top-2 w-px origin-top bg-gradient-to-b from-scope-accent via-scope-accent to-scope-green" aria-hidden="true"></span>
+                            @foreach($blocks as $key => $text)
+                                <li data-reveal class="relative">
+                                    <span class="absolute -left-8 top-1.5 h-[7px] w-[7px] rounded-full {{ $loop->last ? 'bg-scope-green shadow-[0_0_0_4px_rgb(74_222_128/.2)]' : 'bg-scope-accent' }}"></span>
+                                    <p class="label text-scope-accent">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }} · {{ __('messages.case.'.$key) }}</p>
+                                    <p class="mt-3 whitespace-pre-line text-base leading-relaxed text-ink-soft md:text-lg">{{ $text }}</p>
+                                </li>
+                            @endforeach
+                        </ol>
+                    @endif
+
+                    @foreach($project->testimonials()->visible()->get() as $t)
+                        <figure data-reveal class="panel panel-glow p-6">
+                            <blockquote class="text-lg leading-relaxed">“{{ $t->getTranslation('quote') }}”</blockquote>
+                            <figcaption class="mt-4 text-sm text-ink-muted"><span class="font-semibold text-ink-text">{{ $t->name }}</span>@if($t->role || $t->company) · {{ collect([$t->role, $t->company])->filter()->implode(', ') }}@endif</figcaption>
+                        </figure>
+                    @endforeach
+                </div>
             </div>
+
+            @if($gallery = $project->galleryUrls())
+                <section class="mt-20" x-data="{ open: null, items: @js($gallery) }" @keydown.escape.window="open = null" @keydown.arrow-right.window="open !== null && (open = (open + 1) % items.length)" @keydown.arrow-left.window="open !== null && (open = (open - 1 + items.length) % items.length)">
+                    <h2 data-reveal class="label mb-6">{{ __('messages.case.gallery') }}</h2>
+                    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-reveal-group>
+                        @foreach($gallery as $i => $src)
+                            <button type="button" data-reveal @click="open = {{ $i }}" class="panel group overflow-hidden">
+                                <img src="{{ $src }}" alt="{{ $project->getTranslation('title') }} — {{ $i + 1 }}" loading="lazy" decoding="async" class="aspect-[16/10] w-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]">
+                            </button>
+                        @endforeach
+                    </div>
+                    <div x-cloak x-show="open !== null" x-transition.opacity class="fixed inset-0 z-[85] flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm" @click.self="open = null" role="dialog" aria-modal="true">
+                        <img :src="items[open]" alt="" class="max-h-[85vh] max-w-full rounded-panel border border-ink-line object-contain">
+                        <button type="button" @click="open = null" class="absolute right-4 top-4 rounded-xl border border-ink-line bg-ink-panel px-3 py-1.5 text-sm" aria-label="{{ __('messages.nav.close') }}">esc</button>
+                    </div>
+                </section>
+            @endif
 
             <div class="mt-20 grid gap-4 border-t border-ink-line pt-10 md:grid-cols-2">
                 <a href="{{ route('home') }}#work" class="panel group flex items-center gap-3 p-5 text-sm font-semibold transition-colors hover:border-ink-strong">
