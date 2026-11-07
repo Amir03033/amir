@@ -146,4 +146,14 @@ class PolishTest extends TestCase
     {
         $this->get('/')->assertSee('amir@portfolio', false)->assertSee('command not found', false);
     }
+
+    public function test_hero_shows_live_card_only_with_real_measurements(): void
+    {
+        $this->get('/')->assertDontSee(__('messages.hero.more_stats'));
+
+        SiteCheck::create(['label' => 'Jungle', 'url' => 'https://jungle.test', 'ok' => true, 'status_code' => 200, 'response_ms' => 222, 'checked_at' => now()]);
+        cache()->forget('status-panel');
+
+        $this->get('/')->assertSee(__('messages.hero.more_stats'))->assertSee('jungle.test')->assertSee('222 ms');
+    }
 }

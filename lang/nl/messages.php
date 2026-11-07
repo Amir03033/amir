@@ -38,6 +38,10 @@ return [
         'scroll' => 'scroll',
     ],
     'hero' => [
+        'measured_short' => 'elke 10 min gemeten',
+        'response' => 'Respons',
+        'incidents' => 'Incidenten',
+        'more_stats' => 'Alle statistieken',
         'crumb' => 'Portfolio',
         'available' => 'Beschikbaar',
         'last_check' => 'Laatste meting',

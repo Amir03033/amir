@@ -41,12 +41,12 @@
 @endpush
 
 @section('content')
-    {{-- Hero: one message, two actions. The full dashboard lives in the "Live status" section. --}}
+    {{-- Hero: one message, two actions, and a compact live-status card (the full dashboard lives in "Live status"). --}}
     <section id="home" data-hero class="relative flex items-center overflow-hidden px-4 pb-12 pt-28 sm:min-h-[86svh] sm:pb-16 md:pt-32">
         <canvas data-field class="absolute inset-0 h-full w-full opacity-60 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,#000,transparent)]" aria-hidden="true"></canvas>
 
-        <div class="relative mx-auto w-full max-w-6xl">
-            <div class="max-w-3xl">
+        <div class="relative mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-[1.2fr_.8fr] lg:gap-14">
+            <div>
                 <div data-reveal class="flex items-center gap-3">
                     <img src="{{ $avatar }}" alt="{{ config('site.name') }}" width="44" height="44" class="h-11 w-11 rounded-full object-cover ring-2 ring-ink-line ring-offset-2 ring-offset-ink-bg">
                     <div class="leading-tight">
@@ -55,7 +55,7 @@
                     </div>
                 </div>
 
-                <h1 data-split class="mt-7 text-[2.35rem] font-bold leading-[1.05] tracking-[-.04em] min-[400px]:text-[2.6rem] sm:text-6xl lg:text-7xl">{{ __('messages.home.headline') }}</h1>
+                <h1 data-split class="mt-7 text-[2.35rem] font-bold leading-[1.05] tracking-[-.04em] min-[400px]:text-[2.6rem] sm:text-6xl lg:text-6xl xl:text-7xl">{{ __('messages.home.headline') }}</h1>
                 <p data-reveal class="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft sm:text-lg">{{ __('messages.home.text') }}</p>
 
                 <div data-reveal class="mt-8 flex flex-col gap-3 min-[420px]:flex-row min-[420px]:flex-wrap">
@@ -70,23 +70,19 @@
                     @endif
                 </div>
 
-                <div data-reveal class="mt-10 flex flex-col gap-2.5 text-sm sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
-                    @if($dashboard['total'])
-                        <a href="#status" class="group inline-flex items-center gap-2.5 self-start rounded-full border border-ink-line bg-ink-panel px-3.5 py-1.5 transition-colors hover:border-ink-strong">
-                            <span class="dot {{ $dashboard['incidents'] ? 'bg-scope-yellow' : 'bg-scope-green' }}"></span>
-                            <span class="font-medium">{{ trans_choice('messages.health.sites', $dashboard['total'], ['up' => $dashboard['up'], 'total' => $dashboard['total']]) }}</span>
-                            @if($dashboard['uptime_7d'] !== null)<span class="hidden text-ink-muted min-[400px]:inline">· {{ rtrim(rtrim(number_format($dashboard['uptime_7d'], 2), '0'), '.') }}% uptime</span>@endif
-                            <span class="text-ink-muted transition-transform group-hover:translate-x-0.5">→</span>
-                        </a>
-                    @endif
-                    @if($now)
-                        <p class="inline-flex items-center gap-2 self-start text-ink-muted">
-                            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-scope-accent"></span>
-                            <span><span class="font-medium text-ink-soft">{{ __('messages.now.label') }}</span> {{ $now }}</span>
-                        </p>
-                    @endif
-                </div>
+                @if($now)
+                    <p data-reveal class="mt-8 inline-flex items-center gap-2 text-sm text-ink-muted">
+                        <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-scope-accent"></span>
+                        <span><span class="font-medium text-ink-soft">{{ __('messages.now.label') }}</span> {{ $now }}</span>
+                    </p>
+                @endif
             </div>
+
+            @if($dashboard['total'])
+                <div data-reveal class="mx-auto w-full max-w-md lg:max-w-none">
+                    <x-hero-status :d="$dashboard" />
+                </div>
+            @endif
         </div>
     </section>
 
