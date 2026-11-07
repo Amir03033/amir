@@ -13,13 +13,17 @@
     <meta name="description" content="{{ $pageDescription }}">
     <meta name="author" content="{{ config('site.name') }}">
     <link rel="canonical" href="{{ url()->current() }}">
+    <link rel="alternate" hreflang="nl" href="{{ alternate_url('nl') }}">
+    <link rel="alternate" hreflang="en" href="{{ alternate_url('en') }}">
+    <link rel="alternate" hreflang="x-default" href="{{ alternate_url('nl') }}">
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ config('site.name') }}">
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:image" content="{{ \App\Models\Setting::media('og', 'images/og.png') }}">
+    <meta property="og:locale" content="{{ app()->getLocale() === 'en' ? 'en_US' : 'nl_NL' }}">
+    <meta property="og:image" content="{{ $ogImage ?? \App\Models\Setting::media('og', 'images/og.png') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
@@ -47,21 +51,11 @@
             setTimeout(function () { if (!d.classList.contains('motion-ready')) d.classList.remove('js-motion'); }, 2500);
         })(document.documentElement);
     </script>
+    @stack('head')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body
-    x-data="{
-        locale: '{{ app()->getLocale() }}',
-        mobileOpen: false,
-        async switchLanguage(newLocale) {
-            await fetch('{{ route('lang.switch') }}', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' },
-                body: JSON.stringify({ locale: newLocale })
-            });
-            window.location.reload();
-        }
-    }"
+    x-data="{ mobileOpen: false }"
     class="overflow-x-hidden"
 >
 <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-scope-accent focus:px-4 focus:py-2 focus:text-ink-bg">{{ __('messages.nav.skip') }}</a>

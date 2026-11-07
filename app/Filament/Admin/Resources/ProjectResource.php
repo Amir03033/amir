@@ -92,6 +92,16 @@ class ProjectResource extends Resource
                             ->helperText('Wordt bij uploaden automatisch verkleind tot max. 1600px, zodat de site snel blijft.')
                             ->columnSpanFull(),
 
+                        FileUpload::make('video')
+                            ->label('Korte video (optioneel)')
+                            ->helperText('5–10 seconden schermopname, MP4 of WebM, zonder geluid, max. 20 MB. Speelt af als iemand over de projectkaart beweegt.')
+                            ->acceptedFileTypes(['video/mp4', 'video/webm'])
+                            ->disk('public')
+                            ->directory('projects/video')
+                            ->visibility('public')
+                            ->maxSize(20480)
+                            ->columnSpanFull(),
+
                         TextInput::make('tags')
                             ->label('Tags')
                             ->required()

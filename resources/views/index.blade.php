@@ -10,86 +10,83 @@
     $screenFor = fn (string $key) => \App\Models\Setting::media("ss-{$key}");
     $avatar = \App\Models\Setting::media('avatar', 'images/amir-avatar.webp');
     $liveProjects = $projects->filter->hasDemo()->count();
-    $lastCheck = $dashboard['last_check'];
+    $now = \App\Models\Setting::get('now.'.app()->getLocale()) ?: \App\Models\Setting::get('now.nl');
 @endphp
 
+@push('head')
+    <script type="application/ld+json">{!! json_encode([
+        '@context' => 'https://schema.org',
+        '@graph' => [
+            array_filter([
+                '@type' => 'Person',
+                '@id' => lroute('home').'#person',
+                'name' => config('site.name'),
+                'url' => lroute('home'),
+                'image' => $avatar,
+                'jobTitle' => __('messages.home.subtitle'),
+                'email' => 'mailto:'.config('site.email'),
+                'address' => ['@type' => 'PostalAddress', 'addressRegion' => config('site.location'), 'addressCountry' => 'NL'],
+                'sameAs' => array_values(array_filter([config('site.linkedin'), config('site.github')])),
+                'knowsAbout' => collect(__('messages.skills.groups'))->pluck('items')->flatten()->values()->all(),
+            ]),
+            [
+                '@type' => 'WebSite',
+                'name' => config('site.name'),
+                'url' => lroute('home'),
+                'inLanguage' => app()->getLocale(),
+                'author' => ['@id' => lroute('home').'#person'],
+            ],
+        ],
+    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
+@endpush
+
 @section('content')
-    {{-- Boot sequence: once per session, skipped by any key or click, never shown without JS or with reduced motion. --}}
-    <div data-boot class="fixed inset-0 z-[90] hidden cursor-pointer items-center justify-center bg-ink-bg [.js-motion:not(.booted)_&]:flex" aria-hidden="true">
-        <div class="w-full max-w-md px-6 font-mono text-[13px]">
-            <svg class="mb-6 h-8 w-8 text-scope-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path data-boot-pulse d="M2 12h4l3-8 4 16 3-8h6"/></svg>
-            @foreach(__('messages.boot.lines') as $line)
-                <p data-boot-line="{{ $line }}" class="flex items-center justify-between gap-4 py-1 opacity-0">
-                    <span><span class="text-scope-accent">&gt;</span> <span data-boot-text></span></span>
-                    <span data-boot-ok class="text-scope-green opacity-0">{{ $loop->last ? '●' : 'ok' }}</span>
-                </p>
-            @endforeach
-            <p class="mt-6 text-[11px] text-ink-muted">{{ __('messages.boot.hint') }}</p>
-        </div>
-    </div>
+    {{-- Hero: one message, two actions. The full dashboard lives in the "Live status" section. --}}
+    <section id="home" data-hero class="relative flex items-center overflow-hidden px-4 pb-12 pt-28 sm:min-h-[86svh] sm:pb-16 md:pt-32">
+        <canvas data-field class="absolute inset-0 h-full w-full opacity-60 [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,#000,transparent)]" aria-hidden="true"></canvas>
 
-    {{-- Hero: a dashboard, like ServerScope's --}}
-    <section id="home" data-hero class="relative overflow-hidden px-4 pb-20 pt-28 md:pt-32">
-        <canvas data-field class="absolute inset-x-0 top-0 h-[720px] w-full opacity-70 [mask-image:linear-gradient(to_bottom,#000,transparent)]" aria-hidden="true"></canvas>
-
-        <div class="relative mx-auto max-w-6xl">
-            <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-                <div class="max-w-3xl">
-                    <p data-reveal class="flex items-center gap-2 text-sm text-ink-muted">
-                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 11.5 12 4l9 7.5M5 10v10h14V10"/></svg>
-                        <span>›</span> {{ __('messages.hero.crumb') }}
-                    </p>
-
-                    <div data-reveal class="mt-6 flex items-center gap-3">
-                        <img src="{{ $avatar }}" alt="{{ config('site.name') }}" width="48" height="48" class="h-12 w-12 rounded-full object-cover ring-2 ring-ink-line ring-offset-2 ring-offset-ink-bg">
-                        <div class="leading-tight">
-                            <p class="text-gradient text-[15px] font-semibold">{{ config('site.name') }}</p>
-                            <p class="text-sm text-ink-muted">{{ __('messages.home.subtitle') }} · {{ config('site.location') }}</p>
-                        </div>
+        <div class="relative mx-auto w-full max-w-6xl">
+            <div class="max-w-3xl">
+                <div data-reveal class="flex items-center gap-3">
+                    <img src="{{ $avatar }}" alt="{{ config('site.name') }}" width="44" height="44" class="h-11 w-11 rounded-full object-cover ring-2 ring-ink-line ring-offset-2 ring-offset-ink-bg">
+                    <div class="leading-tight">
+                        <p class="text-gradient text-[15px] font-semibold">{{ config('site.name') }}</p>
+                        <p class="text-sm text-ink-muted">{{ __('messages.home.subtitle') }} · {{ config('site.location') }}</p>
                     </div>
-
-                    <h1 data-split class="mt-6 text-[2.5rem] font-bold leading-[1.04] tracking-[-.04em] sm:text-6xl lg:text-[4.5rem]">{{ __('messages.home.headline') }}</h1>
-                    <p data-reveal class="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg">{{ __('messages.home.text') }}</p>
                 </div>
 
-                <div data-reveal class="flex flex-wrap items-center gap-3 lg:justify-end">
-                    <span class="pill border-scope-green/40 bg-scope-green/10 text-scope-green"><span class="dot bg-scope-green h-1.5 w-1.5"></span>{{ __('messages.hero.available') }}</span>
-                    <span class="text-xs leading-tight text-ink-muted">
-                        {{ __('messages.hero.last_check') }}<br>
-                        <span class="font-semibold text-ink-text">{{ $lastCheck ? $lastCheck->diffForHumans() : __('messages.hero.never') }}</span>
-                    </span>
+                <h1 data-split class="mt-7 text-[2.35rem] font-bold leading-[1.05] tracking-[-.04em] min-[400px]:text-[2.6rem] sm:text-6xl lg:text-7xl">{{ __('messages.home.headline') }}</h1>
+                <p data-reveal class="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft sm:text-lg">{{ __('messages.home.text') }}</p>
+
+                <div data-reveal class="mt-8 flex flex-col gap-3 min-[420px]:flex-row min-[420px]:flex-wrap">
+                    <a href="#serverscope" data-magnetic class="btn-primary">{{ __('messages.home.cta') }} <span aria-hidden="true">↓</span></a>
                     @if(config('site.booking_url'))
-                        <a href="{{ config('site.booking_url') }}" target="_blank" rel="noopener" data-magnetic class="btn-secondary">
+                        <a href="{{ config('site.booking_url') }}" target="_blank" rel="noopener" data-magnetic data-track="booking_click" data-track-label="hero" class="btn-secondary">
                             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
                             {{ __('messages.booking.cta') }}
                         </a>
+                    @else
+                        <a href="#contact" data-magnetic class="btn-secondary">{{ __('messages.hero.contact') }}</a>
                     @endif
-                    <a href="#contact" data-magnetic class="btn-primary">
-                        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
-                        {{ __('messages.hero.contact') }}
-                    </a>
+                </div>
+
+                <div data-reveal class="mt-10 flex flex-col gap-2.5 text-sm sm:flex-row sm:flex-wrap sm:items-center sm:gap-3">
+                    @if($dashboard['total'])
+                        <a href="#status" class="group inline-flex items-center gap-2.5 self-start rounded-full border border-ink-line bg-ink-panel px-3.5 py-1.5 transition-colors hover:border-ink-strong">
+                            <span class="dot {{ $dashboard['incidents'] ? 'bg-scope-yellow' : 'bg-scope-green' }}"></span>
+                            <span class="font-medium">{{ trans_choice('messages.health.sites', $dashboard['total'], ['up' => $dashboard['up'], 'total' => $dashboard['total']]) }}</span>
+                            @if($dashboard['uptime_7d'] !== null)<span class="hidden text-ink-muted min-[400px]:inline">· {{ rtrim(rtrim(number_format($dashboard['uptime_7d'], 2), '0'), '.') }}% uptime</span>@endif
+                            <span class="text-ink-muted transition-transform group-hover:translate-x-0.5">→</span>
+                        </a>
+                    @endif
+                    @if($now)
+                        <p class="inline-flex items-center gap-2 self-start text-ink-muted">
+                            <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-scope-accent"></span>
+                            <span><span class="font-medium text-ink-soft">{{ __('messages.now.label') }}</span> {{ $now }}</span>
+                        </p>
+                    @endif
                 </div>
             </div>
-
-            <div class="mt-10">
-                <x-health-dashboard :d="$dashboard" />
-            </div>
-
-            @if($statusUrl = config('site.serverscope.status_url'))
-                {{-- Official, documented ServerScope badge (public status page, no token). --}}
-                <a data-reveal href="{{ $statusUrl }}" target="_blank" rel="noopener" class="panel group mt-4 flex flex-wrap items-center justify-between gap-3 px-5 py-3.5 transition-colors hover:border-ink-strong">
-                    <span class="flex items-center gap-3 text-sm">
-                        <svg class="h-5 w-5 text-scope-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12h4l3-8 4 16 3-8h6"/></svg>
-                        <span><span class="font-semibold">{{ __('messages.serverscope.monitored') }}</span> <span class="text-ink-muted">· {{ __('messages.serverscope.monitored_hint') }}</span></span>
-                    </span>
-                    <span class="flex items-center gap-3">
-                        <img data-theme-src="{{ rtrim($statusUrl, '/') }}/badge.svg?lang={{ app()->getLocale() }}&theme=" alt="ServerScope status" height="20" class="h-5 w-auto">
-                        <script>document.currentScript.previousElementSibling.src = document.currentScript.previousElementSibling.dataset.themeSrc + document.documentElement.dataset.theme;</script>
-                        <noscript><img src="{{ rtrim($statusUrl, '/') }}/badge.svg?lang={{ app()->getLocale() }}&theme=dark" alt="ServerScope status" height="20" class="h-5 w-auto"></noscript>
-                        <span class="text-xs text-ink-muted transition-transform group-hover:translate-x-1">↗</span>
-                    </span>
-                </a>
-            @endif
         </div>
     </section>
 
@@ -116,16 +113,16 @@
                     </div>
                 @endif
 
-                <ol class="mt-12 space-y-2 lg:space-y-0" data-reveal-group>
+                <ol class="mt-8 space-y-1 lg:mt-12 lg:space-y-0" data-reveal-group>
                     @foreach($ss['features'] as $key => $feature)
                         <li data-reveal>
                             <button type="button" data-feature
-                                    class="group/f relative w-full rounded-panel border border-transparent p-4 text-left transition-colors duration-300 data-[active]:border-ink-line data-[active]:bg-ink-panel lg:py-7">
+                                    class="group/f relative w-full rounded-panel border border-transparent px-4 py-3 text-left transition-colors duration-300 data-[active]:border-ink-line data-[active]:bg-ink-panel lg:py-7">
                                 <span class="flex items-baseline gap-4">
                                     <span class="text-[11px] font-semibold tabular-nums text-ink-muted transition-colors group-data-[active]/f:text-scope-accent">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
                                     <span>
                                         <span class="block font-semibold text-ink-soft transition-colors group-data-[active]/f:text-ink-text">{{ $feature['title'] }}</span>
-                                        <span class="mt-1 block text-sm leading-relaxed text-ink-muted">{{ $feature['text'] }}</span>
+                                        <span class="mt-1 block text-sm leading-relaxed text-ink-muted max-lg:hidden max-lg:group-data-[active]/f:block">{{ $feature['text'] }}</span>
                                     </span>
                                 </span>
                                 <span class="absolute bottom-3 left-0 top-3 w-[2px] origin-top scale-y-0 rounded-full bg-scope-accent transition-transform duration-500 group-data-[active]/f:scale-y-100"></span>
@@ -190,10 +187,10 @@
     <x-section id="work" index="2" :label="__('messages.portfolio.label')" :title="__('messages.portfolio.title')" :intro="__('messages.portfolio.intro')" class="border-t border-ink-line/60">
         @if($projects->isNotEmpty())
             @if($tags->count() > 1)
-                <div data-reveal data-filters class="mb-8 flex flex-wrap items-center gap-2" role="toolbar" aria-label="Filter">
-                    <button type="button" data-filter="" data-active class="rounded-xl border border-ink-line px-3.5 py-1.5 text-[13px] font-semibold text-ink-muted transition-colors hover:text-ink-text data-[active]:border-scope-accent/50 data-[active]:bg-scope-accent/10 data-[active]:text-ink-text">{{ __('messages.portfolio.filter_all') }} <span class="ml-1 tabular-nums text-ink-muted">{{ $projects->count() }}</span></button>
+                <div data-reveal data-filters class="-mx-4 mb-8 flex items-center gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden" role="toolbar" aria-label="Filter">
+                    <button type="button" data-filter="" data-active class="shrink-0 whitespace-nowrap rounded-xl border border-ink-line px-3.5 py-1.5 text-[13px] font-semibold text-ink-muted transition-colors hover:text-ink-text data-[active]:border-scope-accent/50 data-[active]:bg-scope-accent/10 data-[active]:text-ink-text">{{ __('messages.portfolio.filter_all') }} <span class="ml-1 tabular-nums text-ink-muted">{{ $projects->count() }}</span></button>
                     @foreach($tags as $tag)
-                        <button type="button" data-filter="{{ strtolower($tag) }}" class="rounded-xl border border-ink-line px-3.5 py-1.5 text-[13px] font-semibold text-ink-muted transition-colors hover:text-ink-text data-[active]:border-scope-accent/50 data-[active]:bg-scope-accent/10 data-[active]:text-ink-text">{{ $tag }}</button>
+                        <button type="button" data-filter="{{ strtolower($tag) }}" class="shrink-0 whitespace-nowrap rounded-xl border border-ink-line px-3.5 py-1.5 text-[13px] font-semibold text-ink-muted transition-colors hover:text-ink-text data-[active]:border-scope-accent/50 data-[active]:bg-scope-accent/10 data-[active]:text-ink-text">{{ $tag }}</button>
                     @endforeach
                 </div>
             @endif
@@ -234,6 +231,33 @@
         </x-section>
     @endif
 
+    {{-- Live status: the ServerScope-style dashboard, fed by real checks --}}
+    <x-section id="status" :label="__('messages.status.section_label')" :title="__('messages.status.section_title')" :intro="__('messages.status.section_intro')" class="border-t border-ink-line/60">
+        <x-health-dashboard :d="$dashboard" />
+
+        <div class="mt-4 grid gap-4 {{ config('site.serverscope.status_url') ? 'md:grid-cols-2' : '' }}">
+            <a data-reveal href="{{ lroute('status') }}" class="panel group flex items-center justify-between gap-3 px-5 py-4 transition-colors hover:border-ink-strong">
+                <span class="text-sm"><span class="font-semibold">{{ __('messages.status.full_page') }}</span> <span class="text-ink-muted">· {{ __('messages.status.full_page_hint') }}</span></span>
+                <span class="text-ink-muted transition-transform group-hover:translate-x-1">→</span>
+            </a>
+            @if($statusUrl = config('site.serverscope.status_url'))
+                {{-- Official, documented ServerScope badge (public status page, no token). --}}
+                <a data-reveal href="{{ $statusUrl }}" target="_blank" rel="noopener" class="panel group flex flex-wrap items-center justify-between gap-3 px-5 py-4 transition-colors hover:border-ink-strong">
+                    <span class="flex items-center gap-3 text-sm">
+                        <svg class="h-5 w-5 text-scope-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12h4l3-8 4 16 3-8h6"/></svg>
+                        <span class="font-semibold">{{ __('messages.serverscope.monitored') }}</span>
+                    </span>
+                    <span class="flex items-center gap-3">
+                        <img data-theme-src="{{ rtrim($statusUrl, '/') }}/badge.svg?lang={{ app()->getLocale() }}&theme=" alt="ServerScope status" height="20" class="h-5 w-auto">
+                        <script>document.currentScript.previousElementSibling.src = document.currentScript.previousElementSibling.dataset.themeSrc + document.documentElement.dataset.theme;</script>
+                        <noscript><img src="{{ rtrim($statusUrl, '/') }}/badge.svg?lang={{ app()->getLocale() }}&theme=dark" alt="ServerScope status" height="20" class="h-5 w-auto"></noscript>
+                        <span class="text-xs text-ink-muted transition-transform group-hover:translate-x-1">↗</span>
+                    </span>
+                </a>
+            @endif
+        </div>
+    </x-section>
+
     {{-- Proof: real numbers + how I work --}}
     <x-section id="proof" index="3" :label="__('messages.proof.label')" :title="__('messages.proof.title')" :intro="__('messages.proof.intro')" class="border-t border-ink-line/60">
         <dl class="grid grid-cols-2 gap-px overflow-hidden rounded-panel border border-ink-line bg-ink-line lg:grid-cols-4" data-reveal-group>
@@ -243,10 +267,10 @@
                 ['notes', $blogCount, ''],
                 ['avg', $dashboard['avg_ms'], ' ms'],
             ] as [$key, $value, $unit])
-                <div data-reveal class="bg-ink-panel p-6 md:p-8">
-                    <dd class="text-4xl font-bold tracking-tight tabular-nums md:text-5xl">
+                <div data-reveal class="bg-ink-panel p-5 sm:p-6 md:p-8">
+                    <dd class="whitespace-nowrap text-3xl font-bold tracking-tight tabular-nums sm:text-4xl md:text-5xl">
                         @if($value !== null)
-                            <span data-count="{{ $value }}" @if(is_float($value)) data-decimals="1" @endif>{{ $value }}</span><span class="text-ink-muted">{{ $unit }}</span>
+                            <span data-count="{{ $value }}" @if(is_float($value)) data-decimals="1" @endif>{{ $value }}</span><span class="text-[.6em] text-ink-muted">{{ $unit }}</span>
                         @else — @endif
                     </dd>
                     <dt class="mt-2 text-sm text-ink-muted">{{ __('messages.proof.stats.'.$key) }}</dt>
@@ -258,7 +282,7 @@
         <ol class="relative grid gap-4 md:grid-cols-4" data-reveal-group data-steps>
             <span data-steps-line class="absolute left-0 right-0 top-[27px] hidden h-px origin-left bg-gradient-to-r from-scope-accent via-scope-green to-transparent md:block" aria-hidden="true"></span>
             @foreach(__('messages.proof.steps') as $step)
-                <li data-reveal class="panel spotlight relative p-6">
+                <li data-reveal class="panel spotlight relative p-5 sm:p-6">
                     <span class="relative grid h-7 w-7 place-items-center rounded-full border border-ink-strong bg-ink-bg text-[11px] font-bold tabular-nums {{ $loop->last ? 'border-scope-green/60 text-scope-green' : 'text-scope-accent' }}">{{ $loop->iteration }}</span>
                     <h4 class="mt-5 font-semibold">{{ $step['title'] }}</h4>
                     <p class="mt-2 text-sm leading-relaxed text-ink-soft">{{ $step['text'] }}</p>
@@ -324,7 +348,7 @@
                         </div>
                     @endforeach
                 </dl>
-                <a href="{{ route('cv.pdf') }}" class="btn-secondary w-full">
+                <a href="{{ lroute('cv.pdf') }}" class="btn-secondary w-full">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>
                     {{ __('messages.cv.download') }}
                 </a>
@@ -376,7 +400,7 @@
         <x-section id="blog" :label="__('messages.blog.label')" :title="__('messages.blog.title')" :intro="__('messages.blog.intro')" class="border-t border-ink-line/60">
             <x-blog-list :blogs="$blogs" />
             @if($blogCount > $blogs->count())
-                <a data-reveal href="{{ route('blog.index') }}" class="btn-secondary mt-6">{{ __('messages.blog.all') }} ({{ $blogCount }}) →</a>
+                <a data-reveal href="{{ lroute('blog.index') }}" class="btn-secondary mt-6">{{ __('messages.blog.all') }} ({{ $blogCount }}) →</a>
             @endif
         </x-section>
     @endif
@@ -400,7 +424,7 @@
                         <span class="text-ink-muted transition-transform group-hover:translate-x-1">↗</span>
                     </a>
                     @if(config('site.booking_url'))
-                        <a href="{{ config('site.booking_url') }}" target="_blank" rel="noopener" class="panel group flex items-center justify-between border-scope-accent/40 bg-scope-accent/10 px-4 py-3 text-sm font-medium transition-colors hover:border-scope-accent">
+                        <a href="{{ config('site.booking_url') }}" target="_blank" rel="noopener" data-track="booking_click" data-track-label="contact" class="panel group flex items-center justify-between border-scope-accent/40 bg-scope-accent/10 px-4 py-3 text-sm font-medium transition-colors hover:border-scope-accent">
                             <span class="flex items-center gap-3"><span class="dot bg-scope-accent"></span>{{ __('messages.booking.cta') }} <span class="text-ink-muted">· {{ __('messages.booking.hint') }}</span></span>
                             <span class="text-ink-muted transition-transform group-hover:translate-x-1">↗</span>
                         </a>
@@ -415,7 +439,7 @@
             </div>
 
             <div data-reveal x-data="{
-                form: { name: '', email: '', message: '', website: '' },
+                form: { name: '', email: '', message: '', website: '', locale: @js(app()->getLocale()) },
                 errors: {},
                 success: false,
                 failed: false,
@@ -430,7 +454,7 @@
                         });
                         let data = await response.json();
                         this.loading = false;
-                        if (data.success) { this.success = true; this.form = { name: '', email: '', message: '', website: '' }; }
+                        if (data.success) { this.success = true; this.form = { name: '', email: '', message: '', website: '', locale: this.form.locale }; }
                         else if (response.status === 429) { this.failed = true; }
                         else { this.errors = data.errors || {}; this.failed = !data.errors; }
                     } catch (e) {

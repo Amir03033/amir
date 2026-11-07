@@ -33,6 +33,8 @@ class ContactController extends Controller
         $email = $request->string('email')->toString();
         $message = $request->string('message')->toString();
 
+        \App\Models\Event::record('contact_submit');
+
         $contactMessage = ContactMessage::create([
             'name' => $name,
             'email' => $email,

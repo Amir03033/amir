@@ -15,7 +15,7 @@
     <div class="px-4 pb-24 pt-28 md:pt-36">
         <div class="mx-auto max-w-3xl">
             <nav data-reveal class="flex items-center gap-2 text-sm text-ink-muted" aria-label="Breadcrumb">
-                <a href="{{ route('home') }}" class="hover:text-ink-text">{{ __('messages.hero.crumb') }}</a>
+                <a href="{{ lroute('home') }}" class="hover:text-ink-text">{{ __('messages.hero.crumb') }}</a>
                 <span>›</span>
                 <span class="text-ink-soft">{{ __('messages.privacy.title') }}</span>
             </nav>

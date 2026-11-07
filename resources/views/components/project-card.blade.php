@@ -7,12 +7,19 @@
 
 <article data-reveal data-tilt data-project data-tags="{{ strtolower(implode('|', $tags)) }}"
          class="panel spotlight group flex flex-col overflow-hidden {{ $project->featured ? 'md:col-span-2 md:flex-row' : '' }}">
-    <a href="{{ route('project.show', $project) }}" class="absolute inset-0 z-10 rounded-[inherit]" aria-label="{{ __('messages.portfolio.read_case') }}: {{ $project->getTranslation('title') }}"></a>
+    <a href="{{ lroute('project.show', $project) }}" class="absolute inset-0 z-10 rounded-[inherit]" aria-label="{{ __('messages.portfolio.read_case') }}: {{ $project->getTranslation('title') }}"></a>
 
     <div class="relative overflow-hidden bg-ink-panel2 {{ $project->featured ? 'aspect-[16/10] md:aspect-auto md:w-[58%] md:border-r' : 'aspect-[16/10] border-b' }} border-ink-line">
         <img src="{{ $project->coverUrl() }}" alt="" loading="lazy" decoding="async"
              style="view-transition-name: project-{{ $project->id }}"
              class="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.05]">
+        @if($video = $project->videoUrl())
+            {{-- Plays on hover (desktop) or when scrolled into view (touch); only loaded when needed. --}}
+            <video data-hover-video muted loop playsinline preload="none" poster="{{ $project->coverUrl() }}" class="absolute inset-0 h-full w-full object-cover object-top opacity-0 transition-opacity duration-500" aria-hidden="true">
+                <source src="{{ $video }}" type="{{ str_ends_with($video, '.webm') ? 'video/webm' : 'video/mp4' }}">
+            </video>
+            <span class="absolute bottom-3 left-3 z-[1] flex items-center gap-1 rounded-lg border border-ink-line bg-ink-bg/80 px-2 py-0.5 text-[10px] font-semibold text-ink-soft backdrop-blur">▶ video</span>
+        @endif
         <div class="absolute inset-0 bg-gradient-to-t from-ink-panel/90 via-transparent to-transparent"></div>
         <span class="absolute left-3 top-3 rounded-lg border border-ink-line bg-ink-bg/80 px-2 py-0.5 text-[10px] font-semibold tabular-nums text-ink-soft backdrop-blur">{{ str_pad($index, 2, '0', STR_PAD_LEFT) }}</span>
         @if($check)
@@ -31,13 +38,13 @@
         <p class="mt-2 flex-1 text-sm leading-relaxed text-ink-soft">{{ $project->excerpt($project->featured ? 260 : 140) }}</p>
         <div class="mt-4 flex flex-wrap gap-1.5">
             @foreach($tags as $tag)
-                <span class="chip">{{ $tag }}</span>
+                <span class="chip {{ $loop->index >= 3 ? 'max-sm:hidden' : '' }}">{{ $tag }}</span>
             @endforeach
         </div>
         <div class="mt-5 flex items-center justify-between gap-3 border-t border-ink-line pt-4 text-xs">
-            <span class="font-semibold text-scope-accent">{{ __('messages.portfolio.read_case') }} <span class="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span></span>
+            <span class="shrink-0 whitespace-nowrap font-semibold text-scope-accent">{{ __('messages.portfolio.read_case') }} <span class="inline-block transition-transform duration-300 group-hover:translate-x-1">→</span></span>
             @if($host)
-                <a href="{{ $project->demo_url }}" target="_blank" rel="noopener noreferrer" class="relative z-20 truncate text-ink-muted transition-colors hover:text-ink-text">{{ $host }} ↗</a>
+                <a href="{{ $project->demo_url }}" target="_blank" rel="noopener noreferrer" class="relative z-20 min-w-0 truncate text-ink-muted transition-colors hover:text-ink-text">{{ $host }} ↗</a>
             @endif
         </div>
     </div>
