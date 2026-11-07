@@ -89,7 +89,8 @@
     {{-- Featured case: ServerScope --}}
     <x-section id="serverscope" index="1" :label="$ss['label']" :title="$ss['title']" :intro="$ss['tagline']" class="border-t border-ink-line/60">
         <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-16" data-features>
-            <div>
+            {{-- min-w-0: without it the swipe carousel stretches this grid column (and the page) to its full scroll width. --}}
+            <div class="min-w-0">
                 <p data-reveal class="leading-relaxed text-ink-soft">{{ $ss['intro'] }}</p>
 
                 <div data-reveal class="mt-6 flex flex-wrap gap-1.5">
@@ -109,7 +110,46 @@
                     </div>
                 @endif
 
-                <ol class="mt-8 space-y-1 lg:mt-12 lg:space-y-0" data-reveal-group>
+                {{-- Phones/tablets: swipe through the features; each slide carries its own screenshot. --}}
+                <div class="mt-8 lg:hidden" data-carousel>
+                    <div class="mb-3 flex items-center justify-between text-xs text-ink-muted">
+                        <span><span data-carousel-current class="font-semibold tabular-nums text-ink-text">1</span> / {{ count($ss['features']) }}</span>
+                        <span class="flex items-center gap-1.5">{{ __('messages.serverscope.swipe') }} <span class="motion-safe:animate-[nudge_1.6s_ease-in-out_infinite]">→</span></span>
+                    </div>
+
+                    <div data-carousel-track class="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="region" aria-roledescription="carousel" aria-label="ServerScope">
+                        @foreach($ss['features'] as $key => $feature)
+                            @php($src = $screenFor($key))
+                            <article data-carousel-slide @if($loop->first) data-active @endif aria-roledescription="slide" aria-label="{{ $loop->iteration }} / {{ count($ss['features']) }}"
+                                     class="panel w-[86%] max-w-sm shrink-0 snap-center overflow-hidden opacity-60 transition-[opacity,transform] duration-300 [transform:scale(.96)] data-[active]:opacity-100 data-[active]:[transform:scale(1)] sm:w-[60%]">
+                                <div class="flex items-center gap-1.5 border-b border-ink-line px-3 py-2" aria-hidden="true">
+                                    <span class="h-2 w-2 rounded-full bg-ink-strong"></span><span class="h-2 w-2 rounded-full bg-ink-strong"></span><span class="h-2 w-2 rounded-full bg-ink-strong"></span>
+                                </div>
+                                <div class="relative aspect-[16/10] bg-ink-panel2">
+                                    @if($src)
+                                        <img src="{{ $src }}" alt="ServerScope — {{ $feature['title'] }}" loading="lazy" decoding="async" class="h-full w-full object-cover object-top">
+                                    @else
+                                        <div class="grid-bg absolute inset-0 opacity-60" aria-hidden="true"></div>
+                                        <span class="absolute inset-0 grid place-items-center text-xs text-ink-muted">{{ $ss['screenshot_pending'] }}</span>
+                                    @endif
+                                </div>
+                                <div class="p-4">
+                                    <p class="text-[11px] font-semibold tabular-nums text-scope-accent">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</p>
+                                    <h3 class="mt-1 font-semibold">{{ $feature['title'] }}</h3>
+                                    <p class="mt-1.5 text-sm leading-relaxed text-ink-muted">{{ $feature['text'] }}</p>
+                                </div>
+                            </article>
+                        @endforeach
+                    </div>
+
+                    <div class="mt-3 flex justify-center gap-1.5">
+                        @foreach($ss['features'] as $feature)
+                            <button type="button" data-carousel-dot @if($loop->first) data-active @endif class="h-1.5 w-1.5 rounded-full bg-ink-strong transition-all duration-300 data-[active]:w-5 data-[active]:bg-scope-accent" aria-label="{{ $feature['title'] }}"></button>
+                        @endforeach
+                    </div>
+                </div>
+
+                <ol class="mt-12 hidden lg:block" data-reveal-group>
                     @foreach($ss['features'] as $key => $feature)
                         <li data-reveal>
                             <button type="button" data-feature
@@ -128,7 +168,7 @@
                 </ol>
             </div>
 
-            <div class="order-first lg:order-none lg:sticky lg:top-28 lg:h-fit">
+            <div class="hidden lg:sticky lg:top-28 lg:block lg:h-fit">
                 <div data-reveal data-tilt class="panel overflow-hidden shadow-[0_40px_100px_-40px_rgb(110_156_247/.35)]">
                     <div class="flex items-center gap-3 border-b border-ink-line px-4 py-3">
                         <span class="flex items-center gap-1.5" aria-hidden="true">

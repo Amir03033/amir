@@ -194,6 +194,7 @@ return [
         'monitored' => 'Monitored by ServerScope',
         'monitored_hint' => 'live status of my sites',
         'docs' => 'Read the docs',
+        'swipe' => 'swipe',
         'screenshot_pending' => 'Screenshot coming soon',
         'features' => [
             'server-monitoring' => ['title' => 'Server monitoring', 'text' => 'An agent on the server reports health and resource usage, so problems show up in the dashboard instead of in a support ticket.'],
