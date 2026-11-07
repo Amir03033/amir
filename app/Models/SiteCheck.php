@@ -68,6 +68,84 @@ class SiteCheck extends Model
         ];
     }
 
+    /**
+     * Per-day uptime for one URL over the last $days days (oldest first). Days without checks have uptime null.
+     *
+     * @return Collection<int, array{date: \Illuminate\Support\Carbon, uptime: ?float, checks: int, avg_ms: ?int}>
+     */
+    public static function daily(string $url, int $days = 30): Collection
+    {
+        $rows = static::query()
+            ->whereIn('url', [rtrim($url, '/'), rtrim($url, '/').'/'])
+            ->where('checked_at', '>=', now()->subDays($days - 1)->startOfDay())
+            ->selectRaw('DATE(checked_at) as d, COUNT(*) as checks, SUM(CASE WHEN ok THEN 1 ELSE 0 END) as up, AVG(response_ms) as avg_ms')
+            ->groupBy('d')
+            ->get()
+            ->keyBy('d');
+
+        return collect(range($days - 1, 0))->map(function (int $ago) use ($rows) {
+            $date = now()->subDays($ago)->startOfDay();
+            $row = $rows[$date->toDateString()] ?? null;
+
+            return [
+                'date' => $date,
+                'uptime' => $row ? round($row->up / max($row->checks, 1) * 100, 2) : null,
+                'checks' => (int) ($row->checks ?? 0),
+                'avg_ms' => $row && $row->avg_ms !== null ? (int) round($row->avg_ms) : null,
+            ];
+        });
+    }
+
+    /** Uptime percentage over the given days, or null without data. */
+    public static function uptime(string $url, int $days = 30): ?float
+    {
+        $q = static::query()->whereIn('url', [rtrim($url, '/'), rtrim($url, '/').'/'])->where('checked_at', '>=', now()->subDays($days));
+        $total = (clone $q)->count();
+
+        return $total ? round((clone $q)->where('ok', true)->count() / $total * 100, 2) : null;
+    }
+
+    /** First stored measurement for a URL ("measured since"). */
+    public static function firstCheck(string $url): ?\Illuminate\Support\Carbon
+    {
+        $first = static::query()->whereIn('url', [rtrim($url, '/'), rtrim($url, '/').'/'])->min('checked_at');
+
+        return $first ? \Illuminate\Support\Carbon::parse($first) : null;
+    }
+
+    /**
+     * Outages: runs of consecutive failed checks, newest first.
+     *
+     * @return Collection<int, array{start: \Illuminate\Support\Carbon, end: ?\Illuminate\Support\Carbon, minutes: int, code: ?int}>
+     */
+    public static function outages(string $url, int $days = 30): Collection
+    {
+        $checks = static::query()
+            ->whereIn('url', [rtrim($url, '/'), rtrim($url, '/').'/'])
+            ->where('checked_at', '>=', now()->subDays($days))
+            ->orderBy('checked_at')
+            ->get(['ok', 'status_code', 'checked_at']);
+
+        $outages = collect();
+        $current = null;
+
+        foreach ($checks as $check) {
+            if (! $check->ok && ! $current) {
+                $current = ['start' => $check->checked_at, 'end' => null, 'code' => $check->status_code];
+            } elseif ($check->ok && $current) {
+                $current['end'] = $check->checked_at;
+                $outages->push($current);
+                $current = null;
+            }
+        }
+
+        if ($current) {
+            $outages->push($current);
+        }
+
+        return $outages->map(fn ($o) => $o + ['minutes' => (int) $o['start']->diffInMinutes($o['end'] ?? now())])->reverse()->values();
+    }
+
     /** Latest measurement per URL, for live dots on project cards. */
     public static function latestByUrl(): Collection
     {

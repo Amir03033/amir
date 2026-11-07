@@ -42,15 +42,11 @@
             </p>
         </div>
 
-        <a href="#work" class="btn-secondary self-start sm:self-center">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/></svg>
-            {{ __('messages.health.focus') }}
-        </a>
     </div>
 
     {{-- Everything at a glance --}}
     <div data-reveal class="panel p-5 md:p-6">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <p class="label">{{ __('messages.health.glance') }}</p>
             <p class="text-[11px] text-ink-muted">{{ __('messages.health.measured') }}</p>
         </div>

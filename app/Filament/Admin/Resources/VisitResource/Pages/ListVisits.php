@@ -18,7 +18,7 @@ class ListVisits extends ListRecords
 
     protected function getHeaderWidgets(): array
     {
-        return [VisitKpis::class, VisitTrend::class, VisitBreakdown::class];
+        return [VisitKpis::class, \App\Filament\Admin\Widgets\Conversions::class, VisitTrend::class, VisitBreakdown::class];
     }
 
     public function getTabs(): array

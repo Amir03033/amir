@@ -20,7 +20,7 @@
                     <p class="mt-3 leading-relaxed text-ink-soft">{{ __('messages.errors.not_found_text') }}</p>
                     <p class="mt-6 truncate rounded-[10px] border border-ink-line bg-ink-panel2 px-3 py-2 font-mono text-xs text-ink-muted">GET {{ request()->path() === '/' ? '/' : '/'.request()->path() }}</p>
                     <div class="mt-8 flex flex-wrap gap-3">
-                        <a href="{{ route('home') }}" class="btn-primary">{{ __('messages.errors.home') }}</a>
+                        <a href="{{ lroute('home') }}" class="btn-primary">{{ __('messages.errors.home') }}</a>
                         <button type="button" onclick="history.back()" class="btn-secondary">{{ __('messages.errors.back') }}</button>
                     </div>
                 </div>

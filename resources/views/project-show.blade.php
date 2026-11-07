@@ -1,7 +1,23 @@
 @extends('layouts.layout', [
     'title' => $project->getTranslation('title').' — '.config('site.name'),
     'description' => $project->excerpt(200),
+    'ogImage' => route('og', ['type' => 'project', 'id' => $project->id, 'lang' => app()->getLocale()]),
 ])
+
+@push('head')
+    <script type="application/ld+json">{!! json_encode(array_filter([
+        '@context' => 'https://schema.org',
+        '@type' => 'CreativeWork',
+        'name' => $project->getTranslation('title'),
+        'description' => $project->excerpt(300),
+        'url' => url()->current(),
+        'image' => $project->coverUrl(),
+        'keywords' => implode(', ', $project->tagList()),
+        'inLanguage' => app()->getLocale(),
+        'sameAs' => $project->hasDemo() ? $project->demo_url : null,
+        'author' => ['@type' => 'Person', 'name' => config('site.name'), 'url' => lroute('home')],
+    ]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
+@endpush
 
 @section('nav')
     <x-site-nav />
@@ -11,9 +27,9 @@
     <article class="px-4 pb-24 pt-28 md:pt-36">
         <div class="mx-auto max-w-5xl">
             <nav data-reveal class="flex flex-wrap items-center gap-2 text-sm text-ink-muted" aria-label="Breadcrumb">
-                <a href="{{ route('home') }}" class="hover:text-ink-text">{{ __('messages.hero.crumb') }}</a>
+                <a href="{{ lroute('home') }}" class="hover:text-ink-text">{{ __('messages.hero.crumb') }}</a>
                 <span>›</span>
-                <a href="{{ route('home') }}#work" class="hover:text-ink-text">{{ __('messages.nav.portfolio') }}</a>
+                <a href="{{ lroute('home') }}#work" class="hover:text-ink-text">{{ __('messages.nav.portfolio') }}</a>
                 <span>›</span>
                 <span class="text-ink-soft">{{ $project->getTranslation('title') }}</span>
             </nav>
@@ -52,12 +68,23 @@
                      class="aspect-[16/9] w-full object-cover object-top">
             </div>
 
-            <div class="mt-14 grid gap-12 md:grid-cols-[200px_1fr]">
+            <div class="mt-14 grid gap-12 md:grid-cols-[220px_1fr]">
                 <aside class="space-y-6 md:sticky md:top-28 md:h-fit">
                     <div>
                         <p class="label mb-2">{{ __('messages.portfolio.stack') }}</p>
                         <p class="text-sm leading-relaxed text-ink-soft">{{ implode(', ', $project->tagList()) }}</p>
                     </div>
+                    @if($uptime !== null)
+                        <div>
+                            <p class="label mb-2">{{ __('messages.status.uptime_30') }}</p>
+                            <p class="flex items-baseline gap-2"><span class="text-2xl font-bold tabular-nums">{{ rtrim(rtrim(number_format($uptime, 2), '0'), '.') }}%</span></p>
+                            <x-uptime-bar :days="$uptimeDays" class="mt-2 !h-6 !gap-[2px]" />
+                            @if($measuredSince)
+                                <p class="mt-2 text-[11px] text-ink-muted">{{ __('messages.status.since', ['date' => $measuredSince->translatedFormat('j M Y')]) }}</p>
+                            @endif
+                            <a href="{{ lroute('status') }}" class="mt-1 inline-block text-[11px] text-scope-accent hover:underline">{{ __('messages.status.full_page') }} →</a>
+                        </div>
+                    @endif
                     @if($project->hasDemo())
                         <div>
                             <p class="label mb-2">URL</p>
@@ -109,11 +136,11 @@
             @endif
 
             <div class="mt-20 grid gap-4 border-t border-ink-line pt-10 md:grid-cols-2">
-                <a href="{{ route('home') }}#work" class="panel group flex items-center gap-3 p-5 text-sm font-semibold transition-colors hover:border-ink-strong">
+                <a href="{{ lroute('home') }}#work" class="panel group flex items-center gap-3 p-5 text-sm font-semibold transition-colors hover:border-ink-strong">
                     <span class="transition-transform group-hover:-translate-x-1">←</span> {{ __('messages.portfolio.more') }}
                 </a>
                 @if($next)
-                    <a href="{{ route('project.show', $next) }}" class="panel spotlight group flex items-center gap-4 overflow-hidden p-3 transition-colors hover:border-ink-strong">
+                    <a href="{{ lroute('project.show', $next) }}" class="panel spotlight group flex items-center gap-4 overflow-hidden p-3 transition-colors hover:border-ink-strong">
                         <img src="{{ $next->coverUrl() }}" alt="" loading="lazy" class="h-14 w-20 rounded-xl object-cover">
                         <span class="flex-1">
                             <span class="block text-[11px] uppercase tracking-[.18em] text-ink-muted">Next</span>

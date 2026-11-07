@@ -1,7 +1,7 @@
 @props(['onHome' => false])
 
 @php
-    $link = fn (string $hash) => $onHome ? '#'.$hash : route('home').'#'.$hash;
+    $link = fn (string $hash) => $onHome ? '#'.$hash : lroute('home').'#'.$hash;
     $items = [
         'work' => __('messages.nav.portfolio'),
         'serverscope' => 'ServerScope',
@@ -58,6 +58,6 @@
                 {{ $label }} <span class="text-[11px] text-ink-muted">0{{ $loop->iteration }}</span>
             </a>
         @endforeach
-        <a href="{{ route('cv') }}" class="mt-1 flex rounded-lg px-3 py-2.5 text-sm text-scope-accent hover:bg-ink-panel">{{ __('messages.nav.cv') }} →</a>
+        <a href="{{ lroute('cv') }}" class="mt-1 flex rounded-lg px-3 py-2.5 text-sm text-scope-accent hover:bg-ink-panel">{{ __('messages.nav.cv') }} →</a>
     </div>
 </nav>

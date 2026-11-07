@@ -43,7 +43,11 @@ class SiteSettings extends Page implements HasForms
 
     public function mount(): void
     {
-        $this->form->fill(collect(self::MAP)->mapWithKeys(fn ($config, $key) => [str_replace('.', '_', $key) => Setting::get($key)])->all());
+        $this->form->fill([
+            ...collect(self::MAP)->mapWithKeys(fn ($config, $key) => [str_replace('.', '_', $key) => Setting::get($key)])->all(),
+            'now_nl' => Setting::get('now.nl'),
+            'now_en' => Setting::get('now.en'),
+        ]);
     }
 
     public function form(Form $form): Form
@@ -53,6 +57,14 @@ class SiteSettings extends Page implements HasForms
         return $form
             ->statePath('data')
             ->schema([
+                Section::make('Nu bezig met')
+                    ->description('Eén regel onder je kop op de homepage. Laat zien dat je actief bent; werk hem af en toe bij. Leeg = niet tonen.')
+                    ->aside()
+                    ->schema([
+                        TextInput::make('now_nl')->label('Nederlands')->maxLength(140)->placeholder('meldingen in ServerScope slimmer maken'),
+                        TextInput::make('now_en')->label('English')->maxLength(140)->placeholder('making ServerScope alerts smarter')
+                            ->helperText('Leeg = de Nederlandse tekst wordt getoond.'),
+                    ]),
                 Section::make('Contact')
                     ->description('Een afsprakenlink (bijv. Cal.com of Calendly) toont een knop "Plan een gesprek" in de hero en bij contact.')
                     ->aside()
@@ -84,7 +96,11 @@ class SiteSettings extends Page implements HasForms
     {
         $state = $this->form->getState();
 
-        Setting::put(collect(self::MAP)->mapWithKeys(fn ($config, $key) => [$key => $state[str_replace('.', '_', $key)] ?: null])->all());
+        Setting::put([
+            ...collect(self::MAP)->mapWithKeys(fn ($config, $key) => [$key => $state[str_replace('.', '_', $key)] ?: null])->all(),
+            'now.nl' => $state['now_nl'] ?: null,
+            'now.en' => $state['now_en'] ?: null,
+        ]);
 
         Notification::make()->title('Opgeslagen')->success()->send();
     }

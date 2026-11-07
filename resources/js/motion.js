@@ -17,6 +17,7 @@ export function initMotion() {
     featureSwitcher();
     projectFilter();
     heartbeat();
+    hoverVideos();
 
     if (reduced) {
         document.documentElement.classList.remove('js-motion');
@@ -448,6 +449,24 @@ function magnetic() {
             y((e.clientY - r.top - r.height / 2) * 0.35);
         }, { passive: true });
         el.addEventListener('pointerleave', () => { x(0); y(0); });
+    });
+}
+
+/* ---------- project videos: hover on desktop, in view on touch; nothing loads until needed ---------- */
+function hoverVideos() {
+    $$('[data-hover-video]').forEach((video) => {
+        const card = video.closest('[data-project]') ?? video.parentElement;
+        const play = () => { video.play().then(() => (video.style.opacity = '1')).catch(() => {}); };
+        const stop = () => { video.pause(); video.style.opacity = '0'; };
+
+        if (reduced) return;
+
+        if (finePointer) {
+            card.addEventListener('pointerenter', play);
+            card.addEventListener('pointerleave', stop);
+        } else {
+            new IntersectionObserver(([e]) => (e.intersectionRatio > 0.6 ? play() : stop()), { threshold: [0, 0.6] }).observe(card);
+        }
     });
 }
 

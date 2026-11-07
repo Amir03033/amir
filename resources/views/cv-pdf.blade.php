@@ -38,7 +38,7 @@
                 <table class="contact">
                     <tr><td><a href="mailto:{{ config('site.email') }}">{{ config('site.email') }}</a></td></tr>
                     @if(config('site.phone'))<tr><td>{{ config('site.phone') }}</td></tr>@endif
-                    <tr><td><a href="{{ route('home') }}">{{ parse_url(route('home'), PHP_URL_HOST) }}</a></td></tr>
+                    <tr><td><a href="{{ lroute('home') }}">{{ parse_url(lroute('home'), PHP_URL_HOST) }}</a></td></tr>
                     <tr><td><a href="{{ config('site.linkedin') }}">LinkedIn</a>@if(config('site.github')) · <a href="{{ config('site.github') }}">GitHub</a>@endif</td></tr>
                 </table>
             </td>
@@ -78,6 +78,6 @@
         <div>{{ __('messages.cv.education_item') }}</div>
     </div>
 
-    <p class="muted" style="margin-top:22px; font-size:8.5px">{{ __('messages.cv.generated', ['date' => now()->format('d-m-Y')]) }} · {{ route('cv') }}</p>
+    <p class="muted" style="margin-top:22px; font-size:8.5px">{{ __('messages.cv.generated', ['date' => now()->format('d-m-Y')]) }} · {{ lroute('cv') }}</p>
 </body>
 </html>

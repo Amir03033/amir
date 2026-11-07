@@ -21,6 +21,7 @@ class Project extends Model
         'solution',
         'result',
         'gallery',
+        'video',
     ];
 
     protected $casts = [
@@ -46,6 +47,11 @@ class Project extends Model
             ->mapWithKeys(fn ($field) => [$field => trim((string) $this->getTranslation($field))])
             ->filter()
             ->all();
+    }
+
+    public function videoUrl(): ?string
+    {
+        return $this->video ? asset('storage/'.$this->video) : null;
     }
 
     /** @return list<string> */

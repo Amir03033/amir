@@ -1,9 +1,9 @@
 @props(['id', 'index' => null, 'label' => null, 'title' => null, 'intro' => null])
 
-<section id="{{ $id }}" {{ $attributes->merge(['class' => 'relative scroll-mt-24 px-4 py-24 md:py-32']) }}>
+<section id="{{ $id }}" {{ $attributes->merge(['class' => 'relative scroll-mt-24 px-4 py-16 sm:py-24 md:py-32']) }}>
     <div class="mx-auto max-w-6xl">
         @if($title)
-            <header class="mb-12 max-w-2xl md:mb-16">
+            <header class="mb-10 max-w-2xl md:mb-16">
                 @if($label)
                     <p class="label mb-4 flex items-center gap-3" data-reveal>
                         @if($index)<span class="tabular-nums text-scope-accent">{{ str_pad($index, 2, '0', STR_PAD_LEFT) }}</span><span class="h-px w-6 bg-ink-strong"></span>@endif

@@ -43,9 +43,12 @@ class CheckSites extends Command
             $this->line(sprintf('%-14s %s %s', $label, $ok ? 'up' : 'down', $ms !== null ? "{$ms}ms" : ''));
         }
 
-        SiteCheck::where('checked_at', '<', now()->subDays(7))->delete();
+        // 35 days so the 30-day uptime bars on /status and the case pages are always complete.
+        SiteCheck::where('checked_at', '<', now()->subDays(35))->delete();
         Cache::forget('status-panel');
         Cache::forget('status-live');
+        Cache::forget('status-page-nl');
+        Cache::forget('status-page-en');
 
         return self::SUCCESS;
     }

@@ -2,7 +2,7 @@
 
 <div class="panel divide-y divide-ink-line overflow-hidden" data-reveal-group>
     @foreach($blogs as $blog)
-        <a data-reveal href="{{ route('blog.show', $blog->slug) }}" class="group grid gap-2 px-5 py-5 transition-colors hover:bg-ink-panel2 md:grid-cols-[120px_1fr_auto] md:items-center md:gap-6">
+        <a data-reveal href="{{ lroute('blog.show', $blog->slug) }}" class="group grid gap-2 px-5 py-5 transition-colors hover:bg-ink-panel2 md:grid-cols-[120px_1fr_auto] md:items-center md:gap-6">
             <span class="text-xs tabular-nums text-ink-muted">
                 <time datetime="{{ $blog->publishedDate()->toDateString() }}">{{ $blog->publishedDate()->format('Y-m-d') }}</time>
                 <span class="block">{{ __('messages.blog.minutes', ['n' => $blog->readingMinutes()]) }}</span>
