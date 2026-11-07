@@ -38,6 +38,10 @@ return [
         'scroll' => 'scroll',
     ],
     'hero' => [
+        'measured_short' => 'measured every 10 min',
+        'response' => 'Response',
+        'incidents' => 'Incidents',
+        'more_stats' => 'All stats',
         'crumb' => 'Portfolio',
         'available' => 'Available',
         'last_check' => 'Last measurement',
