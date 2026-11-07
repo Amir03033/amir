@@ -18,6 +18,7 @@ export function initMotion() {
     projectFilter();
     heartbeat();
     hoverVideos();
+    carousels();
 
     if (reduced) {
         document.documentElement.classList.remove('js-motion');
@@ -533,6 +534,48 @@ function featureSwitcher() {
             end: 'bottom 60%',
             onToggle: (self) => self.isActive && activate(i),
         });
+    });
+}
+
+/* ---------- swipe carousels (ServerScope features on phones): counter + dots follow the swipe ---------- */
+function carousels() {
+    $$('[data-carousel]').forEach((root) => {
+        const track = root.querySelector('[data-carousel-track]');
+        const slides = $$('[data-carousel-slide]', root);
+        const dots = $$('[data-carousel-dot]', root);
+        const current = root.querySelector('[data-carousel-current]');
+        if (!track || !slides.length) return;
+
+        let active = -1;
+        const set = (i) => {
+            if (i === active) return;
+            active = i;
+            slides.forEach((el, n) => el.toggleAttribute('data-active', n === i));
+            dots.forEach((el, n) => el.toggleAttribute('data-active', n === i));
+            if (current) current.textContent = i + 1;
+        };
+
+        // The slide whose centre is closest to the track's centre is the active one.
+        let frame = 0;
+        track.addEventListener('scroll', () => {
+            if (frame) return;
+            frame = requestAnimationFrame(() => {
+                frame = 0;
+                const mid = track.scrollLeft + track.clientWidth / 2;
+                let best = 0;
+                slides.forEach((el, n) => {
+                    if (Math.abs(el.offsetLeft + el.offsetWidth / 2 - mid) < Math.abs(slides[best].offsetLeft + slides[best].offsetWidth / 2 - mid)) best = n;
+                });
+                set(best);
+            });
+        }, { passive: true });
+
+        dots.forEach((dot, n) => dot.addEventListener('click', () => {
+            const el = slides[n];
+            track.scrollTo({ left: el.offsetLeft - (track.clientWidth - el.offsetWidth) / 2, behavior: reduced ? 'auto' : 'smooth' });
+        }));
+
+        set(0);
     });
 }
 

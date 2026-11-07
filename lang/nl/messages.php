@@ -194,6 +194,7 @@ return [
         'monitored' => 'Bewaakt door ServerScope',
         'monitored_hint' => 'live status van mijn sites',
         'docs' => 'Lees de documentatie',
+        'swipe' => 'swipe',
         'screenshot_pending' => 'Screenshot volgt',
         'features' => [
             'server-monitoring' => ['title' => 'Servermonitoring', 'text' => 'Een agent op de server meldt gezondheid en verbruik, zodat problemen in het dashboard opduiken in plaats van in een supportticket.'],

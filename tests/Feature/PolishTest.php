@@ -156,4 +156,13 @@ class PolishTest extends TestCase
 
         $this->get('/')->assertSee(__('messages.hero.more_stats'))->assertSee('jungle.test')->assertSee('222 ms');
     }
+
+    public function test_serverscope_features_have_a_mobile_carousel_with_one_slide_each(): void
+    {
+        $html = $this->get('/')->assertOk()->getContent();
+
+        $features = count(__('messages.serverscope.features'));
+        $this->assertSame($features, substr_count($html, 'data-carousel-slide'));
+        $this->assertSame($features, substr_count($html, 'data-carousel-dot'));
+    }
 }
