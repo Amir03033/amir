@@ -142,9 +142,10 @@ class PolishTest extends TestCase
 
     // --- Terminal ---
 
-    public function test_terminal_easter_egg_is_wired_into_the_palette(): void
+    public function test_terminal_is_inline_on_home_and_a_dialog_elsewhere(): void
     {
-        $this->get('/')->assertSee('amir@portfolio', false)->assertSee('command not found', false);
+        $this->get('/')->assertSee('amir@life', false)->assertSee('command not found', false)->assertDontSee('id="terminal-dialog"', false);
+        $this->get('/work')->assertSee('id="terminal-dialog"', false)->assertSee('amir@life', false);
     }
 
 

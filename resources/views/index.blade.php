@@ -8,6 +8,7 @@
 @endsection
 
 @section('compact-footer', '1')
+@section('inline-terminal', '1')
 
 @php
     $home = lroute('home');

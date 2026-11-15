@@ -30,7 +30,7 @@ class PortfolioTest extends TestCase
 
         $this->artisan('site:check')->assertSuccessful();
 
-        $check = SiteCheck::sole();
+        $check = SiteCheck::where('label', 'KlusKlaar')->sole();
         $this->assertSame('KlusKlaar', $check->label);
         $this->assertTrue($check->ok);
         $this->assertSame(200, $check->status_code);
@@ -43,17 +43,17 @@ class PortfolioTest extends TestCase
 
         $this->artisan('site:check')->assertSuccessful();
 
-        $this->assertFalse(SiteCheck::sole()->ok);
+        $this->assertFalse(SiteCheck::where('label', 'KlusKlaar')->sole()->ok);
     }
 
-    public function test_status_panel_shows_real_measurements_only(): void
+    public function test_ping_section_shows_real_measurements_only(): void
     {
-        $this->get('/')->assertOk()->assertSee(__('messages.status.empty'));
+        $this->get('/')->assertOk()->assertSee(__('site.ping.empty'));
 
         SiteCheck::create(['label' => 'KlusKlaar', 'url' => 'https://klus.test', 'ok' => true, 'status_code' => 200, 'response_ms' => 321, 'checked_at' => now()]);
-        cache()->forget('status-panel');
+        cache()->forget('ping-sites');
 
-        $this->get('/')->assertOk()->assertSee('321')->assertSee('klus.test');
+        $this->get('/')->assertOk()->assertSee('321 ms')->assertSee('klus.test')->assertDontSee(__('site.ping.empty'));
     }
 
     public function test_pages_render(): void

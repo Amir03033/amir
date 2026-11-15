@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
 use App\Models\Blog;
 use App\Models\Project;
 use Illuminate\Support\Facades\Cache;
@@ -23,6 +26,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Public forms: small, per-IP budgets. Responses are JSON 429s, shown as a friendly toast.
+        RateLimiter::for('ask', fn (Request $r) => Limit::perMinutes(10, 3)->by('ask|'.$r->ip()));
+        RateLimiter::for('ideas', fn (Request $r) => Limit::perHour(3)->by('ideas|'.$r->ip()));
+        RateLimiter::for('votes', fn (Request $r) => Limit::perHour(30)->by('votes|'.$r->ip()));
+
         // Links managed in Filament override .env. Skipped before the settings table exists (fresh install, tests booting).
         try {
             \App\Filament\Admin\Pages\SiteSettings::applyToConfig();
@@ -30,20 +38,15 @@ class AppServiceProvider extends ServiceProvider
         }
 
         foreach ([Project::class, Blog::class] as $model) {
-            $model::saved(fn () => Cache::forget('palette-nl') | Cache::forget('palette-en'));
-            $model::deleted(fn () => Cache::forget('palette-nl') | Cache::forget('palette-en'));
+            $model::saved(fn () => Cache::forget('terminal-projects-nl') | Cache::forget('terminal-projects-en'));
+            $model::deleted(fn () => Cache::forget('terminal-projects-nl') | Cache::forget('terminal-projects-en'));
         }
 
-        // Searchable items for the ⌘K command palette, cached per language.
-        View::composer('components.command-palette', function ($view) {
-            $view->with('paletteItems', Cache::remember('palette-'.app()->getLocale(), 600, fn () => [
-                'projects' => Project::orderByDesc('featured')->orderBy('sort_order')->get()
-                    ->map(fn ($p) => ['title' => $p->getTranslation('title'), 'hint' => implode(' · ', array_slice($p->tagList(), 0, 3)), 'url' => lroute('project.show', $p)])
-                    ->values()->all(),
-                'notes' => Blog::published()->latest('published_at')->get()
-                    ->map(fn ($b) => ['title' => $b->getTranslation('title'), 'hint' => $b->publishedDate()->format('Y-m-d'), 'url' => lroute('blog.show', $b->slug)])
-                    ->values()->all(),
-            ]));
+        // Project list for the terminal toy (⌘K on every page), cached per language.
+        View::composer('components.terminal', function ($view) {
+            $view->with('terminalProjects', Cache::remember('terminal-projects-'.app()->getLocale(), 600, fn () => Project::ordered()->get()
+                ->map(fn ($p) => ['title' => $p->getTranslation('title'), 'line' => $p->oneLiner(), 'url' => lroute('project.show', $p)])
+                ->values()->all()));
         });
     }
 }

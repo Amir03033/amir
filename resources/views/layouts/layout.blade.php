@@ -82,7 +82,12 @@
     <x-site-footer />
 @endif
 <x-toast-region />
-{{-- LEGACY: the ⌘K palette (with the terminal easter egg) stays until the terminal toy replaces it in Phase 4. --}}
-<x-command-palette />
+{{-- ⌘K / Ctrl K opens the terminal toy. The home page has it inline instead. --}}
+@unless(View::hasSection('inline-terminal'))
+    <dialog id="terminal-dialog" class="dialog term-dialog" aria-label="{{ __('site.terminal.label') }}">
+        <div class="dialog-head"><p class="label">{{ __('site.terminal.label') }}</p><button type="button" class="btn-icon" data-dialog-close aria-label="{{ __('messages.nav.close') }}">{{ icon('x') }}</button></div>
+        <div class="dialog-body"><x-terminal id="term-dialog" /></div>
+    </dialog>
+@endunless
 </body>
 </html>

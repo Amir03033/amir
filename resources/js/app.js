@@ -10,6 +10,8 @@ import { registerForms } from './forms';
 import { initStamp } from './stamp';
 import { initClock } from './clock';
 import { initPreview } from './preview';
+import { initTerminal } from './terminal';
+import { initPing } from './ping';
 
 window.Alpine = Alpine;
 registerForms(Alpine);
@@ -25,3 +27,5 @@ initTracking();
 initStamp();
 initClock();
 initPreview();
+initTerminal();
+initPing();

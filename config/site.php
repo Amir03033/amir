@@ -34,5 +34,7 @@ return [
     // Project demo URLs are added automatically.
     'status_targets' => array_filter([
         'ServerScope' => env('SERVERSCOPE_URL'),
+        // Jebbari is measured too, for the Ping experiment on the home page.
+        'Jebbari' => env('JEBBARI_URL', 'https://jebbari.nl'),
     ]),
 ];

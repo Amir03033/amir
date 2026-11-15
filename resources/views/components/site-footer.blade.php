@@ -15,6 +15,8 @@
             <nav class="footer-links" aria-label="{{ __('messages.footer.nav') }}">
                 <a href="{{ lroute('home') }}#work">{{ __('messages.nav.portfolio') }}</a>
                 <a href="{{ lroute('blog.index') }}">{{ __('messages.nav.blog') }}</a>
+                <a href="{{ lroute('roadmap') }}">Roadmap</a>
+                <a href="{{ lroute('ask') }}">{{ __('site.ask.label') }}</a>
                 <a href="{{ lroute('cv') }}">{{ __('messages.nav.cv') }}</a>
                 <a href="{{ lroute('status') }}">{{ __('messages.footer.status') }}</a>
                 <a href="{{ lroute('privacy') }}">{{ __('messages.footer.privacy') }}</a>

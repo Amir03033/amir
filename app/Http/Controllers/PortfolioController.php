@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use App\Models\Certificate;
+use App\Models\Idea;
+use App\Models\Question;
 use App\Models\Project;
 use App\Models\Setting;
 use App\Models\SiteCheck;
@@ -13,7 +15,7 @@ use Illuminate\Support\Facades\Cache;
 
 class PortfolioController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $projects = Project::ordered()->get();
         // Up to three pinned chapters: the featured ones, or simply the first three.
@@ -31,7 +33,28 @@ class PortfolioController extends Controller
             'certificates' => Certificate::orderBy('sort_order')->orderByDesc('issued_at')->get(),
             'testimonials' => Testimonial::visible()->with('project')->get(),
             'now' => Setting::get('now.'.app()->getLocale()) ?: Setting::get('now.nl'),
+            'questions' => Question::published()->take(3)->get(),
+            'ideas' => Idea::published()->whereIn('status', Idea::VOTABLE)->ranked()->take(5)->get(),
+            'voted' => IdeaController::votedIds($request),
+            'pingSites' => Cache::remember('ping-sites', 60, fn () => self::pingSites()),
         ]);
+    }
+
+    /** Latest real measurement per site (from site:check), Jebbari and ServerScope first. */
+    private static function pingSites(): \Illuminate\Support\Collection
+    {
+        $first = ['Jebbari', 'ServerScope'];
+
+        return SiteCheck::latestByUrl()
+            ->map(fn ($c) => [
+                'label' => $c->label,
+                'host' => preg_replace('/^www\./', '', (string) parse_url($c->url, PHP_URL_HOST)),
+                'ms' => $c->response_ms,
+                'ok' => $c->ok,
+                'at' => $c->checked_at,
+            ])
+            ->sortBy(fn ($s) => [in_array($s['label'], $first, true) ? array_search($s['label'], $first, true) : 9, $s['label']])
+            ->values();
     }
 
     public function blogs()
@@ -111,7 +134,7 @@ class PortfolioController extends Controller
 
     public function sitemap()
     {
-        $pages = collect([['home', []], ['work', []], ['certificates', []], ['cv', []], ['blog.index', []], ['status', []], ['privacy', []]])
+        $pages = collect([['home', []], ['work', []], ['certificates', []], ['ask', []], ['roadmap', []], ['cv', []], ['blog.index', []], ['status', []], ['privacy', []]])
             ->merge(Project::all()->map(fn ($p) => ['project.show', [$p]]))
             ->merge(Blog::published()->get()->map(fn ($b) => ['blog.show', [$b->slug]]));
 

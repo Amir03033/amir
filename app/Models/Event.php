@@ -11,7 +11,7 @@ class Event extends Model
 {
     use Prunable;
 
-    public const NAMES = ['cv_download', 'booking_click', 'contact_submit', 'outbound'];
+    public const NAMES = ['cv_download', 'booking_click', 'contact_submit', 'outbound', 'question_submit', 'idea_submit', 'idea_vote'];
 
     public const UPDATED_AT = null;
 
