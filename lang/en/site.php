@@ -13,7 +13,7 @@ return [
         // DRAFT
         'lines' => ['I build websites,', 'and sometimes the tools', 'that watch over them.'],
         'role' => 'Founder of Jebbari · Zwolle & Amsterdam',
-        'time' => 'Amsterdam',
+        'time' => 'It’s :time in Amsterdam.',
         'stamp' => 'Leave a stamp',
     ],
 

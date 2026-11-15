@@ -12,7 +12,7 @@
             @if($questions->isNotEmpty())
                 <div class="rule-list mt-stack">
                     @foreach($questions as $question)
-                        <x-question-item :question="$question" />
+                        <x-question-item :question="$question" :level="4" />
                     @endforeach
                 </div>
                 <p class="mt-6"><a href="{{ lroute('ask') }}" class="link-arrow"><span>{{ __('site.ask.all') }}</span>{{ icon('arrow-right') }}</a></p>
@@ -28,7 +28,7 @@
             @if($ideas->isNotEmpty())
                 <ul class="rule-list mt-stack" data-reveal-group>
                     @foreach($ideas as $idea)
-                        <x-idea-row :idea="$idea" :voted="in_array($idea->id, $voted, true)" />
+                        <x-idea-row :idea="$idea" :voted="in_array($idea->id, $voted, true)" :level="4" />
                     @endforeach
                 </ul>
             @endif

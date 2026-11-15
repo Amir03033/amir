@@ -76,7 +76,7 @@
                 @endforeach
             </h1>
             <p class="mt-8 text-small text-fg-2" data-hero-line style="--i: 3">{{ __('site.hero.role') }}</p>
-            <p class="status-line mt-3" data-hero-line style="--i: 4"><span class="live-dot" aria-hidden="true"></span>{{ __('site.hero.time') }} <time class="tabular" datetime="{{ $amsterdam->toIso8601String() }}" data-clock="Europe/Amsterdam">{{ $amsterdam->format('H:i') }}</time>@if($now) · {{ __('messages.now.label') }} <span class="text-fg-2">{{ $now }}</span>@endif</p>
+            <p class="status-line mt-3" data-hero-line style="--i: 4">{!! __('site.hero.time', ['time' => '<time class="tabular" datetime="'.e($amsterdam->toIso8601String()).'" data-clock="Europe/Amsterdam">'.e($amsterdam->format('H:i')).'</time>']) !!}@if($now) {{ __('messages.now.label') }} <span class="text-fg">{{ $now }}</span>@endif</p>
             <div data-hero-line style="--i: 5"><x-stamp /></div>
         </div>
     </section>

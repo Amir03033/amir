@@ -7,7 +7,6 @@
 @import './components.css';
 @import './nav.css';
 @import './home.css';
-@import './legacy.css';
 
 @import 'tailwindcss/utilities';
 @import './motion.css';

@@ -122,7 +122,7 @@ class AdminPanelTest extends TestCase
 
     public function test_site_falls_back_to_bundled_images(): void
     {
-        $this->get('/')->assertSee('images/amir-avatar.webp', false)->assertSee('images/og.png', false);
+        $this->get('/')->assertSee('images/amir-avatar.webp', false)->assertSee('images/og-default.png', false);
     }
 
     public function test_admin_traffic_is_not_counted_as_visits(): void

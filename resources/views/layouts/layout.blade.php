@@ -56,7 +56,7 @@
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:locale" content="{{ app()->getLocale() === 'en' ? 'en_US' : 'nl_NL' }}">
-    <meta property="og:image" content="{{ $ogImage ?? \App\Models\Setting::media('og', 'images/og.png') }}">
+    <meta property="og:image" content="{{ $ogImage ?? \App\Models\Setting::media('og', 'images/og-default.png') }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">

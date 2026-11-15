@@ -1,6 +1,6 @@
 # amirs.life · Build plan
 
-Status: **approved, revision 2** (2026-11-15). Choices: palette A (quieter), hero H1 stamp (refined), experiment E1 Ping, admin panel to `/amir`. Section A proposals 3–5 go ahead as recommended unless you say otherwise.
+Status: **built** (2026-11-16): all phases done, see DEPLOY.md. Earlier status: approved, revision 2 (2026-11-15). Choices: palette A (quieter), hero H1 stamp (refined), experiment E1 Ping, admin panel to `/amir`. Section A proposals 3–5 go ahead as recommended unless you say otherwise.
 Branch: `claude/amirs-life-redesign-mne6mv`, small commits, one PR at the end (only if you ask for one).
 
 ---

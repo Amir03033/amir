@@ -13,7 +13,7 @@
 
 <header class="site-nav" data-nav>
     <div class="container nav-inner">
-        <a href="{{ $home }}" class="wordmark" aria-label="amirs.life — {{ __('messages.nav.home') }}">amirs<span class="dot">.</span>life</a>
+        <a href="{{ $home }}" class="wordmark" aria-label="amirs.life — {{ __('messages.nav.home') }}"><x-wordmark /></a>
 
         <nav class="nav-links" aria-label="{{ __('messages.nav.main') }}">
             @foreach($items as $hash => $label)
@@ -31,7 +31,7 @@
 
 <dialog id="nav-sheet" class="nav-sheet" aria-label="{{ __('messages.nav.menu') }}">
     <div class="container nav-sheet-head">
-        <a href="{{ $home }}" class="wordmark">amirs<span class="dot">.</span>life</a>
+        <a href="{{ $home }}" class="wordmark"><x-wordmark /></a>
         <button type="button" class="btn-icon" data-nav-close aria-label="{{ __('messages.nav.close') }}">{{ icon('x') }}</button>
     </div>
     <nav class="container nav-sheet-links" aria-label="{{ __('messages.nav.main') }}">

@@ -30,7 +30,7 @@
 </head>
 <body>
 <main>
-    <p class="mark" style="margin:0;color:var(--text)">amirs<span>.</span>life</p>
+    <p class="mark" style="margin:0;color:var(--text);display:inline-flex;align-items:center;gap:10px"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="none" stroke="var(--accent)" stroke-width="1.25"/><circle cx="10" cy="10" r="2" fill="var(--accent)"/></svg>amirs.life</p>
     <h1>{{ $t('server') }}</h1>
     <p>{{ $t('server_text') }}</p>
     <div class="actions">

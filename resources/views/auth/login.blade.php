@@ -1,39 +1,21 @@
-<!doctype html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Amir Jebbari</title>
-    @vite(['resources/css/app.css'])
-</head>
-<body class="min-h-screen bg-slate-950 text-slate-200 flex items-center justify-center px-4">
-    <form method="POST" action="{{ route('login') }}" class="w-full max-w-sm space-y-4 border border-slate-800 bg-slate-900/80 p-8 rounded-2xl">
-        @csrf
-        <h1 class="text-xl font-bold text-white">Inloggen</h1>
+@extends('layouts.layout', ['title' => 'Inloggen — amirs.life'])
 
-        @if ($errors->any())
-            <div class="text-rose-400 text-sm">{{ $errors->first() }}</div>
-        @endif
+@push('head')<meta name="robots" content="noindex">@endpush
 
-        <div>
-            <label for="email" class="block text-xs text-slate-400 mb-1">E-mail</label>
-            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                   class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm">
-        </div>
-
-        <div>
-            <label for="password" class="block text-xs text-slate-400 mb-1">Wachtwoord</label>
-            <input id="password" type="password" name="password" required
-                   class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm">
-        </div>
-
-        <label class="flex items-center gap-2 text-xs text-slate-400">
-            <input type="checkbox" name="remember"> Onthoud mij
-        </label>
-
-        <button type="submit" class="w-full py-3 rounded-lg bg-cyan-500 text-white font-semibold">
-            Inloggen
-        </button>
-    </form>
-</body>
-</html>
+@section('content')
+    <section class="container flex min-h-[88svh] items-center justify-center pt-[var(--nav-h)]">
+        <form method="POST" action="{{ route('login') }}" class="w-full max-w-sm">
+            @csrf
+            <h1 class="statement">Inloggen</h1>
+            @if($errors->any())
+                <p class="field-error mt-6" role="alert">{{ icon('circle-alert') }}<span>{{ $errors->first() }}</span></p>
+            @endif
+            <div class="mt-8 grid gap-5">
+                <x-field name="email" type="email" label="E-mail" :value="old('email')" autocomplete="username" autofocus />
+                <x-field name="password" type="password" label="Wachtwoord" autocomplete="current-password" />
+                <label class="flex items-center gap-2 text-small text-fg-2"><input type="checkbox" name="remember" class="h-4 w-4 accent-[rgb(var(--accent))]"> Onthoud mij</label>
+                <button type="submit" class="btn-primary w-full">Inloggen</button>
+            </div>
+        </form>
+    </section>
+@endsection

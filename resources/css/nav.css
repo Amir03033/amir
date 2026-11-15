@@ -11,8 +11,12 @@
     .site-nav:focus-within { transform: none; }
     .nav-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 
-    .wordmark { font-size: 1.125rem; font-weight: 600; letter-spacing: -0.02em; color: rgb(var(--text)); text-decoration: none; white-space: nowrap; }
-    .wordmark .dot { color: rgb(var(--accent)); margin-right: -.06em; }
+    .wordmark { display: inline-flex; align-items: center; gap: 10px; font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.015em; color: rgb(var(--text)); text-decoration: none; white-space: nowrap; }
+    .wordmark-mark { display: inline-block; width: 20px; height: 20px; color: rgb(var(--accent)); transition: transform var(--d-ui-slow) var(--ease); }
+    .wordmark-mark svg { width: 100%; height: 100%; overflow: visible; }
+    .wordmark-mark circle { fill: none; stroke: currentColor; stroke-width: 1.25; }
+    .wordmark-mark circle.fill { fill: currentColor; stroke: none; }
+    .wordmark:hover .wordmark-mark { transform: rotate(-12deg); }
 
     .nav-links { display: none; align-items: center; gap: 4px; }
     @media (min-width: 768px) { .nav-links { display: flex; } }

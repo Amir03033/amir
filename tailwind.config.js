@@ -10,8 +10,6 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.js',
     ],
-    // Status colours are picked at runtime in the (legacy) status views.
-    safelist: ['bg-scope-green', 'bg-scope-red', 'bg-scope-yellow', 'text-scope-green', 'text-scope-red', 'text-scope-yellow'],
     theme: {
         colors: {
             transparent: 'transparent',
@@ -34,24 +32,6 @@ export default {
             // Fixed, theme-independent surfaces (terminal, primary button in light).
             night: token('night'),
             day: token('day'),
-
-            // LEGACY aliases so the pre-redesign views stay readable until they are rebuilt (remove in Phase 6).
-            ink: {
-                bg: token('bg'),
-                panel: token('surface'),
-                panel2: token('fill'),
-                line: token('line'),
-                strong: token('line-strong'),
-                text: token('text'),
-                muted: token('muted'),
-                soft: token('text-2'),
-            },
-            scope: {
-                accent: token('accent'),
-                green: token('ok'),
-                yellow: token('warn'),
-                red: token('err'),
-            },
         },
         borderRadius: {
             none: '0',
@@ -59,7 +39,6 @@ export default {
             1: 'var(--r-1)',
             pill: '9999px',
             full: '9999px',
-            panel: 'var(--r-1)', // legacy
         },
         boxShadow: {
             none: 'none',
@@ -105,16 +84,6 @@ export default {
                 sheet: '70',
                 toast: '80',
                 skip: '90',
-            },
-            // LEGACY keyframes still referenced by old views (remove in Phase 6).
-            keyframes: {
-                pulseDot: { '0%': { transform: 'scale(1)', opacity: '.6' }, '100%': { transform: 'scale(2.6)', opacity: '0' } },
-                nudge: { '0%, 100%': { transform: 'translateX(0)' }, '50%': { transform: 'translateX(4px)' } },
-            },
-            animation: {
-                'pulse-dot': 'pulseDot 2s cubic-bezier(0, 0, .2, 1) infinite',
-                marquee: 'none',
-                blink: 'none',
             },
         },
     },

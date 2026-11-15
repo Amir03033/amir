@@ -20,7 +20,7 @@ export function initNav() {
     window.addEventListener('scroll', () => {
         if (!ticking) { ticking = true; requestAnimationFrame(update); }
     }, { passive: true });
-    update();
+    requestAnimationFrame(update); // first read after the initial render, so it never forces a layout
 
     // Mobile sheet (a <dialog>: focus trap and Esc come with it).
     document.querySelectorAll('[data-nav-open]').forEach((btn) => btn.addEventListener('click', () => {

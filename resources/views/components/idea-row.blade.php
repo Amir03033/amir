@@ -1,4 +1,4 @@
-@props(['idea', 'voted' => false])
+@props(['idea', 'voted' => false, 'level' => 3])
 {{-- One idea on the roadmap. The vote button posts to /ideas/{id}/vote (one vote per visitor). --}}
 <li class="idea-row" data-reveal
     x-data="{ votes: {{ $idea->votes_count }}, voted: {{ $voted ? 'true' : 'false' }}, busy: false,
@@ -13,13 +13,12 @@
             } finally { this.busy = false; }
         } }">
     <div class="min-w-0">
-        <h3 class="font-semibold">{{ $idea->title }}</h3>
+        <h{{ $level }} class="font-semibold">{{ $idea->title }}</h{{ $level }}>
         @if($idea->body)<p class="mt-1 text-small text-muted">{{ $idea->body }}</p>@endif
     </div>
     @if($idea->isVotable())
-        <button type="button" class="vote" @click="vote" :aria-pressed="voted.toString()" aria-pressed="{{ $voted ? 'true' : 'false' }}" :disabled="busy"
-                aria-label="{{ __('site.ideas.vote') }}: {{ $idea->title }}">
-            {{ icon('chevron-up') }}<span class="tabular" x-text="votes">{{ $idea->votes_count }}</span>
+        <button type="button" class="vote" @click="vote" :aria-pressed="voted.toString()" aria-pressed="{{ $voted ? 'true' : 'false' }}" :disabled="busy">
+            {{ icon('chevron-up') }}<span class="sr-only">{{ __('site.ideas.vote') }}: {{ $idea->title }},</span><span class="tabular" x-text="votes">{{ $idea->votes_count }}</span>
         </button>
     @else
         <span class="text-small text-muted tabular">{{ trans_choice('site.ideas.votes', $idea->votes_count, ['count' => $idea->votes_count]) }}</span>

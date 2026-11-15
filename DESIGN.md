@@ -1,6 +1,6 @@
 # amirs.life · Design system
 
-Status: **approved, revision 3** (2026-11-16).
+Status: **built, revision 4** (2026-11-16). Revision 4 = small changes after comparing with jebbari.nl and ServerScope-Info (§10).
 Decisions so far: palette **A, quieter, with a deep burgundy accent (`#7F1D3F`)** instead of vermilion; public email **info@jebbari.nl**; hero **H1, the stamp, refined**; experiment **E1, Ping**; admin panel moves to **/amir**.
 
 Revision 2 changes the mood from "expressive editorial" to **calm and sleek, Apple-like in restraint, but personal**. Removed: marquee strip, oversized numerals, sticky side labels, hard offset shadows, rotated notes, custom cursor ring, magnetic buttons, spring easing. Bricolage Grotesque has been replaced by **Instrument Sans** (see §3 for why).
@@ -110,7 +110,7 @@ Why not Bricolage any more: I rendered the hero line at 96px. Bricolage automati
 **Please confirm Jebbari doesn't use Instrument Sans.** I deliberately didn't check.
 
 - No width axis used (`font-stretch: 100%` always). Weights: 400 body, 500 UI, 600 headings.
-- Martian Mono is used sparingly: 12–13px labels and the terminal only, `wdth 87`.
+- Martian Mono is used only in the terminal and the stamp text (revision 4: labels are no longer mono).
 
 ### Fluid scale (390 → 1440px viewport)
 
@@ -123,7 +123,7 @@ Why not Bricolage any more: I rendered the hero line at 96px. Bricolage automati
 | `--t-lead` | `clamp(1.1875rem, 1.1rem + .4vw, 1.4375rem)` → 19–23 | 1.45 | -0.005em | 400 |
 | `--t-body` | `clamp(1.0625rem, 1.03rem + .12vw, 1.125rem)` → **17–18** | **1.6** | 0 | 400 |
 | `--t-small` | 0.9375rem → 15 | 1.5 | 0 | 400 |
-| `--t-label` | `clamp(.75rem, .73rem + .08vw, .8125rem)` → **12–13** | 1.3 | **+0.1em**, uppercase | Martian Mono 450 |
+| `.label` | 15px | 1.4 | 0, sentence case | Instrument Sans 500, `--muted` (revision 4; was uppercase mono) |
 
 `text-wrap: balance` on headings and statements, `pretty` on paragraphs, `tabular-nums` on times and years. Body max width `64ch`.
 
@@ -148,12 +148,12 @@ Why not Bricolage any more: I rendered the hero line at 96px. Bricolage automati
 
 | Component | Spec |
 |---|---|
-| **Nav** | 64px, wordmark `amirs.life` left (Instrument Sans 600, the dot in accent), 4 links in body 15px/500 (Werk, Over, Speeltuin, Contact), theme + language on the right. After 24px of scroll it gets `--bg` at 85% + a hairline + the soft shadow; **no blur**. On scroll down it slides out of view; on scroll up it comes back (200ms). **Mobile:** a "Menu" text button opens a full-screen sheet on `--bg` with links at `--t-statement` size, staggered fade-in, focus trap, Esc to close. Active link: a 2px accent dot under it. |
-| **Buttons** | *Primary:* burgundy pill (`--accent`), white text (9.77:1), 48px tall, 0 24px, 15px/500. Hover: `--accent-hover` (200ms). In dark: the tint with near-black text. *Secondary:* pill, 1px `--line-strong`, ink text; hover fills `--fill`. *Text link:* underline 1px at 0.2em offset, colour `--line-strong`; on hover it thickens and darkens to ink (200ms), so nothing moves. Arrow links (`Bekijk de case →`): the arrow moves 3px on hover. No magnetic effect and no lift. |
+| **Nav** | 64px, wordmark left: a 20px miniature of the stamp (burgundy ring + dot) and `amirs.life` in ink (revision 4: no coloured period), 4 links in body 15px/500 (Werk, Over, Speeltuin, Contact), theme + language on the right. After 24px of scroll it gets `--bg` at 85% + a hairline + the soft shadow; **no blur**. On scroll down it slides out of view; on scroll up it comes back (200ms). **Mobile:** a "Menu" text button opens a full-screen sheet on `--bg` with links at `--t-statement` size, staggered fade-in, focus trap, Esc to close. Active link: a 2px accent dot under it. |
+| **Buttons** | *Primary:* burgundy pill (`--accent`), white text (9.77:1), 48px tall, 0 24px, 15px/500. Hover: `--accent-hover` (200ms). In dark: the tint with near-black text. *Secondary:* softly filled pill (`--fill`, no border), ink text; hover `--line` (revision 4: no outline pill). *Text link:* underline 1px at 0.2em offset, colour `--line-strong`; on hover it thickens and darkens to ink (200ms), so nothing moves. Arrow links (`Bekijk de case →`): the arrow moves 3px on hover. No magnetic effect and no lift. |
 | **Tag** | 13px/500, pill, 1px `--line`, `--muted` text, 2px 10px. No fill. |
-| **Status line** | One quiet line under the hero, 15px muted: `Amsterdam 14:32 · Nu bezig met: …`. A small accent dot marks it as live. The time is server-rendered, then updated each minute. |
+| **Status line** | One plain sentence under the hero, 15px: “Het is 14:32 in Amsterdam. Nu bezig met: …”. No dot, no mono. The time is server-rendered, then updated each minute. |
 | **Section opener** | Small mono label (optional) + centered `--t-statement` + optional lead (`--t-lead`, muted, max 2 lines). |
-| **Work chapter** (home, featured projects) | A full-width, scroll-pinned block: the project name at `--t-statement`, centered, with the one-liner and year; then a large screenshot that scales from 0.92 → 1 and fades in as you scroll; then "Bekijk de case →". At most 3 on the home page. |
+| **Work chapter** (home, featured projects) | A full-width, scroll-pinned block: a quiet line with year — role (no index numbers), the project name at `--t-statement`, centered, with the one-liner; then a large screenshot that scales from 0.92 → 1 and fades in as you scroll; then "Bekijk de case →". At most 3 on the home page. |
 | **Project row** (more work, `/work`) | A ruled list: `year` · **name** (`--t-h3`) · one-liner · tags · `→`. Desktop hover: siblings fade to 40%, and a preview image (280×180, `--r-1`) follows the cursor with eased lag, no rotation. Touch: no preview. The whole row is one link; focus = hover state. |
 | **Case-study layout** | Centered title (`--t-hero` × 0.75) + one-liner, a quiet meta row (Year · Role · Stack · Link), then a full-width hero screenshot. Body in the 720px reading column: **Problem**, **What I built**, **Result**, each with a small mono label. Screenshots alternate between full-bleed and column-wide; phone shots get a simple rounded outline. Ends with previous / next as two large halves. |
 | **Certificate item** | One ruled row: `2025 · Title · Issuer · ↗`. |
@@ -163,7 +163,7 @@ Why not Bricolage any more: I rendered the hero line at 96px. Bricolage automati
 | **Modal / sheet** | `<dialog>`. Desktop: centered, max 560px, `--surface`, `--r-1`, soft shadow. Mobile: bottom sheet. Scrim `rgb(22 21 18 / .35)`, no blur, focus trap, Esc. |
 | **Idea row** | A calm ruled list grouped by status (not sticky notes): title, optional detail, status tag, vote button (`chevron-up` + count, pill). Voted state: an accent dot. |
 | **Question item** | The question in `--t-h3`, the answer in body, then `— Amir · date` in muted text. Unanswered questions are never shown publicly. |
-| **Terminal** | A calm dark panel in both themes (`#161512`, `--r-1`), Martian Mono 14px, prompt `amir@life ~ %` with the `%` in accent. A **visible input** always at the bottom (works with mobile keyboards), plus command chips under it for touch. History ↑/↓, Tab completion, `aria-live="polite"` output. |
+| **Terminal** | A light panel in light mode (`--surface`, hairline, ink text) and `--surface` in dark (revision 4: no dark code-block look), Martian Mono 13px, prompt `amir@life ~ %` with the `%` in accent. A **visible input** always at the bottom (works with mobile keyboards), plus command chips under it for touch. History ↑/↓, Tab completion, `aria-live="polite"` output. |
 | **Footer** | A big centered email link (`--t-statement`), then one quiet row: links · NL/EN · theme · "Gebouwd met Laravel, door mij." · "Ook: Jebbari ↗" · ©. |
 | **404 / 500** | A centered statement ("Deze pagina bestaat niet. Nog niet.") + two buttons. The 500 page has inline CSS and no database calls. |
 | **Empty / loading / error** | Empty: one centered muted sentence + an action. Loading: hairline skeleton rows with a slow opacity pulse. Error: an inline message + "Probeer opnieuw". |
@@ -242,3 +242,42 @@ All forms: CSRF, server-side validation with nl/en messages, honeypot, `throttle
 - WCAG AA: every text pair listed is ≥ 4.5:1; the accent is used only for UI details at ≥ 3:1. Focus ring: 2px accent + 2px offset on `:focus-visible`. Skip link, full keyboard support (nav sheet, terminal, dialogs, stamp button), semantic landmarks, alt text everywhere.
 - SEO: titles/descriptions, canonical, hreflang nl/en/x-default, OG + Twitter, generated OG images in the new style (GD + a static Instrument Sans TTF), JSON-LD `Person` (`worksFor` → `Organization` Jebbari), `WebSite`, `CreativeWork`, `BlogPosting`, sitemap including the new pages.
 - Performance: Lighthouse mobile ≥ 90, LCP < 2s (text hero), CLS ≈ 0 (aspect ratios, font fallback metrics via `size-adjust`), AVIF/WebP with `srcset` + `width`/`height`, lazy-loading below the fold.
+
+---
+
+## 10. Review (end of build)
+
+### Against the sloppy list (brief §2)
+
+| Item | Status |
+|---|---|
+| Purple/blue gradients | None. No `linear-gradient` in the public CSS; the old purple MasterMind image is no longer used anywhere. |
+| Glowing orbs | Removed (page glow, cursor glow, canvas dot field). |
+| Glassmorphism | None: the nav is a solid 90% background with a hairline, no `backdrop-filter`. |
+| Emoji icons | None. Lucide SVG only (the old palette's emoji went with it). |
+| Icon-in-circle feature cards | None. |
+| Three identical cards in a row | None: lists are ruled rows; the only grid is the case gallery (screenshots). |
+| Everything centered | Statements and the hero are centered; all reading content (lists, case text, forms, facts) is left-aligned in a reading column. |
+| Default Tailwind look | Tailwind colours, radii and shadows are replaced by tokens; `rounded-2xl`/`shadow-lg`/`blue-500` do not exist in this build. |
+| Uniform rounded-2xl + shadow-lg | Three radii (0, 12px, pill); one soft shadow for floating layers only. |
+| Generic copy | No “passionate / cutting-edge / seamless / unleash”; old “Proof, not promises” and “Developer die oplevert” are gone. |
+| Fake stats / testimonials | No stats band. Testimonials only render when real, visible ones exist. Ping shows only measured numbers. |
+| Stock photos | Not used; projects without a screenshot get a neutral typographic panel. |
+
+### Compared with jebbari.nl and ServerScope-Info (screenshots taken 2026-11-16)
+
+What those sites do: **jebbari.nl** is Geist, off-white with a faint grid and blue wash in the hero, a left-aligned giant headline ending in a blue period, a blue-dot wordmark `jebbari.`, uppercase mono meta lines (including `ZWOLLE · AMSTERDAM, NL: 00:50`), ink + outline pill buttons, big image cards with `01 · … · 2026` mono meta, a dark rounded CTA panel. **ServerScope-Info** is Inter, zinc greys, a blue 8px-radius primary button, a status pill, a dark code block, a 4-column stats band and dashboard screenshots.
+
+What is visibly different on amirs.life:
+
+1. **Type:** Instrument Sans + (terminal only) Martian Mono, not Geist or Inter.
+2. **Colour:** warm off-white and ink with a deep burgundy accent; no blue anywhere, no grid or colour wash.
+3. **Hero:** a centered statement with the stamp (an object you can play with), instead of a left-aligned headline with lead and buttons.
+4. **Brand mark:** a miniature stamp ring + `amirs.life`; no coloured period (changed in revision 4 because jebbari.nl uses that).
+5. **Time line:** a plain sentence (“Het is 00:52 in Amsterdam.”) in sans, not an uppercase mono label (changed in revision 4).
+6. **Labels:** sentence-case sans; no uppercase mono meta anywhere (changed in revision 4).
+7. **Buttons:** burgundy filled pill + softly filled secondary pill; not ink/outline pills (Jebbari) or blue 8px buttons (ServerScope) (secondary changed in revision 4).
+8. **Work:** scroll-pinned chapters with year — role in quiet text, then a ruled list with a cursor preview; no numbered image cards (index numbers removed in revision 4).
+9. **Interactive layer:** a playground band (Ask Amir, ideas and roadmap, terminal, Ping); neither sibling has this.
+10. **Terminal:** light in light mode, so it doesn't echo ServerScope's dark code block (changed in revision 4).
+11. **No stats band, no status pill, no CTA panel.** The footer ends with a big email link instead.

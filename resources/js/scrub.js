@@ -11,7 +11,7 @@ const effects = {
     'scale-in': (p, e) => ({ opacity: e(p), transform: `scale(${0.92 + 0.08 * e(p)})` }),
     'fade-out': (p) => ({ opacity: 1 - p, transform: `scale(${1 - 0.02 * p})` }),
     'hero-exit': (p) => ({ opacity: 1 - 0.8 * p, transform: `scale(${1 - 0.04 * p})` }),
-    'dim-in': (p, e) => ({ opacity: 0.15 + 0.85 * e(p) }),
+    'dim-in': (p, e) => ({ opacity: e(p), transform: `translateY(${24 * (1 - e(p))}px)` }),
     'zoom-settle': (p) => ({ transform: `scale(${1.06 - 0.06 * p})` }),
     parallax: (p) => ({ transform: `translateY(${20 - 40 * p}px)` }),
 };
@@ -43,7 +43,7 @@ export function initScrub() {
     const viewProgress = (fx, rect, vh) => {
         switch (fx) {
             case 'hero-exit': return clamp(-rect.top / (rect.height * 0.6));
-            case 'dim-in': return clamp((vh * 0.6 - rect.top) / (vh * 0.45));
+            case 'dim-in': return clamp((vh * 0.8 - rect.top) / (vh * 0.45));
             case 'zoom-settle': return clamp((vh - rect.top) / ((vh + rect.height) * 0.6));
             case 'parallax': return clamp((vh - rect.top) / (vh + rect.height));
             default: return clamp((vh - rect.top) / (vh * 0.4 + rect.height * 0.4));

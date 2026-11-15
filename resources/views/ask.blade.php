@@ -16,7 +16,7 @@
 
             <div class="rule-list mt-stack">
                 @forelse($questions as $question)
-                    <x-question-item :question="$question" />
+                    <x-question-item :question="$question" :level="2" />
                 @empty
                     <p class="empty">{{ __('site.ask.empty') }}</p>
                 @endforelse

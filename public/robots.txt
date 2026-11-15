@@ -1,2 +1,7 @@
 User-agent: *
-Disallow:
+Disallow: /amir
+Disallow: /login
+Disallow: /two-factor-check
+Disallow: /_styleguide
+
+Sitemap: https://amirs.life/sitemap.xml
