@@ -159,7 +159,7 @@ return [
         ],
     ],
     'now' => [
-        'label' => 'Now working on:',
+        'label' => 'Currently building:',
     ],
     'og' => [
         'case' => 'Case study',

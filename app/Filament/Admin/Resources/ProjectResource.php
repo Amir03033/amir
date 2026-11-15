@@ -21,6 +21,9 @@ class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
+    // The public site uses slugs; the admin keeps stable numeric ids in its URLs.
+    protected static ?string $recordRouteKeyName = 'id';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationLabel = 'Projecten';

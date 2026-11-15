@@ -40,7 +40,7 @@ class SiteMedia extends Page implements HasForms
     /** @return list<string> */
     private function keys(): array
     {
-        return ['avatar', 'og', ...array_map(fn ($k) => "ss-{$k}", array_keys(__('messages.serverscope.features', [], 'nl')))];
+        return ['avatar', 'about', 'og', ...array_map(fn ($k) => "ss-{$k}", array_keys(__('messages.serverscope.features', [], 'nl')))];
     }
 
     private function upload(string $key, string $label): FileUpload
@@ -63,7 +63,7 @@ class SiteMedia extends Page implements HasForms
             ->statePath('data')
             ->schema([
                 Section::make('Profielfoto')
-                    ->description('Kleine ronde foto in de hero en bij "Over mij". Wordt vierkant bijgesneden en verkleind naar 400×400.')
+                    ->description('Vierkante profielfoto, gebruikt in zoekmachines (JSON-LD) en het cv. Wordt verkleind naar 400×400.')
                     ->aside()
                     ->schema([
                         $this->upload('avatar', 'Profielfoto')
@@ -72,6 +72,17 @@ class SiteMedia extends Page implements HasForms
                             ->imageResizeMode('cover')
                             ->imageResizeTargetWidth('400')
                             ->imageResizeTargetHeight('400'),
+                    ]),
+
+                Section::make('Foto bij "Over mij"')
+                    ->description('Grote staande foto in de sectie "Over mij" op de homepage (4:5). Leeg = de meegeleverde foto uit Salzburg.')
+                    ->aside()
+                    ->schema([
+                        $this->upload('about', 'Foto over mij')
+                            ->imageCropAspectRatio('4:5')
+                            ->imageResizeMode('cover')
+                            ->imageResizeTargetWidth('1280')
+                            ->imageResizeTargetHeight('1600'),
                     ]),
 
                 Section::make('Deelafbeelding')
@@ -86,7 +97,7 @@ class SiteMedia extends Page implements HasForms
                     ]),
 
                 Section::make('ServerScope screenshots')
-                    ->description('Eén screenshot per feature in de ServerScope-case. Zolang er geen is, staat er "Screenshot volgt". Wordt verkleind naar max. 1600px breed.')
+                    ->description('Gebruikt als cover en galerij van het ServerScope-project zolang dat project zelf geen afbeeldingen heeft. Wordt verkleind naar max. 1600px breed.')
                     ->schema(collect($features)->map(fn ($feature, $key) => $this->upload("ss-{$key}", $feature['title'])
                         ->imageResizeMode('contain')
                         ->imageResizeTargetWidth('1600')

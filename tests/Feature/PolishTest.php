@@ -35,23 +35,23 @@ class PolishTest extends TestCase
 
         $this->get('/')->assertSee('<html lang="nl"', false)->assertSee('Jungle Tuinen');
         $this->get('/en')->assertSee('<html lang="en"', false)->assertSee('Jungle Gardens');
-        $this->get('/en/project/'.$project->id)->assertOk()->assertSee('Jungle Gardens');
+        $this->followingRedirects()->get('/en/project/'.$project->id)->assertOk()->assertSee('Jungle Gardens');
     }
 
     public function test_hreflang_and_switch_point_to_the_same_page(): void
     {
         $project = $this->project();
 
-        $this->get('/project/'.$project->id)
-            ->assertSee('hreflang="en" href="'.url('/en/project/'.$project->id).'"', false)
-            ->assertSee('hreflang="nl" href="'.url('/project/'.$project->id).'"', false);
+        $this->get('/project/'.$project->slug)
+            ->assertSee('hreflang="en" href="'.url('/en/project/'.$project->slug).'"', false)
+            ->assertSee('hreflang="nl" href="'.url('/project/'.$project->slug).'"', false);
     }
 
     public function test_sitemap_lists_both_languages(): void
     {
         $this->project();
 
-        $this->get('/sitemap.xml')->assertOk()->assertSee(url('/en/project/1'), false)->assertSee('hreflang="en"', false);
+        $this->get('/sitemap.xml')->assertOk()->assertSee(url('/en/project/jungle-tuinen'), false)->assertSee('hreflang="en"', false);
     }
 
     public function test_confirmation_mail_uses_the_visitors_language(): void
@@ -89,7 +89,7 @@ class PolishTest extends TestCase
         $project = $this->project();
         SiteCheck::create(['label' => 'Jungle Gardens', 'url' => 'https://jungle.test', 'ok' => true, 'status_code' => 200, 'response_ms' => 180, 'checked_at' => now()]);
 
-        $this->get('/project/'.$project->id)->assertSee('100%')->assertSee('data-uptime-bar', false);
+        $this->get('/project/'.$project->slug)->assertSee('100%')->assertSee('data-uptime-bar', false);
     }
 
     // --- SEO ---
@@ -99,7 +99,7 @@ class PolishTest extends TestCase
         $project = $this->project();
 
         $this->get('/')->assertSee('"@type":"Person"', false);
-        $this->get('/project/'.$project->id)->assertSee('"@type":"CreativeWork"', false)->assertSee(route('og', ['type' => 'project', 'id' => $project->id, 'lang' => 'nl']), false);
+        $this->get('/project/'.$project->slug)->assertSee('"@type":"CreativeWork"', false)->assertSee(route('og', ['type' => 'project', 'id' => $project->id, 'lang' => 'nl']), false);
     }
 
     public function test_og_image_is_a_png(): void
@@ -147,22 +147,5 @@ class PolishTest extends TestCase
         $this->get('/')->assertSee('amir@portfolio', false)->assertSee('command not found', false);
     }
 
-    public function test_hero_shows_live_card_only_with_real_measurements(): void
-    {
-        $this->get('/')->assertDontSee(__('messages.hero.more_stats'));
 
-        SiteCheck::create(['label' => 'Jungle', 'url' => 'https://jungle.test', 'ok' => true, 'status_code' => 200, 'response_ms' => 222, 'checked_at' => now()]);
-        cache()->forget('status-panel');
-
-        $this->get('/')->assertSee(__('messages.hero.more_stats'))->assertSee('jungle.test')->assertSee('222 ms');
-    }
-
-    public function test_serverscope_features_have_a_mobile_carousel_with_one_slide_each(): void
-    {
-        $html = $this->get('/')->assertOk()->getContent();
-
-        $features = count(__('messages.serverscope.features'));
-        $this->assertSame($features, substr_count($html, 'data-carousel-slide'));
-        $this->assertSame($features, substr_count($html, 'data-carousel-dot'));
-    }
 }

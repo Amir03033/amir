@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\Route;
 // Public pages exist twice: Dutch at "/" and English under "/en" (names prefixed "en."). SetLocale reads the prefix.
 $pages = function () {
     Route::get('/', [PortfolioController::class, 'index'])->name('home');
+    Route::get('/work', [PortfolioController::class, 'work'])->name('work');
     Route::get('/project/{project}', [PortfolioController::class, 'showProject'])->name('project.show');
+    Route::get('/certificates', [PortfolioController::class, 'certificates'])->name('certificates');
     Route::get('/blog', [PortfolioController::class, 'blogs'])->name('blog.index');
     Route::get('/blog/{slug}', [PortfolioController::class, 'showBlog'])->name('blog.show');
     Route::get('/cv', [PortfolioController::class, 'cv'])->name('cv');

@@ -1,3 +1,4 @@
+@props(['mail' => true])
 @php
     $email = config('site.email');
     $jebbari = config('site.jebbari.url');
@@ -5,10 +6,12 @@
 
 <footer class="site-footer">
     <div class="container text-center">
-        <p class="label">{{ __('messages.footer.write') }}</p>
-        <a href="mailto:{{ $email }}" class="footer-mail mt-4" style="--chars: {{ mb_strlen($email) }}">{{ $email }}</a>
+        @if($mail)
+            <p class="label">{{ __('messages.footer.write') }}</p>
+            <a href="mailto:{{ $email }}" class="footer-mail mt-4" style="--chars: {{ mb_strlen($email) }}">{{ $email }}</a>
+        @endif
 
-        <div class="footer-row text-left">
+        <div class="footer-row text-left {{ $mail ? '' : 'mt-0 border-t-0 pt-0' }}">
             <nav class="footer-links" aria-label="{{ __('messages.footer.nav') }}">
                 <a href="{{ lroute('home') }}#work">{{ __('messages.nav.portfolio') }}</a>
                 <a href="{{ lroute('blog.index') }}">{{ __('messages.nav.blog') }}</a>

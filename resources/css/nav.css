@@ -61,6 +61,7 @@
 
     /* Footer */
     .site-footer { padding-block: var(--space-section) 40px; border-top: 1px solid rgb(var(--line)); }
+    .site-footer:has(.footer-row.mt-0) { padding-top: 40px; }
     .footer-mail {
         display: inline-block; font-size: var(--t-statement); font-weight: 600; letter-spacing: -0.025em; line-height: 1.1;
         color: rgb(var(--text)); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: .15em;

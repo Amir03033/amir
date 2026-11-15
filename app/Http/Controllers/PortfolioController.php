@@ -5,25 +5,32 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 use App\Models\Certificate;
 use App\Models\Project;
+use App\Models\Setting;
 use App\Models\SiteCheck;
 use App\Models\Testimonial;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class PortfolioController extends Controller
 {
     public function index()
     {
-        $projects = Project::orderByDesc('featured')->orderBy('sort_order')->latest()->get();
+        $projects = Project::ordered()->get();
+        // Up to three pinned chapters: the featured ones, or simply the first three.
+        $chapters = $projects->where('featured', true)->take(3);
+        if ($chapters->isEmpty()) {
+            $chapters = $projects->take(3);
+        }
 
         return view('index', [
-            'projects' => $projects,
+            'chapters' => $chapters->values(),
+            'more' => $projects->reject(fn ($p) => $chapters->contains('id', $p->id))->take(6)->values(),
+            'projectCount' => $projects->count(),
             'blogs' => Blog::published()->latest('published_at')->latest()->take(3)->get(),
             'blogCount' => Blog::published()->count(),
-            'certificates' => Certificate::orderBy('sort_order')->get(),
+            'certificates' => Certificate::orderBy('sort_order')->orderByDesc('issued_at')->get(),
             'testimonials' => Testimonial::visible()->with('project')->get(),
-            'dashboard' => Cache::remember('status-panel', 300, fn () => SiteCheck::dashboard()),
-            'live' => Cache::remember('status-live', 300, fn () => SiteCheck::latestByUrl()),
-            'tags' => $projects->flatMap->tagList()->countBy()->sortDesc()->keys()->take(6)->values(),
+            'now' => Setting::get('now.'.app()->getLocale()) ?: Setting::get('now.nl'),
         ]);
     }
 
@@ -41,8 +48,25 @@ class PortfolioController extends Controller
         return view('blog-show', compact('blog'));
     }
 
-    public function showProject(Project $project)
+    public function work()
     {
+        $projects = Project::ordered()->get();
+
+        return view('work', [
+            'projects' => $projects,
+            'tags' => $projects->flatMap->tagList()->countBy()->sortDesc()->keys()->take(8)->values(),
+        ]);
+    }
+
+    public function showProject(Request $request, Project $project)
+    {
+        // Old links used the numeric id: send them (and search engines) to the slug URL for good.
+        if ($request->route()->originalParameter('project') !== (string) $project->getRouteKey()) {
+            return redirect()->to(lroute('project.show', $project), 301);
+        }
+
+        $ordered = Project::ordered()->get(['id', 'slug', 'title', 'year', 'image']);
+        $position = $ordered->search(fn ($p) => $p->id === $project->id);
         $url = $project->hasDemo() ? $project->demo_url : null;
 
         return view('project-show', [
@@ -50,14 +74,22 @@ class PortfolioController extends Controller
             'uptimeDays' => $url ? SiteCheck::daily($url) : collect(),
             'uptime' => $url ? SiteCheck::uptime($url, 30) : null,
             'measuredSince' => $url ? SiteCheck::firstCheck($url) : null,
-            'next' => Project::where('id', '!=', $project->id)->orderByDesc('featured')->orderBy('sort_order')->first(),
+            'previous' => $ordered->count() > 1 ? $ordered[($position - 1 + $ordered->count()) % $ordered->count()] : null,
+            'next' => $ordered->count() > 1 ? $ordered[($position + 1) % $ordered->count()] : null,
+        ]);
+    }
+
+    public function certificates()
+    {
+        return view('certificates', [
+            'certificates' => Certificate::orderBy('sort_order')->orderByDesc('issued_at')->get(),
         ]);
     }
 
     public function cv()
     {
         return view('cv', [
-            'projects' => Project::orderByDesc('featured')->orderBy('sort_order')->get(),
+            'projects' => Project::ordered()->get(),
         ]);
     }
 
@@ -68,7 +100,7 @@ class PortfolioController extends Controller
             return redirect()->lroute('cv');
         }
 
-        $projects = Project::orderByDesc('featured')->orderBy('sort_order')->get();
+        $projects = Project::ordered()->get();
         \App\Models\Event::record('cv_download');
 
         return \Barryvdh\DomPDF\Facade\Pdf::loadView('cv-pdf', compact('projects'))
@@ -79,7 +111,7 @@ class PortfolioController extends Controller
 
     public function sitemap()
     {
-        $pages = collect([['home', []], ['cv', []], ['blog.index', []], ['status', []], ['privacy', []]])
+        $pages = collect([['home', []], ['work', []], ['certificates', []], ['cv', []], ['blog.index', []], ['status', []], ['privacy', []]])
             ->merge(Project::all()->map(fn ($p) => ['project.show', [$p]]))
             ->merge(Blog::published()->get()->map(fn ($b) => ['blog.show', [$b->slug]]));
 

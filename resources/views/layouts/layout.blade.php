@@ -76,7 +76,11 @@
     @yield('content')
 </main>
 
-<x-site-footer />
+@hasSection('compact-footer')
+    <x-site-footer :mail="false" />
+@else
+    <x-site-footer />
+@endif
 <x-toast-region />
 {{-- LEGACY: the ⌘K palette (with the terminal easter egg) stays until the terminal toy replaces it in Phase 4. --}}
 <x-command-palette />
