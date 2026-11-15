@@ -5,6 +5,9 @@ return [
         'description' => 'Amir Jebbari, Laravel-developer in Overijssel. Bouwer van ServerScope, een monitoringplatform voor servers en domeinen, en andere live Laravel-projecten.',
     ],
     'nav' => [
+        'play' => 'Speeltuin',
+        'main' => 'Hoofdmenu',
+        'language' => 'Taal',
         'home' => 'Home',
         'about' => 'Over mij',
         'skills' => 'Stack',
@@ -123,6 +126,9 @@ return [
         'signoff' => 'Groet,',
     ],
     'theme' => [
+        'system' => 'Thema: systeem',
+        'light' => 'Thema: licht',
+        'dark' => 'Thema: donker',
         'toggle' => 'Licht/donker thema wisselen',
     ],
     'two_factor' => [
@@ -296,13 +302,26 @@ return [
         'contact' => 'Contact',
     ],
     'footer' => [
-        'line' => 'Gebouwd met Laravel, Tailwind en GSAP.',
+        'line' => 'Gebouwd met Laravel, door mij.',
+        'write' => 'Mail me',
+        'nav' => 'Footer',
+        'status' => 'Status',
+        'agency' => 'Mijn webbureau:',
         'privacy' => 'Privacy',
     ],
     'errors' => [
-        'not_found' => 'Deze pagina bestaat niet',
-        'not_found_text' => 'De pagina die je zoekt is verplaatst, verwijderd of heeft nooit bestaan.',
+        'not_found' => 'Deze pagina bestaat niet. Nog niet.',
+        'not_found_text' => 'Misschien verhuisd, misschien nooit gebouwd. De rest van de site staat er wel.',
+        'server' => 'Er ging iets mis aan mijn kant.',
+        'server_text' => 'Niet jouw schuld. Probeer het zo nog eens, of mail me als het blijft gebeuren.',
+        'retry' => 'Probeer opnieuw',
         'home' => 'Terug naar home',
         'back' => 'Vorige pagina',
+    ],
+    'form' => [
+        'optional' => 'optioneel',
+        'sending' => 'Versturen…',
+        'error_generic' => 'Dat lukte niet. Probeer het zo nog eens.',
+        'error_throttle' => 'Even rustig aan. Probeer het over een paar minuten opnieuw.',
     ],
 ];

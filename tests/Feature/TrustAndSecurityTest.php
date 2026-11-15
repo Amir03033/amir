@@ -50,23 +50,23 @@ class TrustAndSecurityTest extends TestCase
     {
         $this->actingAs($this->admin(twoFactor: false));
 
-        $this->get('/admin')->assertRedirect('/admin/two-factor');
-        $this->get('/admin/two-factor')->assertOk()->assertSee('Instellen');
+        $this->get('/amir')->assertRedirect('/amir/two-factor');
+        $this->get('/amir/two-factor')->assertOk()->assertSee('Instellen');
     }
 
     public function test_admin_with_2fa_must_enter_a_code(): void
     {
         $this->actingAs($this->admin());
 
-        $this->get('/admin/projects')->assertRedirect(route('two-factor.check'));
+        $this->get('/amir/projects')->assertRedirect(route('two-factor.check'));
         $this->get(route('two-factor.check'))->assertOk();
 
         $this->post(route('two-factor.verify'), ['code' => '000000'])->assertSessionHasErrors('code');
-        $this->get('/admin')->assertRedirect(route('two-factor.check'));
+        $this->get('/amir')->assertRedirect(route('two-factor.check'));
 
         $code = (new Google2FA)->getCurrentOtp(self::SECRET);
-        $this->post(route('two-factor.verify'), ['code' => $code])->assertRedirect('/admin');
-        $this->get('/admin')->assertOk();
+        $this->post(route('two-factor.verify'), ['code' => $code])->assertRedirect('/amir');
+        $this->get('/amir')->assertOk();
     }
 
     public function test_recovery_code_works_once(): void
@@ -75,7 +75,7 @@ class TrustAndSecurityTest extends TestCase
         $this->actingAs($user);
 
         $this->post(route('two-factor.verify'), ['recovery_code' => 'recovery-code-one'])->assertRedirect();
-        $this->get('/admin')->assertOk();
+        $this->get('/amir')->assertOk();
         $this->assertNotContains('recovery-code-one', $user->fresh()->recoveryCodes());
     }
 

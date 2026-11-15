@@ -6,9 +6,41 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="theme-color" content="#09090b">
+    <meta name="theme-color" content="#F7F5F1">
+    <meta name="color-scheme" content="light dark">
+    <script>
+        // Theme before first paint (no flash). Preference: "system" (default), "light" or "dark".
+        (function (d) {
+            var mq = matchMedia('(prefers-color-scheme: dark)'), pref = null;
+            try { pref = localStorage.getItem('theme'); } catch (e) {}
+            if (pref !== 'light' && pref !== 'dark') pref = 'system';
+            function apply(p) {
+                var t = p === 'system' ? (mq.matches ? 'dark' : 'light') : p;
+                d.dataset.theme = t;
+                d.dataset.themePref = p;
+                var m = document.querySelector('meta[name=theme-color]');
+                if (m) m.content = t === 'dark' ? '#121110' : '#F7F5F1';
+                return t;
+            }
+            apply(pref);
+            window.__theme = {
+                pref: function () { return d.dataset.themePref; },
+                set: function (p) {
+                    try { p === 'system' ? localStorage.removeItem('theme') : localStorage.setItem('theme', p); } catch (e) {}
+                    window.dispatchEvent(new CustomEvent('themechange', { detail: apply(p) }));
+                },
+            };
+            mq.addEventListener('change', function () { if (d.dataset.themePref === 'system') window.__theme.set('system'); });
+
+            // Reveal targets start hidden only when motion is allowed and JS runs; un-hide if the bundle never starts.
+            if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                d.classList.add('js-motion');
+                setTimeout(function () { if (!d.classList.contains('motion-ready')) d.classList.remove('js-motion'); }, 2500);
+            }
+        })(document.documentElement);
+    </script>
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDescription }}">
     <meta name="author" content="{{ config('site.name') }}">
@@ -17,8 +49,9 @@
     <link rel="alternate" hreflang="en" href="{{ alternate_url('en') }}">
     <link rel="alternate" hreflang="x-default" href="{{ alternate_url('nl') }}">
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="preload" href="{{ asset('fonts/instrument-sans-latin-wght.woff2') }}" as="font" type="font/woff2" crossorigin>
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="{{ config('site.name') }}">
+    <meta property="og:site_name" content="amirs.life">
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
     <meta property="og:url" content="{{ url()->current() }}">
@@ -27,50 +60,25 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <script>
-        // Theme before first paint (no flash). Dark is the default; a saved choice wins.
-        (function (d) {
-            var t = 'dark';
-            try { t = localStorage.getItem('theme') || 'dark'; } catch (e) {}
-            d.dataset.theme = t;
-            window.toggleTheme = function () {
-                var next = d.dataset.theme === 'light' ? 'dark' : 'light';
-                d.dataset.theme = next;
-                try { localStorage.setItem('theme', next); } catch (e) {}
-                document.querySelectorAll('[data-theme-src]').forEach(function (img) { img.src = img.dataset.themeSrc + next; });
-                document.querySelector('meta[name=theme-color]').content = next === 'light' ? '#fafafa' : '#09090b';
-                window.dispatchEvent(new CustomEvent('themechange', { detail: next }));
-            };
-        })(document.documentElement);
-
-        // Hide reveal targets before first paint; un-hide if the animation bundle never starts.
-        (function (d) {
-            if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-            d.classList.add('js-motion');
-            try { if (sessionStorage.getItem('booted') === '1') d.classList.add('booted'); } catch (e) {}
-            setTimeout(function () { if (!d.classList.contains('motion-ready')) d.classList.remove('js-motion'); }, 2500);
-        })(document.documentElement);
-    </script>
     @stack('head')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body
-    x-data="{ mobileOpen: false }"
-    class="overflow-x-hidden"
->
-<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-scope-accent focus:px-4 focus:py-2 focus:text-ink-bg">{{ __('messages.nav.skip') }}</a>
+<body>
+<a href="#main" class="skip-link btn-primary">{{ __('messages.nav.skip') }}</a>
 
-<div class="pointer-events-none fixed inset-0 -z-10 bg-[radial-gradient(50%_40%_at_85%_-5%,rgb(110_156_247/.07),transparent),radial-gradient(40%_35%_at_5%_0%,rgb(74_222_128/.04),transparent)]"></div>
-<div class="cursor-glow" aria-hidden="true"></div>
-<div data-progress class="fixed inset-x-0 top-0 z-[60] h-[2px] origin-left scale-x-0 bg-gradient-to-r from-scope-accent to-scope-green" aria-hidden="true"></div>
+@hasSection('nav')
+    @yield('nav')
+@else
+    <x-site-nav />
+@endif
 
-@yield('nav')
-
-<main id="main" class="relative">
+<main id="main" tabindex="-1" class="outline-none">
     @yield('content')
 </main>
 
 <x-site-footer />
+<x-toast-region />
+{{-- LEGACY: the ⌘K palette (with the terminal easter egg) stays until the terminal toy replaces it in Phase 4. --}}
 <x-command-palette />
 </body>
 </html>

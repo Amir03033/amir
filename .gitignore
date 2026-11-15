@@ -2,7 +2,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=macos,windows,phpstorm,laravel,visualstudiocode
 
 ### Laravel ###
-public/build
+
 /vendor/
 package-lock.json
 node_modules/
@@ -222,3 +222,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,windows,phpstorm,laravel,visualstudiocode
+
+# Review screenshots (sent per phase, not versioned)
+/docs/screens/

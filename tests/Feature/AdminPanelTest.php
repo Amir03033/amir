@@ -34,7 +34,7 @@ class AdminPanelTest extends TestCase
 
         $this->actingAs($this->admin());
 
-        foreach (['/admin', '/admin/projects', '/admin/projects/create', "/admin/projects/{$project->id}/edit", '/admin/blogs', "/admin/blogs/{$blog->id}/edit", '/admin/contact-messages', '/admin/certificates', '/admin/visits', '/admin/site-media', '/admin/fail2ban-status', '/admin/site-settings', '/admin/two-factor', '/admin/testimonials', '/admin/testimonials/create'] as $url) {
+        foreach (['/amir', '/amir/projects', '/amir/projects/create', "/amir/projects/{$project->id}/edit", '/amir/blogs', "/amir/blogs/{$blog->id}/edit", '/amir/contact-messages', '/amir/certificates', '/amir/visits', '/amir/site-media', '/amir/fail2ban-status', '/amir/site-settings', '/amir/two-factor', '/amir/testimonials', '/amir/testimonials/create'] as $url) {
             $this->get($url)->assertOk();
         }
     }
@@ -43,7 +43,7 @@ class AdminPanelTest extends TestCase
     {
         $this->actingAs(User::factory()->create(['email' => 'x'.config('site.admin_email'), 'email_verified_at' => now()]));
 
-        $this->get('/admin')->assertForbidden();
+        $this->get('/amir')->assertForbidden();
     }
 
     public function test_drafts_are_hidden_from_the_public_site(): void
@@ -86,7 +86,7 @@ class AdminPanelTest extends TestCase
     {
         $this->actingAs($this->admin());
 
-        $this->get('/admin');
+        $this->get('/amir');
         $this->post('/lang/switch', ['locale' => 'en']);
         $this->assertSame(0, \App\Models\Visit::count());
 

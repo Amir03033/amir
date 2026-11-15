@@ -23,6 +23,11 @@ $pages = function () {
 Route::group([], $pages);
 Route::prefix('en')->name('en.')->group($pages);
 
+// Component overview for design review. Local only; never registered in production.
+if (app()->environment('local')) {
+    Route::view('/_styleguide', 'styleguide')->name('styleguide');
+}
+
 Route::get('/sitemap.xml', [PortfolioController::class, 'sitemap'])->name('sitemap');
 Route::get('/og/{type}/{id}.png', OgImageController::class)->whereIn('type', ['project', 'blog'])->whereNumber('id')->name('og');
 

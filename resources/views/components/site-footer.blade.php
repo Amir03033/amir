@@ -1,24 +1,39 @@
 @php
-    $github = config('site.github');
+    $email = config('site.email');
+    $jebbari = config('site.jebbari.url');
 @endphp
 
-<footer class="relative border-t border-ink-line">
-    <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 text-xs text-ink-muted md:flex-row md:items-center md:justify-between">
-        <div class="flex items-center gap-3">
-            <span class="dot bg-scope-green"></span>
-            <span>&copy; {{ date('Y') }} {{ config('site.name') }} · {{ __('messages.footer.line') }}</span>
+<footer class="site-footer">
+    <div class="container text-center">
+        <p class="label">{{ __('messages.footer.write') }}</p>
+        <a href="mailto:{{ $email }}" class="footer-mail mt-4" style="--chars: {{ mb_strlen($email) }}">{{ $email }}</a>
+
+        <div class="footer-row text-left">
+            <nav class="footer-links" aria-label="{{ __('messages.footer.nav') }}">
+                <a href="{{ lroute('home') }}#work">{{ __('messages.nav.portfolio') }}</a>
+                <a href="{{ lroute('blog.index') }}">{{ __('messages.nav.blog') }}</a>
+                <a href="{{ lroute('cv') }}">{{ __('messages.nav.cv') }}</a>
+                <a href="{{ lroute('status') }}">{{ __('messages.footer.status') }}</a>
+                <a href="{{ lroute('privacy') }}">{{ __('messages.footer.privacy') }}</a>
+                <a href="{{ config('site.linkedin') }}" rel="me noopener" target="_blank">LinkedIn</a>
+                @if(config('site.github'))
+                    <a href="{{ config('site.github') }}" rel="me noopener" target="_blank">GitHub</a>
+                @endif
+            </nav>
+            <div class="flex items-center gap-2">
+                <x-lang-switch />
+                <x-theme-toggle />
+            </div>
         </div>
-        <div class="flex flex-wrap gap-x-5 gap-y-2">
-            <a href="mailto:{{ config('site.email') }}" class="transition-colors hover:text-scope-accent">E-mail</a>
-            <a href="{{ config('site.linkedin') }}" target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-scope-accent">LinkedIn</a>
-            @if($github)
-                <a href="{{ $github }}" target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-scope-accent">GitHub</a>
-            @endif
-            @if(config('site.serverscope.url'))
-                <a href="{{ config('site.serverscope.url') }}" target="_blank" rel="noopener" class="transition-colors hover:text-scope-accent">ServerScope</a>
-            @endif
-            <a href="{{ lroute('cv') }}" class="transition-colors hover:text-scope-accent">{{ __('messages.nav.cv') }}</a>
-            <a href="{{ lroute('privacy') }}" class="transition-colors hover:text-scope-accent">{{ __('messages.footer.privacy') }}</a>
+
+        <div class="mt-6 flex flex-wrap items-center justify-between gap-x-8 gap-y-2 text-left text-[.875rem] text-muted">
+            <p>{{ __('messages.footer.line') }}</p>
+            <p>
+                @if($jebbari)
+                    {{ __('messages.footer.agency') }} <a href="{{ $jebbari }}" class="link" rel="noopener" target="_blank">Jebbari</a> ·
+                @endif
+                &copy; {{ date('Y') }} {{ config('site.name') }}
+            </p>
         </div>
     </div>
 </footer>

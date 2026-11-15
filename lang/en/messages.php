@@ -5,6 +5,9 @@ return [
         'description' => 'Amir Jebbari, Laravel developer in Overijssel. Builder of ServerScope, a server and domain monitoring platform, and other live Laravel projects.',
     ],
     'nav' => [
+        'play' => 'Playground',
+        'main' => 'Main menu',
+        'language' => 'Language',
         'home' => 'Home',
         'about' => 'About',
         'skills' => 'Stack',
@@ -123,6 +126,9 @@ return [
         'signoff' => 'Kind regards,',
     ],
     'theme' => [
+        'system' => 'Theme: system',
+        'light' => 'Theme: light',
+        'dark' => 'Theme: dark',
         'toggle' => 'Toggle light/dark theme',
     ],
     'two_factor' => [
@@ -296,13 +302,26 @@ return [
         'contact' => 'Contact',
     ],
     'footer' => [
-        'line' => 'Built with Laravel, Tailwind and GSAP.',
+        'line' => 'Built with Laravel, by me.',
+        'write' => 'Write to me',
+        'nav' => 'Footer',
+        'status' => 'Status',
+        'agency' => 'My web agency:',
         'privacy' => 'Privacy',
     ],
     'errors' => [
-        'not_found' => 'This page does not exist',
-        'not_found_text' => 'The page you are looking for was moved, removed or never existed.',
+        'not_found' => 'This page doesn’t exist. Yet.',
+        'not_found_text' => 'Maybe it moved, maybe it was never built. The rest of the site is still here.',
+        'server' => 'Something broke on my end.',
+        'server_text' => 'Not your fault. Try again in a moment, or email me if it keeps happening.',
+        'retry' => 'Try again',
         'home' => 'Back to home',
         'back' => 'Previous page',
+    ],
+    'form' => [
+        'optional' => 'optional',
+        'sending' => 'Sending…',
+        'error_generic' => 'That didn’t work. Please try again in a moment.',
+        'error_throttle' => 'Easy there. Try again in a few minutes.',
     ],
 ];

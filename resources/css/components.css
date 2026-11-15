@@ -1,0 +1,159 @@
+/* Components: designed once, reused everywhere (DESIGN.md §5). */
+@layer components {
+    /* ---------- Layout ---------- */
+    .container { width: 100%; max-width: calc(var(--w-content) + 2 * var(--gutter)); margin-inline: auto; padding-inline: var(--gutter); }
+    .read { max-width: var(--w-read); margin-inline: auto; }
+    .section { padding-block: var(--space-section); }
+    .section + .section { padding-top: 0; }
+    .section-band { background: rgb(var(--fill)); }
+    .section-band + .section { padding-top: var(--space-section); }
+
+    /* Section opener: optional mono label, one centered statement, optional lead. */
+    .opener { text-align: center; max-width: 18ch; margin-inline: auto; }
+    .opener-wide { max-width: 22ch; }
+    .statement { font-size: var(--t-statement); line-height: 1.04; letter-spacing: -0.025em; font-weight: 600; }
+    .hero-type { font-size: var(--t-hero); line-height: 1; letter-spacing: -0.03em; font-weight: 600; }
+    .lead { font-size: var(--t-lead); line-height: 1.45; color: rgb(var(--muted)); }
+    .opener + .lead, .opener-lead { max-width: 36rem; margin-inline: auto; text-align: center; margin-top: 24px; }
+
+    .label {
+        font-family: 'Martian Mono', ui-monospace, monospace;
+        font-size: var(--t-label);
+        font-weight: 450;
+        font-stretch: 87%;
+        letter-spacing: .1em;
+        line-height: 1.3;
+        text-transform: uppercase;
+        color: rgb(var(--muted));
+    }
+
+    .icon { width: 1.25em; height: 1.25em; flex-shrink: 0; stroke-width: 1.5; }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+        display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+        min-height: 48px; padding: 0 24px;
+        border-radius: var(--r-pill);
+        font-size: var(--t-small); font-weight: 500; line-height: 1;
+        white-space: nowrap; text-decoration: none; cursor: pointer;
+        transition: background-color var(--d-ui) var(--ease), border-color var(--d-ui) var(--ease), color var(--d-ui) var(--ease), opacity var(--d-ui) var(--ease);
+    }
+    .btn:disabled, .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; }
+    .btn-primary { @apply btn; background: rgb(var(--btn-bg)); color: rgb(var(--btn-fg)); border: 1px solid transparent; }
+    .btn-primary:not(:disabled):hover { background: rgb(var(--btn-bg-hover)); }
+    .btn-secondary { @apply btn; background: transparent; color: rgb(var(--text)); border: 1px solid rgb(var(--line-strong)); }
+    .btn-secondary:not(:disabled):hover { background: rgb(var(--fill)); }
+    .btn-sm { min-height: 36px; padding: 0 16px; font-size: .875rem; }
+    .btn-icon { min-height: 40px; width: 40px; padding: 0; border-radius: var(--r-pill); display: inline-grid; place-items: center; color: rgb(var(--text-2)); transition: background-color var(--d-ui) var(--ease), color var(--d-ui) var(--ease); }
+    .btn-icon:hover { background: rgb(var(--fill)); color: rgb(var(--text)); }
+
+    /* Text link: underline darkens and thickens, nothing moves. */
+    .link {
+        color: inherit;
+        text-decoration-line: underline;
+        text-decoration-thickness: 1px;
+        text-underline-offset: .2em;
+        text-decoration-color: rgb(var(--line-strong));
+        transition: text-decoration-color var(--d-ui) var(--ease), text-decoration-thickness var(--d-ui) var(--ease);
+    }
+    .link:hover { text-decoration-color: currentColor; text-decoration-thickness: 2px; }
+
+    /* Arrow link: "Bekijk de case →" — only the arrow moves. */
+    .link-arrow { display: inline-flex; align-items: center; gap: 6px; font-weight: 500; color: rgb(var(--text)); text-decoration: none; }
+    .link-arrow .icon { width: 1.1em; height: 1.1em; transition: transform var(--d-ui) var(--ease); }
+    .link-arrow:hover .icon { transform: translateX(3px); }
+    .link-arrow:hover .icon-diag { transform: translate(2px, -2px); }
+    .link-arrow > span { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em; text-decoration-color: transparent; transition: text-decoration-color var(--d-ui) var(--ease); }
+    .link-arrow:hover > span { text-decoration-color: currentColor; }
+
+    /* ---------- Tag ---------- */
+    .tag {
+        display: inline-flex; align-items: center;
+        padding: 2px 10px; border: 1px solid rgb(var(--line)); border-radius: var(--r-pill);
+        font-size: .8125rem; font-weight: 500; line-height: 1.5; color: rgb(var(--muted)); white-space: nowrap;
+    }
+
+    /* Status line: one quiet line; the live dot stays attached to the first word when it wraps. */
+    .status-line { font-size: var(--t-small); color: rgb(var(--muted)); text-wrap: balance; }
+    .live-dot { display: inline-block; width: 6px; height: 6px; margin-right: 8px; border-radius: 9999px; background: rgb(var(--accent)); vertical-align: .15em; }
+
+    /* ---------- Ruled list (projects, certificates, notes, ideas) ---------- */
+    .rule-list { border-top: 1px solid rgb(var(--line)); }
+    .rule-list > * { border-bottom: 1px solid rgb(var(--line)); }
+
+    /* ---------- Form fields ---------- */
+    .field { display: grid; gap: 8px; align-content: start; }
+    .field-label { font-size: var(--t-small); font-weight: 500; color: rgb(var(--text)); }
+    .field-label .optional { font-weight: 400; color: rgb(var(--muted)); }
+    .field-input {
+        width: 100%; min-height: 52px; padding: 13px 16px;
+        background: rgb(var(--surface)); color: rgb(var(--text));
+        border: 1px solid rgb(var(--line-strong)); border-radius: var(--r-1);
+        font: inherit; font-size: var(--t-body); line-height: 1.5;
+        transition: border-color var(--d-ui) var(--ease), box-shadow var(--d-ui) var(--ease);
+    }
+    .field-input::placeholder { color: rgb(var(--muted)); opacity: 1; }
+    .field-input:hover { border-color: rgb(var(--muted)); }
+    .field-input:focus { outline: none; border-color: rgb(var(--text)); box-shadow: 0 0 0 3px rgb(var(--accent) / .35); }
+    textarea.field-input { resize: vertical; min-height: 140px; field-sizing: content; max-height: 24rem; }
+    .field-input[aria-invalid="true"] { border-color: rgb(var(--err)); }
+    .field-input[aria-invalid="true"]:focus { box-shadow: 0 0 0 3px rgb(var(--err) / .25); }
+    .field-help { font-size: .875rem; color: rgb(var(--muted)); }
+    .field-error { display: flex; align-items: flex-start; gap: 6px; font-size: .875rem; color: rgb(var(--err)); }
+    .field-error:empty { display: none; }
+    .field-error .icon { width: 1rem; height: 1rem; margin-top: .15em; }
+    /* Honeypot: off-screen for people and assistive tech, still visible to naive bots. */
+    .hp { position: absolute !important; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+
+    .spinner { width: 1rem; height: 1rem; animation: spin .8s linear infinite; }
+
+    /* ---------- Toast ---------- */
+    .toast-region {
+        position: fixed; z-index: 80; left: 50%; bottom: max(16px, env(safe-area-inset-bottom));
+        transform: translateX(-50%); width: min(calc(100vw - 32px), 420px);
+        display: grid; gap: 8px; pointer-events: none;
+    }
+    .toast {
+        pointer-events: auto; display: flex; align-items: flex-start; gap: 10px;
+        padding: 14px 16px; border-radius: var(--r-1);
+        background: rgb(var(--btn-bg)); color: rgb(var(--btn-fg)); box-shadow: var(--shadow-float);
+        font-size: var(--t-small); line-height: 1.45;
+        animation: toast-in var(--d-ui-slow) var(--ease) both;
+    }
+    .toast[data-leaving] { animation: toast-out var(--d-ui) var(--ease) both; }
+    .toast .icon { width: 1.125rem; height: 1.125rem; margin-top: .1em; }
+    .toast-close { margin-left: auto; opacity: .6; transition: opacity var(--d-ui); }
+    .toast-close:hover { opacity: 1; }
+
+    /* ---------- Dialog / sheet ---------- */
+    .dialog {
+        width: min(calc(100vw - 32px), 560px); max-height: min(85svh, 760px);
+        margin: auto; padding: 0; border: 1px solid rgb(var(--line)); border-radius: var(--r-1);
+        background: rgb(var(--surface)); color: rgb(var(--text)); box-shadow: var(--shadow-float);
+        overflow: auto;
+    }
+    .dialog::backdrop { background: var(--scrim); }
+    .dialog[open] { animation: dialog-in var(--d-ui-slow) var(--ease) both; }
+    .dialog-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px 0; }
+    .dialog-body { padding: 16px 24px 24px; }
+    @media (max-width: 639px) {
+        .dialog { width: 100%; max-width: none; margin: auto 0 0; border-radius: var(--r-1) var(--r-1) 0 0; border-bottom: 0; }
+        .dialog[open] { animation-name: sheet-in; }
+        .dialog::before { content: ''; display: block; width: 36px; height: 4px; margin: 10px auto 0; border-radius: 9999px; background: rgb(var(--line-strong)); }
+    }
+
+    /* ---------- Empty / loading / error ---------- */
+    .empty { padding: 48px 0; text-align: center; color: rgb(var(--muted)); }
+    .skeleton { height: 1em; border-radius: 4px; background: rgb(var(--fill)); animation: pulse-soft 1.6s ease-in-out infinite; }
+
+    /* ---------- Skip link ---------- */
+    .skip-link { position: fixed; left: 16px; top: 12px; z-index: 90; transform: translateY(-200%); }
+    .skip-link:focus { transform: none; }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse-soft { 50% { opacity: .5; } }
+@keyframes toast-in { from { opacity: 0; transform: translateY(8px); } }
+@keyframes toast-out { to { opacity: 0; transform: translateY(4px); } }
+@keyframes dialog-in { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+@keyframes sheet-in { from { transform: translateY(100%); } }

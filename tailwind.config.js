@@ -1,6 +1,7 @@
 import typography from '@tailwindcss/typography';
 
-// Shared with ServerScope: same palette, radius and type so both read as one family.
+// amirs.life design tokens (see DESIGN.md). Colours, radii and shadows are *replaced*, not extended,
+// so Tailwind's defaults (blue-500, rounded-2xl, shadow-lg…) don't exist here and can't creep back in.
 const token = (name) => `rgb(var(--${name}) / <alpha-value>)`;
 
 /** @type {import('tailwindcss').Config} */
@@ -9,61 +10,111 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/js/**/*.js',
     ],
-    // Status colors are picked at runtime in status-panel.blade.php.
+    // Status colours are picked at runtime in the (legacy) status views.
     safelist: ['bg-scope-green', 'bg-scope-red', 'bg-scope-yellow', 'text-scope-green', 'text-scope-red', 'text-scope-yellow'],
     theme: {
+        colors: {
+            transparent: 'transparent',
+            current: 'currentColor',
+            inherit: 'inherit',
+            white: '#ffffff',
+            bg: token('bg'),
+            surface: token('surface'),
+            fill: token('fill'),
+            line: token('line'),
+            'line-strong': token('line-strong'),
+            fg: token('text'),
+            'fg-2': token('text-2'),
+            muted: token('muted'),
+            accent: token('accent'),
+            'accent-fg': token('accent-text'),
+            ok: token('ok'),
+            err: token('err'),
+            warn: token('warn'),
+            // Fixed, theme-independent surfaces (terminal, primary button in light).
+            night: token('night'),
+            day: token('day'),
+
+            // LEGACY aliases so the pre-redesign views stay readable until they are rebuilt (remove in Phase 6).
+            ink: {
+                bg: token('bg'),
+                panel: token('surface'),
+                panel2: token('fill'),
+                line: token('line'),
+                strong: token('line-strong'),
+                text: token('text'),
+                muted: token('muted'),
+                soft: token('text-2'),
+            },
+            scope: {
+                accent: token('accent'),
+                green: token('ok'),
+                yellow: token('warn'),
+                red: token('err'),
+            },
+        },
+        borderRadius: {
+            none: '0',
+            0: '0',
+            1: 'var(--r-1)',
+            pill: '9999px',
+            full: '9999px',
+            panel: 'var(--r-1)', // legacy
+        },
+        boxShadow: {
+            none: 'none',
+            float: 'var(--shadow-float)',
+        },
+        fontFamily: {
+            sans: ['"Instrument Sans"', '"Instrument Sans Fallback"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            mono: ['"Martian Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        },
         extend: {
-            colors: {
-                ink: {
-                    bg: token('bg'),
-                    panel: token('panel'),
-                    panel2: token('panel-2'),
-                    line: token('border'),
-                    strong: token('border-strong'),
-                    text: token('text'),
-                    muted: token('muted'),
-                    soft: token('soft'),
-                },
-                scope: {
-                    accent: token('accent'),
-                    green: token('green'),
-                    yellow: token('yellow'),
-                    red: token('red'),
-                },
+            fontSize: {
+                hero: ['var(--t-hero)', { lineHeight: '1', letterSpacing: '-0.03em' }],
+                statement: ['var(--t-statement)', { lineHeight: '1.04', letterSpacing: '-0.025em' }],
+                title: ['var(--t-title)', { lineHeight: '1.08', letterSpacing: '-0.02em' }],
+                h3: ['var(--t-h3)', { lineHeight: '1.2', letterSpacing: '-0.01em' }],
+                lead: ['var(--t-lead)', { lineHeight: '1.45', letterSpacing: '-0.005em' }],
+                body: ['var(--t-body)', { lineHeight: '1.6' }],
+                small: ['var(--t-small)', { lineHeight: '1.5' }],
+                label: ['var(--t-label)', { lineHeight: '1.3', letterSpacing: '0.1em' }],
             },
-            fontFamily: {
-                sans: ['"Inter Variable"', 'Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-                mono: ['"JetBrains Mono Variable"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+            maxWidth: {
+                content: 'var(--w-content)',
+                read: 'var(--w-read)',
             },
-            borderRadius: {
-                panel: '18px',
+            spacing: {
+                gutter: 'var(--gutter)',
+                section: 'var(--space-section)',
+                stack: 'var(--space-stack)',
             },
+            transitionTimingFunction: {
+                DEFAULT: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                out: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                inout: 'cubic-bezier(0.65, 0, 0.35, 1)',
+            },
+            transitionDuration: {
+                DEFAULT: '200ms',
+                ui: '200ms',
+                slow: '300ms',
+                reveal: '800ms',
+            },
+            zIndex: {
+                nav: '50',
+                sheet: '70',
+                toast: '80',
+                skip: '90',
+            },
+            // LEGACY keyframes still referenced by old views (remove in Phase 6).
             keyframes: {
-                pulseDot: {
-                    '0%': { transform: 'scale(1)', opacity: '.6' },
-                    '100%': { transform: 'scale(2.6)', opacity: '0' },
-                },
-                marquee: {
-                    from: { transform: 'translateX(0)' },
-                    to: { transform: 'translateX(-50%)' },
-                },
-                blink: {
-                    '50%': { opacity: '0' },
-                },
-                nudge: {
-                    '0%, 100%': { transform: 'translateX(0)' },
-                    '50%': { transform: 'translateX(4px)' },
-                },
-                scrollcue: {
-                    '0%': { transform: 'translateY(-100%)' },
-                    '100%': { transform: 'translateY(200%)' },
-                },
+                pulseDot: { '0%': { transform: 'scale(1)', opacity: '.6' }, '100%': { transform: 'scale(2.6)', opacity: '0' } },
+                nudge: { '0%, 100%': { transform: 'translateX(0)' }, '50%': { transform: 'translateX(4px)' } },
             },
             animation: {
                 'pulse-dot': 'pulseDot 2s cubic-bezier(0, 0, .2, 1) infinite',
-                marquee: 'marquee 40s linear infinite',
-                blink: 'blink 1s step-end infinite',
-                scrollcue: 'scrollcue 1.8s cubic-bezier(.6, 0, .4, 1) infinite',
+                marquee: 'none',
+                blink: 'none',
             },
         },
     },

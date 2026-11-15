@@ -1,0 +1,81 @@
+/* ------------------------------------------------------------------
+   Motion (DESIGN.md §7). Calm, scroll-driven, no bounce.
+   Only transform and opacity ever animate.
+   ------------------------------------------------------------------ */
+
+/* 1. Entrances, once. Hidden only when JS + motion are available (.js-motion is set pre-paint, with a failsafe). */
+.js-motion [data-reveal] {
+    transition: opacity var(--d-reveal) var(--ease), transform var(--d-reveal) var(--ease);
+    transition-delay: calc(var(--i, 0) * var(--stagger));
+}
+.js-motion [data-reveal]:not(.is-in) { opacity: 0; transform: translateY(24px) scale(.98); }
+
+/* 2. Hero lines on load: pure CSS so the LCP text starts painting immediately. */
+[data-hero-line] { animation: hero-in 900ms var(--ease) both; animation-delay: calc(var(--i, 0) * 80ms); }
+@keyframes hero-in { from { opacity: 0; transform: translateY(20px); } }
+
+/* 3. Pinned stages: a tall container with a sticky 100svh stage; scroll progress drives the children. */
+.pin { position: relative; height: var(--pin-h, 180vh); }
+@media (max-width: 767px) { .pin { height: var(--pin-h-sm, 140vh); } }
+.pin-stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: clip; display: grid; place-items: center; }
+
+[data-scrub="fade-up"], [data-scrub-view="fade-up"] { --kf: scrub-fade-up; }
+[data-scrub="scale-in"], [data-scrub-view="scale-in"] { --kf: scrub-scale-in; }
+[data-scrub="fade-out"], [data-scrub-view="fade-out"] { --kf: scrub-fade-out; --ease-scrub: linear; }
+[data-scrub-view="hero-exit"] { --kf: scrub-hero-exit; --ease-scrub: linear; --range: exit 0% exit 60%; }
+[data-scrub-view="dim-in"] { --kf: scrub-dim-in; --range: entry 40% cover 55%; }
+[data-scrub-view="zoom-settle"] { --kf: scrub-zoom-settle; --ease-scrub: linear; --range: cover 0% cover 60%; }
+[data-scrub-view="parallax"] { --kf: scrub-parallax; --ease-scrub: linear; --range: cover 0% cover 100%; }
+
+@supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+        .pin { view-timeline: --pin block; }
+        .pin [data-scrub] {
+            animation-name: var(--kf);
+            animation-duration: auto;
+            animation-timing-function: var(--ease-scrub, var(--ease));
+            animation-fill-mode: both;
+            animation-timeline: --pin;
+            animation-range: contain var(--from, 0%) contain var(--to, 100%);
+        }
+        [data-scrub-view] {
+            animation-name: var(--kf);
+            animation-duration: auto;
+            animation-timing-function: var(--ease-scrub, var(--ease));
+            animation-fill-mode: both;
+            animation-timeline: view();
+            animation-range: var(--range, entry 0% cover 40%);
+        }
+        /* Hero exit follows the hero section, not the element itself. */
+        [data-hero] { view-timeline: --hero block; }
+        [data-hero] [data-scrub-view="hero-exit"] { animation-timeline: --hero; }
+    }
+}
+
+@keyframes scrub-fade-up { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+@keyframes scrub-scale-in { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: none; } }
+@keyframes scrub-fade-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: scale(.98); } }
+@keyframes scrub-hero-exit { from { opacity: 1; transform: none; } to { opacity: .2; transform: scale(.96); } }
+@keyframes scrub-dim-in { from { opacity: .15; } to { opacity: 1; } }
+@keyframes scrub-zoom-settle { from { transform: scale(1.06); } to { transform: none; } }
+@keyframes scrub-parallax { from { transform: translateY(20px); } to { transform: translateY(-20px); } }
+
+/* 4. Page transitions (cross-document View Transitions; unsupported browsers just navigate). */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation: 150ms var(--ease) both vt-out; }
+::view-transition-new(root) { animation: 250ms var(--ease) both vt-in; }
+::view-transition-group(site-nav) { animation: none; }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(8px); } }
+
+/* 5. Reduced motion: no scrubs, no pins, no slides. Entrances become short fades. */
+@media (prefers-reduced-motion: reduce) {
+    .pin { height: auto !important; }
+    .pin-stage { position: relative; height: auto; min-height: 0; overflow: visible; padding-block: var(--space-stack); }
+    [data-scrub], [data-scrub-view] { animation: none !important; opacity: 1 !important; transform: none !important; }
+    [data-hero-line] { animation: fade-in 200ms linear both; animation-delay: 0ms; }
+    .js-motion [data-reveal] { transition: opacity 200ms linear; transition-delay: 0ms; }
+    .js-motion [data-reveal]:not(.is-in) { transform: none; }
+    ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+    .nav-sheet[open], .nav-sheet[open] .nav-sheet-links a, .dialog[open], .toast { animation-duration: 1ms !important; }
+}

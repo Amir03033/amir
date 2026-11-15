@@ -16,6 +16,11 @@ return [
 
     'booking_url' => env('SITE_BOOKING_URL'),
 
+    // The agency. Only linked from the footer and the about section.
+    'jebbari' => [
+        'url' => env('JEBBARI_URL', 'https://jebbari.nl'),
+    ],
+
     // These can also be set in Filament under "Links & instellingen", which overrides .env.
     'serverscope' => [
         'url' => env('SERVERSCOPE_URL'),

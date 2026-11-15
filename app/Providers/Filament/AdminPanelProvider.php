@@ -27,7 +27,7 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->id('Admin')
-            ->path('admin')
+            ->path('amir')
             ->login()
             // Same palette as the public site and ServerScope: neutral zinc, blue accent, green status.
             ->brandName('Amir Jebbari')

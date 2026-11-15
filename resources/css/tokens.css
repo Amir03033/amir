@@ -1,0 +1,120 @@
+/* ------------------------------------------------------------------
+   amirs.life tokens. Colours are RGB triplets so Tailwind can add alpha.
+   Components only use the semantic names below; themes remap them.
+   ------------------------------------------------------------------ */
+
+@font-face {
+    font-family: 'Instrument Sans';
+    font-style: normal;
+    font-weight: 400 700;
+    font-display: swap;
+    src: url('/fonts/instrument-sans-latin-wght.woff2') format('woff2-variations'), url('/fonts/instrument-sans-latin-wght.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Arial tuned to Instrument Sans' metrics, so swapping fonts doesn't move anything (CLS ≈ 0). */
+@font-face {
+    font-family: 'Instrument Sans Fallback';
+    src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+    size-adjust: 102.73%;
+    ascent-override: 94.42%;
+    descent-override: 24.34%;
+    line-gap-override: 0%;
+}
+
+@font-face {
+    font-family: 'Martian Mono';
+    font-style: normal;
+    font-weight: 100 800;
+    font-stretch: 75% 112.5%;
+    font-display: swap;
+    src: url('/fonts/martian-mono-latin-standard.woff2') format('woff2-variations'), url('/fonts/martian-mono-latin-standard.woff2') format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+    color-scheme: light;
+
+    /* Light: warm off-white + ink. Vermilion only for tiny details. */
+    --bg: 247 245 241;          /* #F7F5F1 */
+    --surface: 255 255 255;     /* #FFFFFF */
+    --fill: 239 236 230;        /* #EFECE6 */
+    --line: 227 222 213;        /* #E3DED5 */
+    --line-strong: 207 200 188; /* #CFC8BC */
+    --text: 22 21 18;           /* #161512  16.8:1 */
+    --text-2: 72 68 61;         /* #48443D   8.9:1 */
+    --muted: 107 101 91;        /* #6B655B   5.3:1 */
+    --accent: 226 67 30;        /* #E2431E  details only */
+    --accent-text: 184 50 15;   /* #B8320F   5.5:1 */
+    --ok: 46 106 59;            /* #2E6A3B */
+    --err: 158 27 50;           /* #9E1B32 */
+    --warn: 138 90 0;           /* #8A5A00 */
+    --night: 22 21 18;          /* terminal panel */
+    --day: 247 245 241;
+    --btn-bg: 22 21 18;
+    --btn-bg-hover: 42 40 36;
+    --btn-fg: 247 245 241;
+    --shadow-float: 0 1px 2px rgb(22 21 18 / .04), 0 8px 24px rgb(22 21 18 / .06);
+    --scrim: rgb(22 21 18 / .35);
+    --photo-filter: none;
+
+    /* Type (390 → 1440px viewport). */
+    --t-hero: clamp(3.5rem, 2.1rem + 5.9vw, 7.5rem);
+    --t-statement: clamp(2.25rem, 1.4rem + 3.5vw, 4.5rem);
+    --t-title: clamp(1.75rem, 1.25rem + 2vw, 3rem);
+    --t-h3: clamp(1.25rem, 1.15rem + .45vw, 1.5rem);
+    --t-lead: clamp(1.1875rem, 1.1rem + .4vw, 1.4375rem);
+    --t-body: clamp(1.0625rem, 1.03rem + .12vw, 1.125rem);
+    --t-small: .9375rem;
+    --t-label: clamp(.75rem, .73rem + .08vw, .8125rem);
+
+    /* Layout. */
+    --w-content: 1200px;
+    --w-read: 720px;
+    --gutter: 20px;
+    --space-section: clamp(120px, 8rem + 6vw, 220px);
+    --space-stack: clamp(48px, 3rem + 3vw, 96px);
+    --nav-h: 64px;
+
+    /* Shape. */
+    --r-0: 0;
+    --r-1: 12px;
+    --r-pill: 9999px;
+
+    /* Motion. No spring, no overshoot. */
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+    --d-ui: 200ms;
+    --d-ui-slow: 300ms;
+    --d-reveal: 800ms;
+    --stagger: 60ms;
+}
+
+@media (min-width: 768px) { :root { --gutter: 32px; } }
+@media (min-width: 1280px) { :root { --gutter: 48px; } }
+
+/* Dark: warm night, designed on its own (not an inversion). */
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: 18 17 16;             /* #121110 */
+    --surface: 27 26 24;        /* #1B1A18 */
+    --fill: 36 34 31;           /* #24221F */
+    --line: 46 43 39;           /* #2E2B27 */
+    --line-strong: 69 65 59;    /* #45413B */
+    --text: 242 239 233;        /* #F2EFE9  16.4:1 */
+    --text-2: 207 202 193;      /* #CFCAC1  11.6:1 */
+    --muted: 163 158 149;       /* #A39E95   7.1:1 */
+    --accent: 255 107 61;       /* #FF6B3D   6.7:1 */
+    --accent-text: 255 107 61;
+    --ok: 127 208 143;
+    --err: 255 138 138;
+    --warn: 232 180 74;
+    --night: 27 26 24;
+    --day: 242 239 233;
+    --btn-bg: 242 239 233;
+    --btn-bg-hover: 255 255 255;
+    --btn-fg: 18 17 16;
+    --shadow-float: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .35);
+    --scrim: rgb(0 0 0 / .55);
+    --photo-filter: brightness(.92);
+}
