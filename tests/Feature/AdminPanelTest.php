@@ -34,9 +34,52 @@ class AdminPanelTest extends TestCase
 
         $this->actingAs($this->admin());
 
-        foreach (['/amir', '/amir/projects', '/amir/projects/create', "/amir/projects/{$project->id}/edit", '/amir/blogs', "/amir/blogs/{$blog->id}/edit", '/amir/contact-messages', '/amir/certificates', '/amir/visits', '/amir/site-media', '/amir/fail2ban-status', '/amir/site-settings', '/amir/two-factor', '/amir/testimonials', '/amir/testimonials/create'] as $url) {
+        foreach (['/amir', '/amir/projects', '/amir/projects/create', "/amir/projects/{$project->id}/edit", '/amir/blogs', "/amir/blogs/{$blog->id}/edit", '/amir/contact-messages', '/amir/certificates', '/amir/visits', '/amir/site-media', '/amir/fail2ban-status', '/amir/site-settings', '/amir/two-factor', '/amir/testimonials', '/amir/testimonials/create', '/amir/questions', '/amir/ideas', '/amir/ideas/create'] as $url) {
             $this->get($url)->assertOk();
         }
+    }
+
+    public function test_questions_can_be_answered_and_published_in_filament(): void
+    {
+        $this->actingAs($this->admin());
+        Filament::setCurrentPanel(Filament::getPanel('Admin'));
+        $question = \App\Models\Question::create(['body' => 'Welke stack gebruik je het liefst?', 'voter_hash' => 'x']);
+        $idea = \App\Models\Idea::create(['title' => 'Een RSS-feed', 'voter_hash' => 'x']);
+
+        $this->get("/amir/questions/{$question->id}/edit")->assertOk();
+        $this->get("/amir/ideas/{$idea->id}/edit")->assertOk();
+
+        Livewire::test(\App\Filament\Admin\Resources\QuestionResource\Pages\EditQuestion::class, ['record' => $question->getKey()])
+            ->fillForm(['answer' => 'Laravel, Filament en Alpine.', 'is_public' => true])
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->assertTrue($question->fresh()->is_public);
+        $this->get('/ask')->assertSee('Laravel, Filament en Alpine.');
+
+        Livewire::test(\App\Filament\Admin\Resources\IdeaResource\Pages\EditIdea::class, ['record' => $idea->getKey()])
+            ->fillForm(['status' => 'building', 'is_public' => true])
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->get('/roadmap')->assertSee('Een RSS-feed')->assertSee(__('site.ideas.status.building'));
+    }
+
+    public function test_project_slug_year_and_role_are_editable(): void
+    {
+        $this->actingAs($this->admin());
+        Filament::setCurrentPanel(Filament::getPanel('Admin'));
+        $project = Project::create(['title' => ['nl' => 'Oude naam', 'en' => 'Old'], 'description' => ['nl' => 'x', 'en' => 'x'], 'tags' => 'PHP']);
+
+        Livewire::test(\App\Filament\Admin\Resources\ProjectResource\Pages\EditProject::class, ['record' => $project->getKey()])
+            ->fillForm(['slug' => 'nieuwe-naam', 'year' => 2025, 'role' => ['nl' => 'Bouwer', 'en' => 'Builder'], 'summary' => ['nl' => 'Eén regel.', 'en' => 'One line.']])
+            ->call('save')
+            ->assertHasNoErrors();
+
+        $this->get('/project/nieuwe-naam')->assertOk()->assertSee('2025')->assertSee('Bouwer')->assertSee('Eén regel.');
+
+        Livewire::test(\App\Filament\Admin\Resources\ProjectResource\Pages\EditProject::class, ['record' => $project->getKey()])
+            ->fillForm(['slug' => '123'])->call('save')->assertHasFormErrors(['slug']);
     }
 
     public function test_lookalike_email_cannot_access_admin(): void

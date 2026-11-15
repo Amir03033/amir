@@ -29,13 +29,13 @@ class AdminPanelProvider extends PanelProvider
             ->id('Admin')
             ->path('amir')
             ->login()
-            // Same palette as the public site and ServerScope: neutral zinc, blue accent, green status.
+            // Neutral zinc with the amirs.life burgundy as primary; green status.
             ->brandName('Amir Jebbari')
             ->brandLogo(fn () => view('filament.admin.brand'))
             ->brandLogoHeight('2.25rem')
             ->favicon(asset('favicon.svg'))
             ->colors([
-                'primary' => Color::hex('#6e9cf7'),
+                'primary' => Color::hex('#7F1D3F'),
                 'gray' => Color::Zinc,
                 'success' => Color::hex('#4ade80'),
                 'warning' => Color::Amber,

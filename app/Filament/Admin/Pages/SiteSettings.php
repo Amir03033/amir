@@ -57,8 +57,8 @@ class SiteSettings extends Page implements HasForms
         return $form
             ->statePath('data')
             ->schema([
-                Section::make('Nu bezig met')
-                    ->description('Eén regel onder je kop op de homepage. Laat zien dat je actief bent; werk hem af en toe bij. Leeg = niet tonen.')
+                Section::make('Nu bezig met (currently building)')
+                    ->description('De statusregel onder je kop op de homepage ("Amsterdam 14:32 · Nu bezig met: …") en het commando now in de terminal. Werk hem af en toe bij. Leeg = alleen de tijd.')
                     ->aside()
                     ->schema([
                         TextInput::make('now_nl')->label('Nederlands')->maxLength(140)->placeholder('meldingen in ServerScope slimmer maken'),

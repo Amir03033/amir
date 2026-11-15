@@ -58,6 +58,16 @@ class ProjectResource extends Resource
                                     ->label('Titel (NL)')
                                     ->required(),
 
+                                TextInput::make('summary.nl')
+                                    ->label('Eén regel (NL)')
+                                    ->maxLength(140)
+                                    ->helperText('Korte zin onder de projectnaam op de homepage en in /werk. Leeg = begin van de omschrijving.'),
+
+                                TextInput::make('role.nl')
+                                    ->label('Mijn rol (NL)')
+                                    ->maxLength(80)
+                                    ->placeholder('Ontwerp en bouw'),
+
                                 Textarea::make('description.nl')
                                     ->label('Omschrijving (NL)')
                                     ->required()
@@ -70,6 +80,15 @@ class ProjectResource extends Resource
                                     ->label('Title (EN)')
                                     ->required(),
 
+                                TextInput::make('summary.en')
+                                    ->label('One line (EN)')
+                                    ->maxLength(140),
+
+                                TextInput::make('role.en')
+                                    ->label('My role (EN)')
+                                    ->maxLength(80)
+                                    ->placeholder('Design and build'),
+
                                 Textarea::make('description.en')
                                     ->label('Description (EN)')
                                     ->required()
@@ -77,6 +96,25 @@ class ProjectResource extends Resource
                             ]),
                     ])
                     ->columnSpanFull(),
+
+                Forms\Components\Section::make('Adres & jaar')
+                    ->schema([
+                        TextInput::make('slug')
+                            ->label('Slug')
+                            ->prefix('/project/')
+                            ->maxLength(120)
+                            ->alphaDash()
+                            ->unique(ignoreRecord: true)
+                            ->rule('not_regex:/^\\d+$/')
+                            ->helperText('Leeg = automatisch uit de Nederlandse titel. Let op: wijzig je hem later, dan werken oude links niet meer.'),
+                        TextInput::make('year')
+                            ->label('Jaar')
+                            ->numeric()
+                            ->integer()
+                            ->minValue(2000)
+                            ->maxValue(2100),
+                    ])
+                    ->columns(2),
 
                 Forms\Components\Section::make('Media & stack')
                     ->schema([
@@ -92,12 +130,12 @@ class ProjectResource extends Resource
                             ->imageResizeTargetWidth('1600')
                             ->imageResizeTargetHeight('1600')
                             ->maxSize(8192)
-                            ->helperText('Wordt bij uploaden automatisch verkleind tot max. 1600px, zodat de site snel blijft.')
+                            ->helperText('Echte screenshot (16:10 werkt het best). Verschijnt op de homepage, in /werk en bovenaan de case. Wordt verkleind tot max. 1600px.')
                             ->columnSpanFull(),
 
                         FileUpload::make('video')
                             ->label('Korte video (optioneel)')
-                            ->helperText('5–10 seconden schermopname, MP4 of WebM, zonder geluid, max. 20 MB. Speelt af als iemand over de projectkaart beweegt.')
+                            ->helperText('5–10 seconden schermopname, MP4 of WebM, zonder geluid, max. 20 MB. (Wordt in het nieuwe ontwerp nog niet getoond.)')
                             ->acceptedFileTypes(['video/mp4', 'video/webm'])
                             ->disk('public')
                             ->directory('projects/video')
@@ -148,7 +186,7 @@ class ProjectResource extends Resource
                     ]),
 
                 Forms\Components\Section::make('Links')
-                    ->description('Een demo-URL wordt automatisch elke 10 minuten gecontroleerd en verschijnt in het live-dashboard op de homepage.')
+                    ->description('Een live-URL wordt elke 10 minuten gecontroleerd; de uptime staat op de casepagina en in het Ping-blok op de homepage.')
                     ->schema([
                         TextInput::make('demo_url')
                             ->label('Live URL')
