@@ -1,30 +1,24 @@
 @extends('layouts.layout', [
-    'title' => __('messages.blog.index_title').' — '.config('site.name'),
-    'description' => __('messages.blog.index_intro'),
+    'title' => __('site.notes.label').' — Amir Jebbari',
+    'description' => __('site.notes.lead'),
 ])
 
-@section('nav')
-    <x-site-nav />
-@endsection
-
 @section('content')
-    <div class="px-4 pb-24 pt-28 md:pt-36">
-        <div class="mx-auto max-w-4xl">
-            <nav data-reveal class="flex items-center gap-2 text-sm text-ink-muted" aria-label="Breadcrumb">
-                <a href="{{ lroute('home') }}" class="hover:text-ink-text">{{ __('messages.hero.crumb') }}</a>
-                <span>›</span>
-                <span class="text-ink-soft">{{ __('messages.blog.index_title') }}</span>
-            </nav>
-            <h1 data-split class="mt-6 text-4xl font-bold tracking-[-.03em] md:text-6xl">{{ __('messages.blog.index_title') }}</h1>
-            <p data-reveal class="mt-4 max-w-xl text-lg text-ink-soft">{{ __('messages.blog.index_intro') }}</p>
+    <header class="page-head container">
+        <p class="label" data-hero-line style="--i: 0">{{ __('site.notes.label') }}</p>
+        <h1 class="hero-type mx-auto mt-5 max-w-[12ch]" data-hero-line style="--i: 1">{{ __('site.notes.title') }}</h1>
+        <p class="lead mx-auto mt-6 max-w-xl" data-hero-line style="--i: 2">{{ __('site.notes.lead') }}</p>
+    </header>
 
-            <div class="mt-12">
-                @if($blogs->isNotEmpty())
-                    <x-blog-list :blogs="$blogs" />
-                @else
-                    <p class="panel p-8 text-center text-sm text-ink-muted">{{ __('messages.blog.empty') }}</p>
-                @endif
-            </div>
-        </div>
-    </div>
+    <section class="container pb-section">
+        @if($blogs->isEmpty())
+            <p class="empty">{{ __('site.notes.empty') }}</p>
+        @else
+            <ul class="rule-list read" data-reveal-group>
+                @foreach($blogs as $blog)
+                    <x-note-row :blog="$blog" />
+                @endforeach
+            </ul>
+        @endif
+    </section>
 @endsection

@@ -1,7 +1,7 @@
 @php
     use App\Models\Setting;
     $avatar = Setting::get('media.avatar') ? storage_path('app/public/'.Setting::get('media.avatar')) : public_path('images/amir-avatar.webp');
-    $accent = '#3b6fd8';
+    $accent = '#7F1D3F';
 @endphp
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
@@ -10,11 +10,11 @@
     <title>CV — {{ config('site.name') }}</title>
     <style>
         @page { margin: 34px 40px; }
-        body { font-family: DejaVu Sans, sans-serif; font-size: 10.5px; color: #1f2328; line-height: 1.5; }
+        body { font-family: DejaVu Sans, sans-serif; font-size: 10.5px; color: #161512; line-height: 1.5; }
         h1 { font-size: 24px; margin: 0; letter-spacing: -0.5px; }
-        h2 { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #6b7280; margin: 0 0 8px; border-bottom: 1px solid #e5e7eb; padding-bottom: 4px; }
+        h2 { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #6B655B; margin: 0 0 8px; border-bottom: 1px solid #E3DED5; padding-bottom: 4px; }
         .sub { color: {{ $accent }}; font-size: 12px; margin-top: 2px; }
-        .muted { color: #6b7280; }
+        .muted { color: #6B655B; }
         .section { margin-top: 18px; }
         .item { margin-bottom: 10px; }
         .item b { font-size: 11.5px; }
@@ -31,7 +31,7 @@
             <td width="76">@if(is_file($avatar))<img class="avatar" src="{{ $avatar }}">@endif</td>
             <td>
                 <h1>{{ config('site.name') }}</h1>
-                <div class="sub">{{ __('messages.home.subtitle') }} · {{ config('site.location') }}</div>
+                <div class="sub">{{ __('site.hero.role') }}</div>
                 <div class="muted" style="margin-top:4px">{{ __('messages.about.availability') }}: {{ __('messages.about.availability_value') }}</div>
             </td>
             <td align="right" class="muted">
@@ -47,16 +47,18 @@
 
     <div class="section">
         <h2>{{ __('messages.about.label') }}</h2>
-        <p style="margin:0">{{ __('messages.about.text') }}</p>
+        <p style="margin:0">{{ __('site.about.text') }} {{ __('site.about.text_2') }}</p>
     </div>
 
     <div class="section">
         <h2>{{ __('messages.cv.projects') }}</h2>
+        @unless($projects->contains(fn ($p) => $p->slug === 'serverscope'))
         <div class="item">
             <b>ServerScope</b>@if(config('site.serverscope.url')) <span class="muted">· {{ parse_url(config('site.serverscope.url'), PHP_URL_HOST) }}</span>@endif<br>
             {{ __('messages.serverscope.tagline') }} {{ __('messages.serverscope.intro') }}<br>
             <span class="tags">{{ implode(' · ', __('messages.serverscope.stack')) }}</span>
         </div>
+        @endunless
         @foreach($projects as $project)
             <div class="item">
                 <b>{{ $project->getTranslation('title') }}</b>@if($project->hasDemo()) <span class="muted">· {{ parse_url($project->demo_url, PHP_URL_HOST) }}</span>@endif<br>

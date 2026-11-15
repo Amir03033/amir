@@ -1,94 +1,57 @@
 @extends('layouts.layout', [
-    'title' => __('messages.status.page_title').' — '.config('site.name'),
+    'title' => __('messages.status.page_title').' — Amir Jebbari',
     'description' => __('messages.status.page_intro'),
 ])
 
-@section('nav')
-    <x-site-nav />
-@endsection
-
 @section('content')
-    <div class="px-4 pb-24 pt-28 md:pt-36">
-        <div class="mx-auto max-w-4xl">
-            <nav data-reveal class="flex items-center gap-2 text-sm text-ink-muted" aria-label="Breadcrumb">
-                <a href="{{ lroute('home') }}" class="hover:text-ink-text">{{ __('messages.hero.crumb') }}</a>
-                <span>›</span>
-                <span class="text-ink-soft">{{ __('messages.status.page_title') }}</span>
-            </nav>
+    <header class="page-head container">
+        <p class="label" data-hero-line style="--i: 0">{{ __('messages.status.page_title') }}</p>
+        <h1 class="statement mx-auto mt-5 max-w-[16ch]" data-hero-line style="--i: 1">
+            {{ $sites->isEmpty() ? __('messages.health.state.none') : ($down ? trans_choice('messages.status.banner_down', $down, ['count' => $down]) : __('messages.status.banner_ok')) }}
+        </h1>
+        <p class="lead mx-auto mt-6 max-w-xl" data-hero-line style="--i: 2">{{ __('messages.status.page_intro') }}</p>
+        <p class="mt-4 text-small text-muted" data-hero-line style="--i: 3">{{ __('messages.hero.last_check') }}: {{ $lastCheck?->diffForHumans() ?? '—' }}</p>
+    </header>
 
-            <div class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                    <h1 data-split class="text-4xl font-bold tracking-[-.03em] md:text-6xl">{{ __('messages.status.page_title') }}</h1>
-                    <p data-reveal class="mt-4 max-w-xl text-ink-soft">{{ __('messages.status.page_intro') }}</p>
-                </div>
-                <p data-reveal class="text-xs text-ink-muted">{{ __('messages.hero.last_check') }}: <span class="font-semibold text-ink-text">{{ $lastCheck?->diffForHumans() ?? '—' }}</span></p>
-            </div>
-
-            {{-- Overall banner --}}
-            <div data-reveal class="panel panel-glow mt-10 flex items-center gap-4 p-5 md:p-6">
-                <span class="grid h-11 w-11 shrink-0 place-items-center rounded-full {{ $sites->isEmpty() ? 'bg-ink-line text-ink-muted' : ($down ? 'bg-scope-red/15 text-scope-red' : 'bg-scope-green/15 text-scope-green') }}">
-                    @if($down)
-                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 8v5M12 16.5v.5"/><circle cx="12" cy="12" r="9"/></svg>
-                    @else
-                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m8 12 3 3 5-6"/><circle cx="12" cy="12" r="9"/></svg>
-                    @endif
-                </span>
-                <div>
-                    <p class="text-xl font-bold tracking-tight">
-                        {{ $sites->isEmpty() ? __('messages.health.state.none') : ($down ? trans_choice('messages.status.banner_down', $down, ['count' => $down]) : __('messages.status.banner_ok')) }}
-                    </p>
-                    <p class="text-sm text-ink-muted">{{ __('messages.health.measured') }}</p>
-                </div>
-            </div>
-
-            <div class="mt-6 space-y-4" data-reveal-group>
-                @forelse($sites as $site)
-                    @php($ok = $site['latest']?->ok)
-                    <section data-reveal class="panel p-5 md:p-6">
-                        <div class="flex flex-wrap items-start justify-between gap-3">
-                            <div class="min-w-0">
-                                <h2 class="flex items-center gap-2.5 font-semibold">
-                                    <span class="dot {{ $ok ? 'bg-scope-green' : 'bg-scope-red' }}"></span>{{ $site['label'] }}
-                                </h2>
-                                <a href="{{ $site['url'] }}" target="_blank" rel="noopener noreferrer" class="mt-0.5 block truncate pl-[18px] text-xs text-ink-muted hover:text-scope-accent">{{ $site['host'] }} ↗</a>
-                            </div>
-                            <dl class="flex gap-6 text-right">
-                                <div>
-                                    <dt class="text-[11px] text-ink-muted">{{ __('messages.status.uptime_30') }}</dt>
-                                    <dd class="font-bold tabular-nums">{{ $site['uptime'] !== null ? rtrim(rtrim(number_format($site['uptime'], 2), '0'), '.').'%' : '—' }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-[11px] text-ink-muted">{{ __('messages.health.avg') }}</dt>
-                                    <dd class="font-bold tabular-nums">{{ $site['avg_ms'] ? $site['avg_ms'].' ms' : '—' }}</dd>
-                                </div>
-                            </dl>
+    <section class="container pb-section">
+        <div class="read">
+            @forelse($sites as $site)
+                @php($ok = $site['latest']?->ok)
+                <section class="border-t border-line py-10" data-reveal>
+                    <div class="flex flex-wrap items-baseline justify-between gap-4">
+                        <div class="min-w-0">
+                            <h2 class="text-h3 font-semibold">
+                                <span class="mr-2 inline-block h-2 w-2 rounded-full align-middle {{ $ok ? 'bg-ok' : 'bg-err' }}" aria-hidden="true"></span>{{ $site['label'] }}
+                                <span class="sr-only">{{ $ok ? __('messages.health.legend_ok') : __('messages.health.legend_fail') }}</span>
+                            </h2>
+                            <a href="{{ $site['url'] }}" target="_blank" rel="noopener noreferrer" class="link mt-1 inline-block text-small text-muted">{{ $site['host'] }}</a>
                         </div>
+                        <dl class="flex gap-8 text-right">
+                            <div><dt class="label">{{ __('messages.status.uptime_30') }}</dt><dd class="mt-1 font-semibold tabular">{{ $site['uptime'] !== null ? rtrim(rtrim(number_format($site['uptime'], 2), '0'), '.').'%' : '—' }}</dd></div>
+                            <div><dt class="label">{{ __('messages.health.avg') }}</dt><dd class="mt-1 font-semibold tabular">{{ $site['avg_ms'] ? $site['avg_ms'].' ms' : '—' }}</dd></div>
+                        </dl>
+                    </div>
 
-                        <x-uptime-bar :days="$site['days']" class="mt-5" />
+                    <x-uptime-bar :days="$site['days']" class="mt-6" />
 
-                        @if($site['outages']->isNotEmpty())
-                            <details class="group/o mt-4 border-t border-ink-line pt-3 text-sm">
-                                <summary class="flex cursor-pointer list-none items-center gap-2 text-ink-soft hover:text-ink-text">
-                                    <span class="transition-transform group-open/o:rotate-90">›</span>
-                                    {{ trans_choice('messages.status.outages', $site['outages']->count(), ['count' => $site['outages']->count()]) }}
-                                </summary>
-                                <ul class="mt-3 space-y-1.5 text-xs text-ink-muted">
-                                    @foreach($site['outages'] as $o)
-                                        <li class="flex flex-wrap justify-between gap-2 rounded-lg bg-ink-panel2 px-3 py-2">
-                                            <span>{{ $o['start']->translatedFormat('j M, H:i') }} → {{ $o['end']?->translatedFormat('H:i') ?? __('messages.status.ongoing') }}</span>
-                                            <span class="tabular-nums">{{ $o['minutes'] }} min @if($o['code']) · HTTP {{ $o['code'] }} @endif</span>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </details>
-                        @endif
-                    </section>
-                @empty
-                    <p class="panel p-8 text-center text-sm text-ink-muted">{{ __('messages.status.empty') }}</p>
-                @endforelse
-            </div>
-
-            <p class="mt-6 text-xs text-ink-muted">{{ __('messages.status.legend_page') }}</p>
+                    @if($site['outages']->isNotEmpty())
+                        <details class="mt-6 text-small">
+                            <summary class="cursor-pointer text-fg-2 hover:text-fg">{{ trans_choice('messages.status.outages', $site['outages']->count(), ['count' => $site['outages']->count()]) }}</summary>
+                            <ul class="rule-list mt-4 text-muted">
+                                @foreach($site['outages'] as $o)
+                                    <li class="flex flex-wrap justify-between gap-2 py-3">
+                                        <span>{{ $o['start']->translatedFormat('j M, H:i') }} → {{ $o['end']?->translatedFormat('H:i') ?? __('messages.status.ongoing') }}</span>
+                                        <span class="tabular">{{ $o['minutes'] }} min @if($o['code']) · HTTP {{ $o['code'] }} @endif</span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </details>
+                    @endif
+                </section>
+            @empty
+                <p class="empty">{{ __('messages.status.empty') }}</p>
+            @endforelse
+            <p class="border-t border-line pt-6 text-small text-muted">{{ __('messages.status.legend_page') }}</p>
         </div>
-    </div>
+    </section>
 @endsection
