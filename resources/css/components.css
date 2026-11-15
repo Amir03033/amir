@@ -116,7 +116,7 @@
     .toast {
         pointer-events: auto; display: flex; align-items: flex-start; gap: 10px;
         padding: 14px 16px; border-radius: var(--r-1);
-        background: rgb(var(--btn-bg)); color: rgb(var(--btn-fg)); box-shadow: var(--shadow-float);
+        background: rgb(var(--ink-bg)); color: rgb(var(--ink-fg)); box-shadow: var(--shadow-float);
         font-size: var(--t-small); line-height: 1.45;
         animation: toast-in var(--d-ui-slow) var(--ease) both;
     }

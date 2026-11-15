@@ -2,7 +2,9 @@
 
 return [
     'name' => 'Amir Jebbari',
-    'email' => env('SITE_EMAIL', 'hosseinjebbari@gmail.com'),
+    // Public address everywhere on the site (footer, contact, JSON-LD, CV). Deliberately not read from .env,
+    // so no personal address can leak back in. Contact notifications are sent here too.
+    'email' => 'info@jebbari.nl',
     // Hidden everywhere unless a real number is set in .env.
     'phone' => env('SITE_PHONE'),
     'phone_href' => env('SITE_PHONE_HREF'),

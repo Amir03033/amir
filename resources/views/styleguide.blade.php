@@ -25,7 +25,7 @@
 
     {{-- Opener + colour tokens --}}
     <section class="section container">
-        <x-opener label="01 — Kleur" lead="Gebroken wit en inkt. Vermiljoen alleen voor heel kleine details: de punt in het woordmerk, de focusring, het stempel.">
+        <x-opener label="01 — Kleur" lead="Gebroken wit en inkt. Diep bordeaux als enige accent: de punt in het woordmerk, de focusring, het stempel en de primaire knop.">
             Bijna alles is papier en inkt.
         </x-opener>
 

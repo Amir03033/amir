@@ -1,7 +1,7 @@
 # amirs.life · Design system
 
-Status: **approved direction, revision 2** (2026-11-15).
-Decisions so far: palette **A, quieter**; hero **H1, the stamp, refined**; experiment **E1, Ping**; admin panel moves to **/amir**.
+Status: **approved, revision 3** (2026-11-16).
+Decisions so far: palette **A, quieter, with a deep burgundy accent (`#7F1D3F`)** instead of vermilion; public email **info@jebbari.nl**; hero **H1, the stamp, refined**; experiment **E1, Ping**; admin panel moves to **/amir**.
 
 Revision 2 changes the mood from "expressive editorial" to **calm and sleek, Apple-like in restraint, but personal**. Removed: marquee strip, oversized numerals, sticky side labels, hard offset shadows, rotated notes, custom cursor ring, magnetic buttons, spring easing. Bricolage Grotesque has been replaced by **Instrument Sans** (see §3 for why).
 
@@ -39,15 +39,15 @@ Worth keeping (behaviour, not looks): locale routing, `lroute()` / `alternate_ur
 **Calm, sleek, confident. A lot of air, big type, one idea per screen.**
 
 - Restraint like Apple: few elements, big statements, generous whitespace, motion that follows the scroll.
-- But it's *yours*: warm off-white instead of clinical white, ink instead of pure black, your own voice in the copy, and one tiny vermilion detail (the stamp, the dot in the wordmark, the focus ring).
+- But it's *yours*: warm off-white instead of clinical white, ink instead of pure black, your own voice in the copy, and one deep burgundy accent, used sparingly (the stamp, the dot in the wordmark, the focus ring, primary buttons).
 - Jebbari is the agency. This is the person: quieter and more personal, with small moments of play (the stamp, the terminal, the ping) that only show up when you go looking.
 - Voice: first person, short sentences, no superlatives.
 
 ---
 
-## 2. Colour: palette A, quieter
+## 2. Colour: palette A, quieter, burgundy accent
 
-Mostly off-white and ink. Vermilion appears **only on tiny details**: the wordmark dot, the stamp, focus rings, the active-nav indicator, and the selected state in the terminal and ideas. Links are ink with an underline, not vermilion. No gradients anywhere.
+Mostly off-white and ink. **Deep burgundy `#7F1D3F`** is the single accent: the wordmark dot, the stamp, focus rings, the active-nav dot, the selected state in the terminal and ideas, and primary buttons (burgundy fill, white text). Links stay ink with an underline. Never more than one burgundy element per screen area, and no gradients anywhere.
 
 ### Light (default / hero)
 
@@ -63,9 +63,10 @@ Mostly off-white and ink. Vermilion appears **only on tiny details**: the wordma
 | `--n-600` | `#6B655B` | muted text, labels | **5.30** |
 | `--n-700` | `#48443D` | secondary text | **8.89** |
 | `--n-800` | `#2A2824` | | |
-| `--n-900` | `#161512` | **ink: text, primary button** | **16.77** |
-| `--accent` | `#E2431E` | non-text details only (dot, stamp, ring, 2px indicators) | 3.81 (UI ≥ 3:1 ✓) |
-| `--accent-text` | `#B8320F` | the rare case where accent is text (≤ 1 per screen) | **5.51** |
+| `--n-900` | `#161512` | **ink: text, toasts** | **16.77** |
+| `--accent` | `#7F1D3F` | deep burgundy: dot, stamp, focus ring, primary button, rare accent text | **8.97** (on `#FFFFFF` 9.77, on fill 8.28) |
+| `--accent-hover` | `#641731` | primary button hover | |
+| `--on-accent` | `#FFFFFF` | text on burgundy buttons | **9.77** (hover 12.29) |
 
 ### Dark (alternative): warm night, designed separately
 
@@ -79,9 +80,11 @@ Mostly off-white and ink. Vermilion appears **only on tiny details**: the wordma
 | `--muted` | `#A39E95` | muted text | **7.08** |
 | `--text-2` | `#CFCAC1` | secondary text | **11.56** |
 | `--text` | `#F2EFE9` | text | **16.44** |
-| `--accent` | `#FF6B3D` | details | **6.67** |
+| `--accent` | `#D8799A` | burgundy tint, **same hue (339°)**, HSL lightness 31% → 66%: links, focus rings, stamp, primary button | **6.40** (on surface 5.90, on fill 5.38) |
+| `--accent-hover` | `#DD88A6` | button hover | |
+| `--on-accent` | `#121110` | text on tint buttons | **6.40** (hover 7.32) |
 
-In dark: photos get `filter: brightness(.92)`, the primary button becomes off-white on near-black, and the hairlines are slightly stronger, so sections still read.
+In dark: photos get `filter: brightness(.92)`, the primary button becomes the burgundy tint with near-black text, and the hairlines are slightly stronger, so sections still read.
 
 ### Form states only
 
@@ -94,7 +97,7 @@ Errors always have an icon and text, never colour alone.
 
 ### Semantic tokens (components use only these)
 
-`--bg --surface --fill --line --line-strong --text --text-2 --muted --accent --accent-text --on-ink --focus --ok --err --selection`
+`--bg --surface --fill --line --line-strong --text --text-2 --muted --accent --accent-hover --on-accent --ink-bg --ink-fg --ok --err` (focus ring and selection derive from `--accent`)
 
 ---
 
@@ -145,8 +148,8 @@ Why not Bricolage any more: I rendered the hero line at 96px. Bricolage automati
 
 | Component | Spec |
 |---|---|
-| **Nav** | 64px, wordmark `amir·` left (Instrument Sans 600, the dot in accent), 4 links in body 15px/500 (Werk, Over, Speeltuin, Contact), theme + language on the right. After 24px of scroll it gets `--bg` at 85% + a hairline + the soft shadow; **no blur**. On scroll down it slides out of view; on scroll up it comes back (200ms). **Mobile:** a "Menu" text button opens a full-screen sheet on `--bg` with links at `--t-statement` size, staggered fade-in, focus trap, Esc to close. Active link: a 2px accent dot under it. |
-| **Buttons** | *Primary:* ink pill, off-white text, 48px tall, 0 24px, 15px/500. Hover: background lightens to `--n-800` (200ms). *Secondary:* pill, 1px `--line-strong`, ink text; hover fills `--fill`. *Text link:* underline 1px at 0.2em offset, colour `--line-strong`; on hover it thickens and darkens to ink (200ms), so nothing moves. Arrow links (`Bekijk de case →`): the arrow moves 3px on hover. No magnetic effect and no lift. |
+| **Nav** | 64px, wordmark `amirs.life` left (Instrument Sans 600, the dot in accent), 4 links in body 15px/500 (Werk, Over, Speeltuin, Contact), theme + language on the right. After 24px of scroll it gets `--bg` at 85% + a hairline + the soft shadow; **no blur**. On scroll down it slides out of view; on scroll up it comes back (200ms). **Mobile:** a "Menu" text button opens a full-screen sheet on `--bg` with links at `--t-statement` size, staggered fade-in, focus trap, Esc to close. Active link: a 2px accent dot under it. |
+| **Buttons** | *Primary:* burgundy pill (`--accent`), white text (9.77:1), 48px tall, 0 24px, 15px/500. Hover: `--accent-hover` (200ms). In dark: the tint with near-black text. *Secondary:* pill, 1px `--line-strong`, ink text; hover fills `--fill`. *Text link:* underline 1px at 0.2em offset, colour `--line-strong`; on hover it thickens and darkens to ink (200ms), so nothing moves. Arrow links (`Bekijk de case →`): the arrow moves 3px on hover. No magnetic effect and no lift. |
 | **Tag** | 13px/500, pill, 1px `--line`, `--muted` text, 2px 10px. No fill. |
 | **Status line** | One quiet line under the hero, 15px muted: `Amsterdam 14:32 · Nu bezig met: …`. A small accent dot marks it as live. The time is server-rendered, then updated each minute. |
 | **Section opener** | Small mono label (optional) + centered `--t-statement` + optional lead (`--t-lead`, muted, max 2 lines). |
@@ -156,7 +159,7 @@ Why not Bricolage any more: I rendered the hero line at 96px. Bricolage automati
 | **Certificate item** | One ruled row: `2025 · Title · Issuer · ↗`. |
 | **Blog row** | `date` · title (`--t-h3`) · reading time. |
 | **Form fields** | Label above (15px/500), input 52px, `--surface` bg, 1px `--line-strong`, `--r-1`, 17px text. Focus: border ink + 3px focus ring in accent at 35%. Error: border `--err`, icon + message below, `aria-invalid` + `aria-describedby`. Submit disabled with a spinner while sending. |
-| **Toast** | Bottom center, ink pill/rounded (`--r-1`), off-white text, icon + message, soft shadow, 4s, pause on hover, `role="status"` (`alert` for errors), at most 3 stacked. Fades + rises 8px. |
+| **Toast** | Bottom center, ink (`--ink-bg`) rounded (`--r-1`), off-white text, icon + message, soft shadow, 4s, pause on hover, `role="status"` (`alert` for errors), at most 3 stacked. Fades + rises 8px. |
 | **Modal / sheet** | `<dialog>`. Desktop: centered, max 560px, `--surface`, `--r-1`, soft shadow. Mobile: bottom sheet. Scrim `rgb(22 21 18 / .35)`, no blur, focus trap, Esc. |
 | **Idea row** | A calm ruled list grouped by status (not sticky notes): title, optional detail, status tag, vote button (`chevron-up` + count, pill). Voted state: an accent dot. |
 | **Question item** | The question in `--t-h3`, the answer in body, then `— Amir · date` in muted text. Unanswered questions are never shown publicly. |
@@ -175,7 +178,7 @@ Why not Bricolage any more: I rendered the hero line at 96px. Bricolage automati
 
 Centered. Statement at `--t-hero` (two or three short lines), the role line under it (`Founder of Jebbari · Zwolle & Amsterdam`, 15px muted), the status line, and the stamp. The hero fills the first viewport (`min-height: 92svh`) with a lot of air.
 
-**The stamp, refined:** a 96px circle placed below the role line, slightly off-center to the right. It's a single 1px ink hairline ring, with `AMIRS.LIFE · ZWOLLE · AMSTERDAM ·` set around it in Martian Mono 9px (muted) and a small accent dot in the middle. That's it.
+**The stamp, refined:** a 96px circle placed below the role line, slightly off-center to the right. It is a single 1px burgundy hairline ring, with `AMIRS.LIFE · ZWOLLE · AMSTERDAM ·` set around it in Martian Mono 9px (burgundy) and a small burgundy dot in the middle. That's it.
 - Desktop: it rotates **at most ±10°** to face the cursor, with smooth easing (no spring), and the text ring slowly turns (one revolution per 40s) only while the hero is visible.
 - Click or tap: it leaves a faint imprint at that spot: the same ring in ink at 12% opacity, rotated randomly, fading out over 2.5s. At most 4 imprints at once.
 - Reduced motion: no rotation and no slow spin; the imprint appears and fades without any scale animation.

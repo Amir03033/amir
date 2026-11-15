@@ -35,7 +35,7 @@
 :root {
     color-scheme: light;
 
-    /* Light: warm off-white + ink. Vermilion only for tiny details. */
+    /* Light: warm off-white + ink. Deep burgundy is the one accent, used sparingly. */
     --bg: 247 245 241;          /* #F7F5F1 */
     --surface: 255 255 255;     /* #FFFFFF */
     --fill: 239 236 230;        /* #EFECE6 */
@@ -44,16 +44,20 @@
     --text: 22 21 18;           /* #161512  16.8:1 */
     --text-2: 72 68 61;         /* #48443D   8.9:1 */
     --muted: 107 101 91;        /* #6B655B   5.3:1 */
-    --accent: 226 67 30;        /* #E2431E  details only */
-    --accent-text: 184 50 15;   /* #B8320F   5.5:1 */
+    --accent: 127 29 63;        /* #7F1D3F   9.0:1 on bg */
+    --accent-text: 127 29 63;
+    --accent-hover: 100 23 49;  /* #641731 */
+    --on-accent: 255 255 255;   /* white on burgundy 9.8:1 */
     --ok: 46 106 59;            /* #2E6A3B */
     --err: 158 27 50;           /* #9E1B32 */
     --warn: 138 90 0;           /* #8A5A00 */
     --night: 22 21 18;          /* terminal panel */
     --day: 247 245 241;
-    --btn-bg: 22 21 18;
-    --btn-bg-hover: 42 40 36;
-    --btn-fg: 247 245 241;
+    --btn-bg: 127 29 63;
+    --btn-bg-hover: 100 23 49;
+    --btn-fg: 255 255 255;
+    --ink-bg: 22 21 18;         /* toasts */
+    --ink-fg: 247 245 241;
     --shadow-float: 0 1px 2px rgb(22 21 18 / .04), 0 8px 24px rgb(22 21 18 / .06);
     --scrim: rgb(22 21 18 / .35);
     --photo-filter: none;
@@ -104,16 +108,20 @@
     --text: 242 239 233;        /* #F2EFE9  16.4:1 */
     --text-2: 207 202 193;      /* #CFCAC1  11.6:1 */
     --muted: 163 158 149;       /* #A39E95   7.1:1 */
-    --accent: 255 107 61;       /* #FF6B3D   6.7:1 */
-    --accent-text: 255 107 61;
+    --accent: 216 121 154;      /* #D8799A  burgundy tint, same hue (339°): 6.4:1 on bg */
+    --accent-text: 216 121 154;
+    --accent-hover: 221 136 166;/* #DD88A6 */
+    --on-accent: 18 17 16;      /* #121110 on tint 6.4:1 */
     --ok: 127 208 143;
     --err: 255 138 138;
     --warn: 232 180 74;
     --night: 27 26 24;
     --day: 242 239 233;
-    --btn-bg: 242 239 233;
-    --btn-bg-hover: 255 255 255;
+    --btn-bg: 216 121 154;
+    --btn-bg-hover: 221 136 166;
     --btn-fg: 18 17 16;
+    --ink-bg: 242 239 233;
+    --ink-fg: 18 17 16;
     --shadow-float: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .35);
     --scrim: rgb(0 0 0 / .55);
     --photo-filter: brightness(.92);
