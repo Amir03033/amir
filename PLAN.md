@@ -1,13 +1,13 @@
 # amirs.life · Build plan
 
-Status: **draft for approval**. No code until you approve this and DESIGN.md.
+Status: **approved, revision 2** (2026-11-15). Choices: palette A (quieter), hero H1 stamp (refined), experiment E1 Ping, admin panel to `/amir`. Section A proposals 3–5 go ahead as recommended unless you say otherwise.
 Branch: `claude/amirs-life-redesign-mne6mv`, small commits, one PR at the end (only if you ask for one).
 
 ---
 
 ## A. Things I found that you need to decide first
 
-1. **The admin panel is at `/admin`, not `/amir`.** `bootstrap/providers.php` loads `AdminPanelProvider` (`->path('admin')`). `AmirPanelProvider` (`->path('amir')`) is **commented out**, and it references three widget classes that no longer exist (`VisitsOverview`, `VisitsChart`, `TopReferrers`), so turning it back on would crash. The tests (`AdminPanelTest`) also hit `/admin/...`. Your brief says both "stays at /amir" and "don't touch AdminPanelProvider routing", and today those two contradict each other. Options:
+1. **[DECIDED: move to /amir]** **The admin panel is at `/admin`, not `/amir`.** `bootstrap/providers.php` loads `AdminPanelProvider` (`->path('admin')`). `AmirPanelProvider` (`->path('amir')`) is **commented out**, and it references three widget classes that no longer exist (`VisitsOverview`, `VisitsChart`, `TopReferrers`), so turning it back on would crash. The tests (`AdminPanelTest`) also hit `/admin/...`. Your brief says both "stays at /amir" and "don't touch AdminPanelProvider routing", and today those two contradict each other. Options:
    - **(a) Recommended:** change only `->path('admin')` → `->path('amir')` in `AdminPanelProvider`, update the tests, and delete the dead `AmirPanelProvider`. `canAccessPanel()`, 2FA and middleware stay untouched. TrackVisit already excludes both `admin*` and `amir*`.
    - (b) Leave everything at `/admin` and don't touch it.
 2. **Positioning change.** The current copy says "Laravel developer, 18, student in Overijssel, open to internships / junior roles". The brief says "Founder of Jebbari · Zwolle & Amsterdam, builder of ServerScope, student". I'll rewrite the copy for the new positioning, but **I won't invent facts**: anything factual I don't have is a marked placeholder (list in §E).
@@ -20,7 +20,7 @@ Branch: `claude/amirs-life-redesign-mne6mv`, small commits, one PR at the end (o
    - Boot intro animation, canvas dot field, heartbeat canvas, cursor glow, spotlight cards → **removed**.
 4. **Project URLs.** Case studies live at `/project/{id}`. Adding slugs (`/project/serverscope`) would be nicer for SEO, but it changes URLs. **Proposal:** add a nullable `slug`, resolve by slug *or* id, and 301 the id URLs to slug URLs. Nothing breaks. Say no and I keep ids.
 5. **ServerScope.** It's currently a hard-coded section in the lang files, not a `Project` record. **Proposal:** make it a normal project (featured, `sort_order` 1) with a full case study, so all work uses one system. Jebbari itself could also be a row (link out, no case study).
-6. **Palette A or B, hero H1 or H2, experiment E1 or E2** (DESIGN.md §2, §6, §8).
+6. **[DECIDED]** Palette A (quieter), hero H1, experiment E1. Fonts changed to Instrument Sans + Martian Mono; please confirm Jebbari doesn't use them.
 7. Laravel is **12.71** in `composer.lock` (not 11) and Filament is 3.3. That's no problem; I'm just noting it.
 8. `design-refs/` doesn't exist. Push it if you have it.
 
@@ -46,7 +46,7 @@ Branch: `claude/amirs-life-redesign-mne6mv`, small commits, one PR at the end (o
 
 No routes are renamed or removed.
 
-**Home section order:** Hero → status strip (marquee) → 01 Werk (selected rows) → 02 Over → 03 Speeltuin (Ask Amir · Suggest/roadmap teaser · Terminal · Ping) → 04 Certificaten → 05 Notities → 06 Contact → footer.
+**Home section order (rev. 2, one idea per screen):** Hero (centered statement, role line, status line, stamp) → Werk: up to 3 pinned work chapters, then a quiet "more work" row list → Over (centered statement, full-width photo, a few facts, Jebbari link) → Speeltuin on its own tinted band (Ask Amir · Suggest + roadmap teaser · Terminal · Ping) → Certificaten (compact list) → Notities (3 rows) → Contact (big email + form) → footer.
 
 ---
 
@@ -76,12 +76,16 @@ Each phase ends with: a summary, what to test, and Playwright screenshots at **3
 - `resources/css/` split into `tokens.css`, `base.css`, `components.css`, `motion.css`.
 - Fonts: remove Inter / JetBrains Mono, add Bricolage Grotesque + Martian Mono (latin), preload, fallback metrics.
 - Theme: system default, manual toggle (light / dark / system) remembered in `localStorage`, inline pre-paint script (no flash), `theme-color` meta per theme.
-- Shell: layout, skip link, nav (compact on scroll + full-screen mobile sheet), footer, `<x-icon>`, buttons, link, tag, form fields, toast, `<dialog>` sheet, section header, 404 and 500.
-- JS: new small modules (`theme`, `nav`, `reveal`, `cursor`, `magnetic`, `toast`). Remove GSAP, Vue, vue-router, `@vitejs/plugin-vue`.
+- Fonts: Instrument Sans (display + body) + Martian Mono (labels, terminal), replacing Inter / JetBrains Mono.
+- Shell: layout, skip link, nav (hide on scroll down, full-screen mobile sheet), footer, `<x-icon>`, buttons, link, tag, form fields, toast, `<dialog>` sheet, section opener, 404 and 500.
+- Motion foundation: reveal observer, scroll-scrub engine (CSS scroll timelines + `--p` fallback), pinned-stage primitive, View Transitions, reduced-motion handling.
+- JS: small modules (`theme`, `nav`, `reveal`, `scrub`, `toast`). Remove GSAP, Vue, vue-router, `@vitejs/plugin-vue`.
+- Admin: `AdminPanelProvider` path `admin` → `amir`, tests updated, dead `AmirPanelProvider` removed.
+- Temporary legacy aliases so the old pages stay readable until Phases 2–3 replace them (deleted in Phase 6).
 - Hidden `/_styleguide` page (local env only) that shows every component in both themes, for review.
 
 ### Phase 2: Home
-- Hero (statement, role line, status line with Amsterdam time + "currently building", hero element), status strip, selected-work rows with cursor preview, about (photo, facts, Jebbari link), certificates (compact), notes (3 rows), contact (big email + form). JSON-LD Person + Organization.
+- Hero (centered statement, role line, status line with Amsterdam time + "currently building", refined stamp), pinned work chapters + more-work rows with cursor preview, about (photo, facts, Jebbari link), certificates (compact), notes (3 rows), contact (big email + form). JSON-LD Person + Organization.
 
 ### Phase 3: Projects + case studies
 - `/work` index, case-study layout, prev/next, gallery crops, slug support (if approved), new project fields in Filament, image derivatives (AVIF/WebP + `srcset`) via the existing `OptimizeImages` command, extended.
