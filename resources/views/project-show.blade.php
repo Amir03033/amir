@@ -26,8 +26,13 @@
 
         <div class="container">
             <dl class="case-meta read !max-w-content" data-reveal>
-                <div><dt class="label">{{ __('site.work.year') }}</dt><dd class="tabular">{{ $project->year ?: '' }}@unless($project->year)<x-ph :label="__('site.work.year')" />@endunless</dd></div>
-                <div><dt class="label">{{ __('site.work.role') }}</dt><dd>{{ $role }}@unless($role)<x-ph :label="__('site.work.role')" />@endunless</dd></div>
+                {{-- Empty facts are hidden in production (no empty labels in indexable pages); placeholders show elsewhere. --}}
+                @if($project->year || ! app()->isProduction())
+                    <div><dt class="label">{{ __('site.work.year') }}</dt><dd class="tabular">{{ $project->year ?: '' }}@unless($project->year)<x-ph :label="__('site.work.year')" />@endunless</dd></div>
+                @endif
+                @if($role || ! app()->isProduction())
+                    <div><dt class="label">{{ __('site.work.role') }}</dt><dd>{{ $role }}@unless($role)<x-ph :label="__('site.work.role')" />@endunless</dd></div>
+                @endif
                 <div><dt class="label">{{ __('site.work.stack') }}</dt><dd>{{ implode(', ', $project->tagList()) }}</dd></div>
                 <div><dt class="label">{{ __('site.work.link') }}</dt><dd>
                     @if($project->hasDemo())

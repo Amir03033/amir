@@ -11,7 +11,8 @@ Nothing in this release drops or renames a table, a column or a route.
 2. Check `.env` on the server:
    - `APP_ENV=production` (**required**: placeholders are only hidden in production) and `APP_DEBUG=false`.
    - `APP_URL=https://amirs.life` (used in the sitemap, canonical URLs and OG images).
-   - Nothing new is required. Optional: `JEBBARI_URL` (default `https://jebbari.nl`).
+   - Nothing new is required. Optional: `SITE_GITHUB` (your GitHub URL; it's added to the JSON-LD `sameAs`).
+   - Optional: `SEO_CANONICAL_URL` (default `https://amirs.life`). In production every generated URL uses it.
    - `SITE_EMAIL` is **no longer read**. The public address is fixed to `info@jebbari.nl` in `config/site.php`, so a personal address can't leak back in. `ADMIN_EMAIL` (used by `canAccessPanel()`) is unchanged.
 3. Note that contact-form notifications now go to **info@jebbari.nl**, because `site.email` is used for both. Make sure that mailbox exists and receives mail.
 
@@ -40,14 +41,15 @@ Then run the four new migrations, one by one:
 | 2 | `php artisan migrate --path=database/migrations/2026_11_16_000002_add_profile_fields_to_projects_table.php --force` | Adds `projects.slug` (unique, nullable), `year`, `role`, `summary`, and fills a slug for every existing project from its Dutch title. | Yes |
 | 3 | `php artisan migrate --path=database/migrations/2026_11_16_000003_create_questions_table.php --force` | New table `questions` (Ask Amir). | Yes (new table) |
 | 4 | `php artisan migrate --path=database/migrations/2026_11_16_000004_create_ideas_table.php --force` | New tables `ideas` and `idea_votes` (suggestions + roadmap). | Yes (new tables) |
+| 5 | `php artisan migrate --path=database/migrations/2026_11_16_000005_add_jebbari_url_to_projects_table.php --force` | Adds `projects.jebbari_url` (nullable JSON, nl/en link to the project page on jebbari.nl). | Yes |
 
 If `migrate:status` shows **older** migrations as pending too (for example `2026_11_07_100100_create_events_table`), run plain `php artisan migrate --force` instead. It runs everything pending in date order, including the four above.
 
 ```bash
-php artisan migrate:status    # all four should now say "Ran"
+php artisan migrate:status    # all five should now say "Ran"
 ```
 
-**Optional, one-off:** turn the hard-coded ServerScope section into a normal featured project (only real copy from the old site; it skips itself if a `serverscope` project already exists):
+**Optional, one-off (after migration 5):** turn the hard-coded ServerScope section into a normal featured project, linked to its Jebbari page (only real copy from the old site; it skips itself if a `serverscope` project already exists):
 
 ```bash
 php artisan db:seed --class=ServerScopeProjectSeeder --force
@@ -86,14 +88,21 @@ All three caches were tested on this branch: `route:cache` handles the closure r
 - [ ] Share a project URL in a link preview (or use opengraph.xyz) and check that the new OG image appears.
 - [ ] `/_styleguide` returns 404 in production (it only exists when `APP_ENV=local`).
 
+### SEO
+
+- In Plesk → Hosting Settings: tick **"Permanent SEO-safe 301 redirect from HTTP to HTTPS"** and set the **preferred domain to amirs.life**.
+- HSTS and optional nginx caching lines: see SEO.md §5.
+- Then work through the **SEO post-deploy checklist in SEO.md §8** (Search Console, Bing, Rich Results, schema validator, hreflang, OG preview, PageSpeed), and make the jebbari.nl changes in **SEO-JEBBARI.md**.
+- [ ] `curl -sI https://amirs.life/amir/login | grep -i x-robots` prints `noindex, follow`, and `/admin` returns 404.
+
 ## 6. Rollback
 
 **Code:** deploy the previous commit in Plesk Git (`ba3abf6` = old `main`), then run the cache commands and the `chown` again. The new tables and columns don't bother the old code, so **you can leave the database as it is**. That's the recommended rollback.
 
-**Database (only if you really want to):** run this on a backup-verified database. It **deletes all questions, ideas and votes** and the new project fields (slug/year/role/summary):
+**Database (only if you really want to):** run this on a backup-verified database. It **deletes all questions, ideas and votes** and the new project fields (slug/year/role/summary/jebbari_url):
 
 ```bash
-php artisan migrate:rollback --step=4 --force
+php artisan migrate:rollback --step=5 --force
 ```
 
 It was tested on a copy of the database: it rolls back cleanly and migrates again cleanly. Migration 1 never removes `featured`/`sort_order`.
