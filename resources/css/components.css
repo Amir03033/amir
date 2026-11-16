@@ -13,7 +13,7 @@
     .opener { text-align: center; max-width: 18ch; margin-inline: auto; }
     .opener-wide { max-width: 22ch; }
     .statement { font-size: var(--t-statement); line-height: 1.04; letter-spacing: -0.025em; font-weight: 600; }
-    .hero-type { font-size: var(--t-hero); line-height: 1; letter-spacing: -0.03em; font-weight: 600; }
+    .hero-type { font-size: var(--t-hero); line-height: 1; letter-spacing: -0.03em; font-weight: 600; hyphens: auto; overflow-wrap: break-word; }
     .lead { font-size: var(--t-lead); line-height: 1.45; color: rgb(var(--muted)); }
     .opener + .lead, .opener-lead { max-width: 36rem; margin-inline: auto; text-align: center; margin-top: 24px; }
 

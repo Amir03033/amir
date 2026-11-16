@@ -32,6 +32,8 @@
     }
     .nav-tools { display: flex; align-items: center; gap: 4px; }
     .nav-menu-btn { @apply btn-secondary btn-sm; margin-left: 4px; }
+    /* Phones: language and theme live in the menu sheet, so the bar is just logo + Menu (no overflow). */
+    @media (max-width: 767px) { .nav-tools > .lang-switch, .nav-tools > .theme-toggle { display: none; } }
     @media (min-width: 768px) { .nav-menu-btn { display: none; } }
 
     .lang-switch { display: inline-flex; align-items: center; gap: 2px; padding: 0 6px; font-size: .8125rem; font-weight: 500; }

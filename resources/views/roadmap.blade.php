@@ -48,7 +48,7 @@
             <section class="mt-section border-t border-line pt-stack" aria-labelledby="suggest-title">
                 <h2 id="suggest-title" class="text-title font-semibold" data-reveal>{{ __('site.ideas.title') }}</h2>
                 <p class="mt-3 text-fg-2" data-reveal>{{ __('site.ideas.lead') }}</p>
-                <div class="mt-10" data-reveal>@include('partials.idea-form')</div>
+                <div id="idea-form" class="mt-10 scroll-mt-24" data-reveal>@include('partials.idea-form')</div>
             </section>
         </div>
     </div>

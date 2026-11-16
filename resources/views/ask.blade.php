@@ -15,7 +15,7 @@
 
     <div class="container pb-section">
         <div class="read">
-            <div data-reveal>@include('partials.ask-form')</div>
+            <div id="ask-form" class="scroll-mt-24" data-reveal>@include('partials.ask-form')</div>
 
             <div class="rule-list mt-stack">
                 @forelse($questions as $question)
