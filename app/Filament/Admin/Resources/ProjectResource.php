@@ -194,6 +194,19 @@ class ProjectResource extends Resource
                             ->prefixIcon('heroicon-m-globe-alt')
                             ->nullable(),
 
+                        TextInput::make('jebbari_url.nl')
+                            ->label('Projectpagina op jebbari.nl (NL)')
+                            ->url()
+                            ->rule('starts_with:https://jebbari.nl')
+                            ->placeholder('https://jebbari.nl/nl/werk/…')
+                            ->helperText('Alleen voor projecten die met Jebbari zijn gebouwd: de case linkt dan naar Jebbari en deze pagina.'),
+
+                        TextInput::make('jebbari_url.en')
+                            ->label('Project page on jebbari.nl (EN)')
+                            ->url()
+                            ->rule('starts_with:https://jebbari.nl')
+                            ->placeholder('https://jebbari.nl/en/work/…'),
+
                         TextInput::make('github_url')
                             ->label('GitHub URL')
                             ->url()

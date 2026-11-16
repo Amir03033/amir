@@ -38,6 +38,14 @@
                 </dd></div>
             </dl>
 
+            @if($jebbari = $project->jebbariUrl())
+                {{-- Built with Jebbari: link the agency and its page about this project (anchor text "Jebbari"). --}}
+                <p class="mt-6 text-center text-small text-muted" data-reveal>
+                    {!! __('seo.jebbari.built_with', ['jebbari' => '<a href="'.e(config('seo.company.url')).'" class="link" rel="noopener">Jebbari</a>']) !!}
+                    <a href="{{ $jebbari }}" class="link-arrow ml-2 text-small" rel="noopener"><span>{!! __('seo.jebbari.see_on', ['jebbari' => 'Jebbari']) !!}</span>{{ icon('arrow-up-right', 'icon-diag') }}</a>
+                </p>
+            @endif
+
             <figure class="case-hero mt-stack" data-reveal>
                 <x-project-cover :project="$project" :eager="true" sizes="(min-width: 1280px) 1200px, 100vw" data-scrub-view="zoom-settle" />
             </figure>
@@ -99,7 +107,8 @@
                 <div class="gallery" data-reveal-group>
                     @foreach($gallery as $n => $src)
                         <button type="button" data-reveal @click="show({{ $n }})" aria-label="{{ __('site.case.image_n', ['name' => $title, 'n' => $n + 1]) }}">
-                            <img src="{{ $src }}" alt="{{ __('site.case.image_n', ['name' => $title, 'n' => $n + 1]) }}" loading="lazy" decoding="async">
+                            @php([$gw, $gh] = image_size($src) ?? [1600, 1000])
+                            <img src="{{ $src }}" width="{{ $gw }}" height="{{ $gh }}" alt="{{ __('site.case.image_n', ['name' => $title, 'n' => $n + 1]) }}" loading="lazy" decoding="async">
                         </button>
                     @endforeach
                 </div>

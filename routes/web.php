@@ -34,6 +34,8 @@ if (app()->environment('local')) {
     Route::view('/_styleguide', 'styleguide')->name('styleguide');
 }
 
+Route::get('/llms.txt', [\App\Http\Controllers\LlmsController::class, 'index'])->name('llms');
+Route::get('/llms-full.txt', [\App\Http\Controllers\LlmsController::class, 'full'])->name('llms.full');
 Route::get('/sitemap.xml', [PortfolioController::class, 'sitemap'])->name('sitemap');
 Route::get('/og/page/{key}.png', [OgImageController::class, 'page'])->whereIn('key', OgImageController::PAGES)->name('og.page');
 Route::get('/og/{type}/{id}.png', OgImageController::class)->whereIn('type', ['project', 'blog'])->whereNumber('id')->name('og');

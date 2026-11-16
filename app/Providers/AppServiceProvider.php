@@ -26,6 +26,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // In production every generated URL (canonical, hreflang, sitemap, OG) uses the canonical origin,
+        // even if a request arrives on www or a Plesk preview host.
+        if (config('seo.force_canonical_host')) {
+            \Illuminate\Support\Facades\URL::forceRootUrl(config('seo.url'));
+            if (str_starts_with((string) config('seo.url'), 'https://')) {
+                \Illuminate\Support\Facades\URL::forceScheme('https');
+            }
+        }
+
         // Public forms: small, per-IP budgets. Responses are JSON 429s, shown as a friendly toast.
         RateLimiter::for('ask', fn (Request $r) => Limit::perMinutes(10, 3)->by('ask|'.$r->ip()));
         RateLimiter::for('ideas', fn (Request $r) => Limit::perHour(3)->by('ideas|'.$r->ip()));

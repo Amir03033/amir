@@ -1,7 +1,9 @@
 User-agent: *
-Disallow: /amir
-Disallow: /login
-Disallow: /two-factor-check
-Disallow: /_styleguide
+Allow: /
+Disallow: /ping
+Disallow: /e
+
+# Private pages (/amir, /login, two-factor) are crawlable on purpose: they answer with
+# X-Robots-Tag: noindex, which search engines can only see if they may fetch the page.
 
 Sitemap: https://amirs.life/sitemap.xml

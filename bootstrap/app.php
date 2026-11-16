@@ -11,6 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Global (also covers the Filament panel): canonical host, noindex for private URLs, security headers.
+        $middleware->append(\App\Http\Middleware\SeoHeaders::class);
+
         $middleware->web(append: [
             \App\Http\Middleware\SetLocale::class,
             \App\Http\Middleware\TrackVisit::class,

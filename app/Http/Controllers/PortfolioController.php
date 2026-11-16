@@ -132,24 +132,49 @@ class PortfolioController extends Controller
             ->download('CV-'.str_replace(' ', '-', config('site.name')).'.pdf');
     }
 
+    /**
+     * sitemap.xml: canonical URLs only (slugs, no redirects, nothing noindex), both languages with
+     * reciprocal hreflang, lastmod from real updated_at values. Built on request, so it is always current.
+     */
     public function sitemap()
     {
-        $pages = collect([['home', []], ['work', []], ['certificates', []], ['ask', []], ['roadmap', []], ['cv', []], ['blog.index', []], ['status', []], ['privacy', []]])
-            ->merge(Project::all()->map(fn ($p) => ['project.show', [$p]]))
-            ->merge(Blog::published()->get()->map(fn ($b) => ['blog.show', [$b->slug]]));
+        $projects = Project::ordered()->get(['id', 'slug', 'updated_at']);
+        $blogs = Blog::published()->get(['id', 'slug', 'updated_at', 'published_at', 'created_at']);
+        $max = fn (...$dates) => collect($dates)->filter()->max();
+
+        $projectsAt = $projects->max('updated_at');
+        $blogsAt = $blogs->max('updated_at');
+        $certsAt = Certificate::max('updated_at');
+        $askAt = Question::published()->max('updated_at');
+        $roadmapAt = Idea::published()->max('updated_at');
+
+        $pages = collect([
+            ['home', [], $max($projectsAt, $blogsAt, $certsAt, $askAt, $roadmapAt)],
+            ['work', [], $projectsAt],
+            ['certificates', [], $certsAt],
+            ['ask', [], $askAt],
+            ['roadmap', [], $roadmapAt],
+            ['blog.index', [], $blogsAt],
+            ['cv', [], $projectsAt],
+            ['privacy', [], '2026-11-16'],
+        ])
+            ->merge($projects->map(fn ($p) => ['project.show', [$p], $p->updated_at]))
+            ->merge($blogs->map(fn ($b) => ['blog.show', [$b->slug], $b->updated_at ?? $b->publishedDate()]));
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n"
             .'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">';
 
-        foreach ($pages as [$name, $params]) {
+        foreach ($pages as [$name, $params, $lastmod]) {
             $urls = ['nl' => lroute($name, $params, 'nl'), 'en' => lroute($name, $params, 'en')];
-            $alternates = collect($urls)->map(fn ($u, $l) => '<xhtml:link rel="alternate" hreflang="'.$l.'" href="'.e($u).'"/>')->implode('');
+            $alternates = collect($urls)->map(fn ($u, $l) => '<xhtml:link rel="alternate" hreflang="'.$l.'" href="'.e($u).'"/>')->implode('')
+                .'<xhtml:link rel="alternate" hreflang="x-default" href="'.e($urls['nl']).'"/>';
+            $mod = $lastmod ? '<lastmod>'.\Illuminate\Support\Carbon::parse($lastmod)->toAtomString().'</lastmod>' : '';
 
             foreach ($urls as $url) {
-                $xml .= '<url><loc>'.e($url).'</loc>'.$alternates.'</url>';
+                $xml .= '<url><loc>'.e($url).'</loc>'.$mod.$alternates.'</url>';
             }
         }
 
-        return response($xml.'</urlset>', 200, ['Content-Type' => 'application/xml']);
+        return response($xml.'</urlset>', 200, ['Content-Type' => 'application/xml', 'Cache-Control' => 'public, max-age=3600']);
     }
 }

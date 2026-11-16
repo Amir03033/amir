@@ -90,3 +90,33 @@ if (! function_exists('seo_sentence')) {
         return new \Illuminate\Support\HtmlString($sentence);
     }
 }
+
+if (! function_exists('image_size')) {
+    /**
+     * [width, height] of an image served from this site (public/ or the storage disk), or null.
+     * Cached per file version, so explicit dimensions cost nothing after the first request.
+     *
+     * @return array{0: int, 1: int}|null
+     */
+    function image_size(?string $url): ?array
+    {
+        if (! $url) {
+            return null;
+        }
+
+        $path = (string) parse_url($url, PHP_URL_PATH);
+        $file = str_starts_with($path, '/storage/')
+            ? storage_path('app/public/'.substr($path, strlen('/storage/')))
+            : public_path(ltrim($path, '/'));
+
+        if (! is_file($file)) {
+            return null;
+        }
+
+        return \Illuminate\Support\Facades\Cache::rememberForever('img-size:'.md5($file.filemtime($file)), function () use ($file) {
+            $size = @getimagesize($file);
+
+            return $size ? [(int) $size[0], (int) $size[1]] : null;
+        });
+    }
+}

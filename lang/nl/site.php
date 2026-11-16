@@ -64,7 +64,7 @@ return [
             'since' => 'Jebbari sinds',
         ],
         'cities_value' => 'Amsterdam & Zwolle',
-        'to_jebbari' => 'Naar Jebbari',
+        'to_jebbari' => 'Jebbari',
         'cv' => 'Cv bekijken',
     ],
 
