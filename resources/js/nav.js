@@ -37,6 +37,8 @@ export function initNav() {
     const sections = links.map((a) => document.getElementById(a.dataset.navLink)).filter(Boolean);
     if (!sections.length) return;
 
+    // The hero has no nav link: when it is back in the middle, nothing is highlighted.
+    const hero = document.querySelector('[data-hero]');
     const io = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             if (!entry.isIntersecting) return;
@@ -46,4 +48,5 @@ export function initNav() {
         });
     }, { rootMargin: '-45% 0px -50% 0px' });
     sections.forEach((s) => io.observe(s));
+    if (hero) io.observe(hero);
 }

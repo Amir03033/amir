@@ -6,6 +6,7 @@
     .section { padding-block: var(--space-section); }
     .section + .section { padding-top: 0; }
     .section-band { background: rgb(var(--fill)); }
+    .section.section-band { padding-top: var(--space-section); } /* a tinted band always needs its own top space */
     .section-band + .section { padding-top: var(--space-section); }
 
     /* Section opener: optional mono label, one centered statement, optional lead. */
