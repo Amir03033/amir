@@ -278,4 +278,5 @@ return [
     ],
 
     'placeholder' => 'Placeholder',
+    'brand_by' => ['prefix' => 'handgemaakt bij'],
 ];

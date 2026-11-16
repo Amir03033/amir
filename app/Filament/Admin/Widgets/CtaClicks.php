@@ -18,6 +18,7 @@ class CtaClicks extends BaseWidget
 
     public const PLACEMENTS = [
         'nav' => 'Menu',
+        'logo' => 'Onder het logo',
         'home' => 'Homepage',
         'hero' => 'Hero-zin',
         'about' => 'Over mij',

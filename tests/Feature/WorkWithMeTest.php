@@ -67,6 +67,17 @@ class WorkWithMeTest extends TestCase
         $this->get('/blog/notitie')->assertSee(self::UTM.'post', false)->assertSee('?via=post', false);
     }
 
+    public function test_logo_carries_a_small_handmade_at_jebbari_link(): void
+    {
+        $this->get('/')->assertOk()
+            ->assertSee('class="brand-by"', false)
+            ->assertSee('handgemaakt bij <span class="brand-by-name">Jebbari</span>', false)
+            ->assertSee(self::UTM.'logo', false);
+
+        $this->get('/en')->assertOk()->assertSee('handmade at <span class="brand-by-name">Jebbari</span>', false);
+        $this->get('/werk-met-mij')->assertSee(self::UTM.'logo', false); // on every page, not only home
+    }
+
     public function test_clicks_are_logged_and_counted_per_placement(): void
     {
         $this->post('/e', ['name' => 'cta_click', 'label' => 'case'])->assertNoContent();

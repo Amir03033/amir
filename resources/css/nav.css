@@ -88,4 +88,15 @@
     /* "Work with me": a quiet burgundy nav item, the only accent-coloured link in the bar. */
     .nav-link-cta, .nav-link-cta:hover, .nav-link-cta[aria-current] { color: rgb(var(--accent)); }
     .nav-sheet-links a.nav-sheet-cta { color: rgb(var(--accent)); }
+
+    /* Wordmark plus the small "handmade at Jebbari" line, aligned under the name (past the 20px mark + 10px gap). */
+    .brand { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; line-height: 1; }
+    .brand-by {
+        margin-left: 30px; padding-block: 2px;
+        font-family: 'Martian Mono', ui-monospace, monospace; font-size: .625rem; font-stretch: 87%; letter-spacing: .02em;
+        color: rgb(var(--muted)); text-decoration: none; white-space: nowrap;
+        transition: color var(--d-ui) var(--ease);
+    }
+    .brand-by-name { color: rgb(var(--text-2)); transition: color var(--d-ui) var(--ease); }
+    .brand-by:hover .brand-by-name, .brand-by:focus-visible .brand-by-name { color: rgb(var(--accent)); }
 }
