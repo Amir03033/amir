@@ -17,7 +17,7 @@ class ContentDraftsTest extends TestCase
 {
     use RefreshDatabase;
 
-    private const PROJECTS = ['serverscope', 'barbercuts', 'jebbari'];
+    private const PROJECTS = ['serverscope', 'barbercuts', 'jebbari', 'irooni'];
 
     protected function setUp(): void
     {
@@ -31,7 +31,7 @@ class ContentDraftsTest extends TestCase
         $this->seed(ContentDraftsSeeder::class);
     }
 
-    public function test_seeder_creates_three_unpublished_case_studies_and_three_draft_posts(): void
+    public function test_seeder_creates_four_unpublished_case_studies_and_three_draft_posts(): void
     {
         $this->seedDrafts();
 
@@ -55,7 +55,7 @@ class ContentDraftsTest extends TestCase
         $this->seedDrafts();
         $this->seedDrafts();
 
-        $this->assertSame(3, Project::count());
+        $this->assertSame(count(self::PROJECTS), Project::count());
         $this->assertSame(3, Blog::count());
 
         // An edited draft and a published project survive a re-run untouched.
@@ -71,7 +71,7 @@ class ContentDraftsTest extends TestCase
         $this->assertSame('Mijn eigen tekst.', $edited->fresh()->getTranslation('summary', 'nl'));
         $this->assertTrue($live->fresh()->is_published);
         $this->assertSame('Eigen titel', Blog::where('slug', 'what-building-serverscope-taught-me')->first()->getTranslation('title', 'nl'));
-        $this->assertSame(3, Project::count());
+        $this->assertSame(count(self::PROJECTS), Project::count());
 
         // With the explicit flag the seeded draft replaces it (and it goes offline).
         putenv('CONTENT_SEED_OVERWRITE=1');
@@ -82,7 +82,7 @@ class ContentDraftsTest extends TestCase
         }
         $this->assertFalse($live->fresh()->is_published);
         $this->assertNotSame('Mijn eigen tekst.', $edited->fresh()->getTranslation('summary', 'nl'));
-        $this->assertSame(3, Project::count());
+        $this->assertSame(count(self::PROJECTS), Project::count());
     }
 
     public function test_seeded_drafts_are_hidden_from_guests_lists_sitemap_and_llms(): void
@@ -104,6 +104,7 @@ class ContentDraftsTest extends TestCase
         foreach (['/', '/work', '/en/work', '/blog', '/en/blog', '/werk-met-mij', '/sitemap.xml', '/llms.txt', '/llms-full.txt'] as $url) {
             $this->get($url)->assertOk()
                 ->assertDontSee('/project/barbercuts', false)
+                ->assertDontSee('/project/irooni', false)
                 ->assertDontSee('how-i-hardened-my-vps-with-fail2ban', false)
                 ->assertDontSee('[VERIFY', false);
         }

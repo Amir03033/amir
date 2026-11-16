@@ -85,7 +85,7 @@ If `migrate:status` shows **older** migrations as pending too (for example `2026
 php artisan migrate:status    # all six should now say "Ran"
 ```
 
-**Review drafts (after migration 6):** seed the three case studies (ServerScope, BarberCuts, Jebbari.nl) and three blog posts as **unpublished drafts**, with their screenshots. Nobody but you (logged in to `/amir`) can see them until you publish each one. See REVIEW.md.
+**Review drafts (after migration 6):** seed the four case studies (ServerScope, BarberCuts, Jebbari.nl, Irooni) and three blog posts as **unpublished drafts**, with their screenshots. Nobody but you (logged in to `/amir`) can see them until you publish each one. See REVIEW.md.
 
 ```bash
 php artisan db:seed --class=ContentDraftsSeeder --force

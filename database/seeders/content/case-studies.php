@@ -200,4 +200,65 @@ return [
             ['request-mobile-light.webp', 'De projectaanvraag op een telefoon (leeg formulier)', 'The project request on a phone (empty form)'],
         ],
     ],
+
+    // ------------------------------------------------------------------------------------------
+    // Facts: the Amir03033/irooni repository (README, PLAN.md, docs/phase-0 … phase-10) and the
+    // live site irooni.nl, both read on 2026-11-16.
+    'irooni' => [
+        'sort_order' => 4,
+        'featured' => false, // the home page shows at most three featured projects (REVIEW.md)
+        'year' => 2026, // PLAN.md approved 2026-11-13, first Laravel version live 2026-11-14
+        'status' => 'live', // public, but the site itself says it is "in preparation" (REVIEW.md)
+        'tags' => 'Laravel, Blade, Tailwind CSS, Vite, Markdown, i18n, RTL',
+        'demo_url' => 'https://irooni.nl',
+        'jebbari_url' => null,
+        'title' => ['nl' => 'Irooni', 'en' => 'Irooni'],
+        'summary' => [
+            'nl' => 'Een onafhankelijk online magazine over de geschiedenis en cultuur van Iran, in het Engels, Nederlands en Perzisch.',
+            'en' => 'An independent online magazine about the history and culture of Iran, in English, Dutch and Persian.',
+        ],
+        'role' => [
+            'nl' => 'Ontwerp en bouw, via Jebbari [VERIFY: is Irooni je eigen project of bouwde je het voor iemand anders? Noem geen naam als het een klant is die dat niet wil.]',
+            'en' => 'Design and build, through Jebbari [VERIFY: is Irooni your own project, or did you build it for someone else? Don’t name a client who doesn’t want to be named.]',
+        ],
+        'description' => [
+            'nl' => 'Irooni is een digitaal magazine over Iran en de Perzische cultuur: geschiedenis, architectuur, poëzie, keuken, taal en de Iraanse diaspora. Het verschijnt in drie talen, met een volledige Perzische editie die van rechts naar links leest.',
+            'en' => 'Irooni is a digital magazine about Iran and Persian culture: history, architecture, poetry, food, language and the Iranian diaspora. It appears in three languages, with a full Persian edition that reads from right to left.',
+        ],
+        'problem' => [
+            'nl' => "Wie over Iran leest, leest vooral over politiek. De architectuur, de poëzie, de tuinen en het dagelijks leven komen nauwelijks aan bod, en zeker niet in het Nederlands. [VERIFY: is dit de aanleiding zoals jij hem zou vertellen?]\n\nDe opdracht was een magazine dat aanvoelt als een goed gemaakt tijdschrift, in drie talen tegelijk, waarin elke bewering een bron heeft en elke foto een gecontroleerde licentie.",
+            'en' => "Most of what people read about Iran is about politics. The architecture, the poetry, the gardens and everyday life barely appear, and hardly ever in Dutch. [VERIFY: is this the reason as you would tell it?]\n\nThe brief was a magazine that feels like a well-made print publication, in three languages at once, where every claim has a source and every photo a checked licence.",
+        ],
+        'solution' => [
+            'nl' => "- **Drie talen, ook van rechts naar links.** Engels is de brontaal, Nederlands en Perzisch zijn volwaardige edities. Het Perzisch leest van rechts naar links in elk onderdeel: menu's, pijltjes, sneltoetsen en animaties. Dat kan omdat de CSS overal logische richtingen gebruikt in plaats van links en rechts.\n- **Artikelen als Markdown in Git.** Elk stuk is een Markdown-bestand met gegevens erboven: soort artikel, tijdvak, bronnen, beelden en vertalingen. Er is geen database nodig voor de inhoud, en elke wijziging staat in de geschiedenis.\n- **Een controle die niet onderhandelt.** `php artisan content:validate` weigert een stuk zonder bronnen, met een niet-vrijgegeven foto, met een dubbele URL of zonder Engelse bron. Dezelfde controle draait bij elke push in de CI.\n- **Concepten wachten op de redacteur.** Nieuwe stukken komen als concept binnen. In een eigen beheerpaneel ziet de redacteur de automatische controles, de beweringen die nog nagekeken moeten worden, de bronnen en de beelden. Publiceren kan pas als alle controles slagen. Stukken die met AI zijn opgesteld, staan op de pagina ook zo vermeld.\n- **Licht en snel.** Blade-componenten met een beetje JavaScript erbovenop; zonder JavaScript werkt alles nog. Lettertypen staan op de eigen server, dus er gaan geen bezoekersgegevens naar Google.",
+            'en' => "- **Three languages, including right to left.** English is the source language; Dutch and Persian are full editions. Persian reads right to left in every component: menus, arrows, keyboard shortcuts and animations. That works because the CSS uses logical directions everywhere instead of left and right.\n- **Articles as Markdown in Git.** Every piece is a Markdown file with data on top: type of article, period, sources, images and translations. The content needs no database, and every change is in the history.\n- **A check that doesn't negotiate.** `php artisan content:validate` refuses a piece without sources, with an uncleared photo, with a duplicate URL or without an English source. The same check runs in CI on every push.\n- **Drafts wait for the editor.** New pieces come in as drafts. In its own admin panel the editor sees the automatic checks, the claims that still need checking, the sources and the images. Publishing only works once every check passes. Pieces drafted with AI say so on the page.\n- **Light and fast.** Blade components with a little JavaScript on top; without JavaScript everything still works. Fonts are self-hosted, so no visitor data goes to Google.",
+        ],
+        'lessons' => [
+            'nl' => "- **Rechts-naar-links is geen vertaling, het is een ontwerpkeuze.** Een pijl die \"volgende\" betekent, wijst in het Perzisch de andere kant op. Dat vind je alleen door elke pagina echt in het Perzisch te bekijken. Een test rendert daarom elke pagina in alle drie de talen en controleert onder andere de taal en leesrichting.\n- **Foto's zijn het lastigste deel.** Van de 120 kandidaat-beelden van Wikimedia Commons gebruikt de site er 89, alleen die zonder enige twijfel over de licentie. Een verkeerde foto is erger dan geen foto. [VERIFY: klopt deze les zo voor jou?]\n- **Bereid de server voor vóór de eerste deploy.** De eerste Laravel-versie gaf een lege foutpagina, omdat de server nog geen `.env` en geen Composer-stap had. Terugdraaien, de server voorbereiden en opnieuw uitrollen loste het op.",
+            'en' => "- **Right to left isn't translation, it's a design decision.** An arrow that means \"next\" points the other way in Persian. You only find that by actually looking at every page in Persian. So a test renders every page in all three languages and checks, among other things, the language and reading direction.\n- **Photos are the hardest part.** Of the 120 candidate images from Wikimedia Commons, the site uses 89: only those without any doubt about the licence. A wrong picture is worse than none. [VERIFY: is this lesson right for you as written?]\n- **Prepare the server before the first deploy.** The first Laravel version returned a blank error page, because the server had no `.env` and no Composer step yet. Reverting, preparing the server and deploying again fixed it.",
+        ],
+        'result' => [
+            'nl' => "Irooni staat online op irooni.nl, in een zachte lancering: de site zegt zelf dat hij nog in voorbereiding is. Er staan ruim 130 automatische tests en een controle die elke pagina in drie talen rendert. [VERIFY: wil je een resultaat noemen, zoals het aantal gepubliceerde artikelen of lezers? Alleen als je het kunt onderbouwen.]",
+            'en' => "Irooni is online at irooni.nl in a soft launch: the site itself says it is still in preparation. It has more than 130 automated tests and a check that renders every page in three languages. [VERIFY: do you want to mention a result, such as the number of published articles or readers? Only if you can back it up.]",
+        ],
+        'seo_title' => [
+            'nl' => 'Irooni – magazine in drie talen, door Amir Jebbari',
+            'en' => 'Irooni – a magazine in three languages, by Amir Jebbari',
+        ],
+        'seo_description' => [
+            'nl' => 'Hoe ik Irooni bouwde: een magazine over Iran in het Engels, Nederlands en Perzisch, met Markdown in Git, bronnencontrole en een redactiepaneel.',
+            'en' => 'How I built Irooni: a magazine about Iran in English, Dutch and Persian, with Markdown in Git, source checks and an editor panel.',
+        ],
+        'image' => 'home-en-desktop.webp',
+        'image_alt' => [
+            'nl' => 'De Engelse homepage van irooni.nl met een foto van het Naqsh-e Jahan-plein in Isfahan, gezien door een boog',
+            'en' => 'The English home page of irooni.nl with a photo of Naqsh-e Jahan Square in Isfahan, seen through an arch',
+        ],
+        'gallery' => [
+            ['home-fa-desktop.webp', 'Dezelfde homepage in het Perzisch: de hele pagina leest van rechts naar links', 'The same home page in Persian: the whole page reads right to left'],
+            ['article-persepolis-desktop.webp', 'Een artikel over Persepolis, met tijdvak, auteursregel en de vermelding van AI-hulp', 'An article about Persepolis, with its period, byline and the note on AI assistance'],
+            ['home-en-mobile.webp', 'De homepage op een telefoon', 'The home page on a phone'],
+            ['article-persepolis-mobile.webp', 'Het artikel over Persepolis op een telefoon', 'The Persepolis article on a phone'],
+        ],
+    ],
 ];

@@ -182,3 +182,10 @@ amirs.life has draft case studies for BarberCuts (`/project/barbercuts`) and Jeb
 - **Jebbari.nl** has no project page on jebbari.nl itself, so nothing to add.
 - The case study's "What I learned" asks you to choose between "digital studio" and "webbureau". Whichever you pick, use it on both sites (see section 6, item 1).
 
+
+## 9. Irooni
+
+amirs.life has a draft case study for Irooni (`/project/irooni`). jebbari.nl has no Irooni project page yet. Once the case study is published:
+
+- **Optional:** add Irooni to jebbari.nl/nl/werk and /en/work. Then fill in "Projectpagina op jebbari.nl" for Irooni in Filament, so the case page links to it.
+- **On irooni.nl:** the footer line "Developed and created by Jebbari" could link to `https://jebbari.nl/?utm_source=irooni.nl&utm_medium=referral&utm_campaign=footer`. That change goes in the irooni repository; I didn't make it.

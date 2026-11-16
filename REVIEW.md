@@ -1,6 +1,6 @@
 # Review before publishing
 
-Three case studies and three blog posts are seeded as **unpublished drafts** in Dutch and English. Guests, search engines, the sitemap, `llms.txt`, the OG images and every list on the site cannot see them. Only you can, when you are logged in to `/amir` with 2FA.
+Four case studies (ServerScope, BarberCuts, Jebbari.nl, Irooni) and three blog posts are seeded as **unpublished drafts** in Dutch and English. Guests, search engines, the sitemap, `llms.txt`, the OG images and every list on the site cannot see them. Only you can, when you are logged in to `/amir` with 2FA.
 
 Every detail I could not confirm from the repositories or the live sites carries a visible `[VERIFY: …]` marker. Each one is listed below. Publishing is blocked while any marker is left (in any language, in any field), so you cannot forget one.
 
@@ -67,6 +67,17 @@ Field names are the Filament form fields. Each marker appears once in NL and onc
 | Wat ik leerde (lessons) | The last lesson is a suggestion. Is it true for how you built Jebbari.nl? Adjust it or remove it. |
 | Het resultaat (result) | A result, such as requests per month, only if you want to share it. |
 
+### Project: Irooni (`/project/irooni`), 8 markers
+
+Facts come from the `irooni` repository (README, PLAN.md, `docs/phase-0` to `phase-10`) and irooni.nl, both read on 16 Nov 2026. The text stays on culture and the build. It describes no political position, and states openly that drafts are written with AI help, as the site itself does.
+
+| Field | What to confirm |
+|---|---|
+| Rol (role) | Is Irooni your own project, or did you build it for someone else? If it's a client who doesn't want to be named, keep it anonymous. |
+| Het probleem (problem) | Is this the reason as you would tell it? |
+| Wat ik leerde (lessons) | The photo lesson: 89 of 120 Commons candidates used (from `docs/phase-8` and `phase-10`). Is it right for you as written? |
+| Het resultaat (result) | Do you want to mention published articles or readers? Only if you can back it up. "More than 130 tests" comes from the repo (139 test methods). |
+
 ### Post: "Hoe ik mijn VPS beveiligde met fail2ban" (`how-i-hardened-my-vps-with-fail2ban`), 14 markers
 
 All are in **content**, in this order:
@@ -111,8 +122,9 @@ The publish guard only reads text. Check these fields by hand:
 | Item | Field | Seeded value | What to confirm |
 |---|---|---|---|
 | ServerScope, BarberCuts, Jebbari.nl | Jaar (year) | 2026 | The year you built or launched it. |
-| All three projects | Status | live | That each is still live when you publish. |
-| All three projects | Uitgelicht (featured), volgorde (sort_order) | featured, 1 / 2 / 3 | Whether you want all three on the home page, in this order. |
+| Irooni | Jaar (year) | 2026 | From PLAN.md: approved 13 Nov, live 14 Nov 2026. |
+| All four projects | Status | live | That each is still live when you publish. Irooni is public, but the site says "in preparation"; choose *In ontwikkeling* if you prefer. |
+| All four projects | Uitgelicht (featured), volgorde (sort_order) | ServerScope, BarberCuts and Jebbari.nl featured (1 / 2 / 3); Irooni not featured (4) | The home page shows at most three featured projects. To put Irooni there, switch another one off. Irooni always appears on `/work`. |
 | BarberCuts | Result text | "free during the launch, then €10 a month" | Taken from barbercuts.nl/prijzen on 16 Nov 2026. Check that the price is still the same. |
 | ServerScope | Result text | "Free, Pro and Premium" plans | Taken from info.serverscope.nl. |
 | All three posts | Publication date | set when you publish | The date shown in the preview is the creation date. It becomes the real date the moment you publish. |
@@ -166,6 +178,13 @@ None of them shows a login with credentials, real customers, IPs or tokens. Plea
 - [ ] `pricing-desktop-light.webp`, `pricing-mobile-light.webp`
 - [ ] `signup-mobile-light.webp`: an empty sign-up form. The footer shows the company's KvK number, which is public on barbercuts.nl. Fine to show? If not, I will crop it.
 - The public shop directory (`/kappers`) was deliberately **not** captured: it lists real businesses.
+
+**Irooni** (irooni.nl, light only: each section has its own colours, and there is no theme toggle)
+- [ ] `home-en-desktop.webp`: cover. The Isfahan photo is "Amir Pashaei, CC BY-SA 4.0", credited in the image itself.
+- [ ] `home-fa-desktop.webp`: the Persian home page, right to left.
+- [ ] `article-persepolis-desktop.webp`, `article-persepolis-mobile.webp`: the Persepolis article, including its line about AI assistance.
+- [ ] `home-en-mobile.webp`
+- Deliberately not captured: `/admin`, and the history timeline (it opens with a portrait of a Shah, which reads as political on a portfolio).
 
 **Jebbari.nl** (dark captures use the site's own theme toggle; the site ignores the system setting)
 - [ ] `home-desktop-light.webp`: cover

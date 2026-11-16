@@ -10,6 +10,7 @@ then scaled to 1600 px (desktop) and 780 px (mobile) wide, WebP quality 80.
 |---|---|---|
 | `serverscope/` | info.serverscope.nl (public site) and serverscope.nl/demo | The demo uses sample data (team "Acme (demo)", example.com hosts); its "demo with sample data" banner is kept in the image. No real servers, IPs or accounts. |
 | `barbercuts/` | barbercuts.nl home, /prijzen, /aanmelden (empty form) | The phone mock-up on the home page shows names such as "Sam" and "Daan de Vries": confirm these are illustrative, not real customers (REVIEW.md). The public shop directory is deliberately not captured. |
+| `irooni/` | irooni.nl/en (home), /fa (home, right to left), /en/history/persepolis-a-city-built-for-ceremony | The photos inside the screenshots are Wikimedia Commons images (CC BY-SA / CC0) that irooni.nl credits on the page; the credit line is visible in the shots. No admin panel or drafts captured. |
 | `jebbari/` | jebbari.nl/nl home (light and dark via its theme toggle), /nl/diensten, /nl/aanvraag/stap/1 (empty form) | |
 
 Re-capture: see `REVIEW.md` → "Screenshots".

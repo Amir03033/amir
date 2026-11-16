@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * Seeds the ServerScope, BarberCuts and Jebbari.nl case studies as UNPUBLISHED drafts, with their
+ * Seeds the ServerScope, BarberCuts, Jebbari.nl and Irooni case studies as UNPUBLISHED drafts, with their
  * screenshots. Idempotent: matched by slug, so running it twice creates no duplicates.
  *
  * A project that already exists (published, or a draft you are editing) is never touched, so a
