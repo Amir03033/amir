@@ -34,7 +34,8 @@
         // Theme before first paint (no flash). Preference: "system" (default), "light" or "dark".
         (function (d) {
             var mq = matchMedia('(prefers-color-scheme: dark)'), pref = null;
-            try { pref = localStorage.getItem('theme'); } catch (e) {}
+            // Own key: Filament (/amir, same domain) keeps its panel theme under "theme".
+            try { pref = localStorage.getItem('site-theme'); } catch (e) {}
             if (pref !== 'light' && pref !== 'dark') pref = 'system';
             function apply(p) {
                 var t = p === 'system' ? (mq.matches ? 'dark' : 'light') : p;
@@ -48,7 +49,7 @@
             window.__theme = {
                 pref: function () { return d.dataset.themePref; },
                 set: function (p) {
-                    try { p === 'system' ? localStorage.removeItem('theme') : localStorage.setItem('theme', p); } catch (e) {}
+                    try { p === 'system' ? localStorage.removeItem('site-theme') : localStorage.setItem('site-theme', p); } catch (e) {}
                     window.dispatchEvent(new CustomEvent('themechange', { detail: apply(p) }));
                 },
             };
