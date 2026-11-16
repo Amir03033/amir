@@ -1,6 +1,6 @@
 # Review before publishing
 
-Four case studies (ServerScope, BarberCuts, Jebbari.nl, Irooni) and three blog posts are seeded as **unpublished drafts** in Dutch and English. Guests, search engines, the sitemap, `llms.txt`, the OG images and every list on the site cannot see them. Only you can, when you are logged in to `/amir` with 2FA.
+Four case studies (ServerScope, BarberCuts, Jebbari.nl, Irooni), three blog posts and four pilot reviews are seeded as **unpublished drafts** in Dutch and English. Guests, search engines, the sitemap, `llms.txt`, the OG images and every list on the site cannot see them. Only you can, when you are logged in to `/amir` with 2FA.
 
 Every detail I could not confirm from the repositories or the live sites carries a visible `[VERIFY: …]` marker. Each one is listed below. Publishing is blocked while any marker is left (in any language, in any field), so you cannot forget one.
 
@@ -114,6 +114,32 @@ grep -no "\[VERIFY[^]]*\]" database/seeders/content/*.php
 The **[VERIFY]** column in Filament shows what is left in the database.
 
 ---
+
+## Pilot reviews (hidden, text only)
+
+`TestimonialDraftsSeeder` (part of `ContentDraftsSeeder`) adds four **hidden** reviews under **Reviews** in Filament. They have no photos; you add those yourself.
+
+**These are not real quotes.** Each text is a suggestion to send to a real client:
+- The client approves it, or rewrites it in their own words.
+- Name, role and company are `[VERIFY]` placeholders, because I don't invent people or companies.
+
+| Review | Linked to | What to do |
+|---|---|---|
+| A ServerScope user | ServerScope | Find a user who wants to be quoted, send them the text, fill in name/role, and leave the company empty if they prefer. |
+| A barber | BarberCuts | The same, with a shop that uses BarberCuts. |
+| Irooni | Irooni | Only if Irooni was built for someone else. If it's your own project, delete this review. |
+| A Jebbari client | (no project) | A general client review for the home page. |
+
+**To publish one:**
+1. Edit the review.
+2. Replace the name, role and company, or empty the company field.
+3. Put in the approved text in NL and EN, and remove the `[VERIFY: …]` at the end.
+4. Optionally add a photo.
+5. Switch on **Tonen op de site**, or click **Publiceer** in the list.
+
+With a `[VERIFY]` marker left, it refuses with "Nog niet te publiceren". The review section on the home page and on the project page appears automatically as soon as one review is visible.
+
+Running the seeder again adds nothing for a project that already has a review, so it never touches a review you edited.
 
 ## Numbers and fields without markers
 

@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\App;
 
 class Testimonial extends Model
 {
+    use \App\Models\Concerns\HasReviewMarkers;
+
     protected $fillable = ['name', 'role', 'company', 'quote', 'avatar', 'url', 'project_id', 'is_visible', 'sort_order'];
 
     protected $casts = [
@@ -16,6 +18,18 @@ class Testimonial extends Model
         'is_visible' => 'boolean',
         'sort_order' => 'integer',
     ];
+
+    /** @return list<string> */
+    public function reviewFields(): array
+    {
+        return ['name', 'role', 'company', 'quote'];
+    }
+
+    /** "Published" for a review means: shown on the site. */
+    public function isPublishedState(): bool
+    {
+        return (bool) $this->is_visible;
+    }
 
     public function project(): BelongsTo
     {

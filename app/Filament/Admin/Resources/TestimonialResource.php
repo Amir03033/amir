@@ -55,7 +55,9 @@ class TestimonialResource extends Resource
                 ]),
             ])->columnSpanFull(),
 
-            Forms\Components\Toggle::make('is_visible')->label('Tonen op de site')->default(true),
+            Forms\Components\Toggle::make('is_visible')->label('Tonen op de site')->default(true)
+                ->rules([\App\Filament\Admin\Support\ReviewGuard::rule(Testimonial::class, fn ($v) => (bool) $v)])
+                ->helperText('Een concept met [VERIFY]-markers kan niet zichtbaar worden. Laat de klant de tekst eerst goedkeuren.'),
         ]);
     }
 
@@ -68,11 +70,19 @@ class TestimonialResource extends Resource
                     ->description(fn (Testimonial $r) => collect([$r->role, $r->company])->filter()->implode(' · '))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('quote.nl')->label('Quote')->limit(70)->wrap(),
-                Tables\Columns\ToggleColumn::make('is_visible')->label('Zichtbaar'),
+                \App\Filament\Admin\Support\ReviewGuard::markersColumn(),
+                Tables\Columns\IconColumn::make('is_visible')->label('Zichtbaar')->boolean(),
             ])
             ->reorderable('sort_order')
             ->defaultSort('sort_order')
-            ->actions([Tables\Actions\EditAction::make(), Tables\Actions\DeleteAction::make()])
+            ->actions([
+                \App\Filament\Admin\Support\ReviewGuard::publishAction(
+                    fn (Testimonial $record): bool => (bool) $record->is_visible,
+                    fn (Testimonial $record) => $record->update(['is_visible' => true]),
+                ),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
             ->emptyStateHeading('Nog geen reviews')
             ->emptyStateDescription('Vraag een opdrachtgever om 2–3 zinnen over de samenwerking. De sectie verschijnt pas op de site zodra er een zichtbare review is.');
     }
