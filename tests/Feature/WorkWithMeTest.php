@@ -71,10 +71,10 @@ class WorkWithMeTest extends TestCase
     {
         $this->get('/')->assertOk()
             ->assertSee('class="brand-by"', false)
-            ->assertSee('handgemaakt bij <span class="brand-by-name">Jebbari</span>', false)
+            ->assertSee('<span class="brand-by">handgemaakt bij <a href="https://jebbari.nl/nl?utm_source=amirs.life', false)
             ->assertSee(self::UTM.'logo', false);
 
-        $this->get('/en')->assertOk()->assertSee('handmade at <span class="brand-by-name">Jebbari</span>', false);
+        $this->get('/en')->assertOk()->assertSee('<span class="brand-by">handmade at <a href="https://jebbari.nl/en?utm_source=amirs.life', false);
         $this->get('/werk-met-mij')->assertSee(self::UTM.'logo', false); // on every page, not only home
     }
 

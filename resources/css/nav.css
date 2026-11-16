@@ -94,9 +94,8 @@
     .brand-by {
         margin-left: 30px; padding-block: 2px;
         font-family: 'Martian Mono', ui-monospace, monospace; font-size: .625rem; font-stretch: 87%; letter-spacing: .02em;
-        color: rgb(var(--muted)); text-decoration: none; white-space: nowrap;
-        transition: color var(--d-ui) var(--ease);
+        color: rgb(var(--muted)); white-space: nowrap;
     }
-    .brand-by-name { color: rgb(var(--text-2)); transition: color var(--d-ui) var(--ease); }
-    .brand-by:hover .brand-by-name, .brand-by:focus-visible .brand-by-name { color: rgb(var(--accent)); }
+    .brand-by-name { color: rgb(var(--text-2)); text-decoration: none; transition: color var(--d-ui) var(--ease); }
+    .brand-by-name:hover, .brand-by-name:focus-visible { color: rgb(var(--accent)); }
 }
