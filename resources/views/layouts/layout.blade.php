@@ -36,7 +36,8 @@
             var mq = matchMedia('(prefers-color-scheme: dark)'), pref = null;
             // Own key: Filament (/amir, same domain) keeps its panel theme under "theme".
             try { pref = localStorage.getItem('site-theme'); } catch (e) {}
-            if (pref !== 'light' && pref !== 'dark') pref = 'system';
+            // Light is the default; a visitor's own choice (light, dark or system) is remembered.
+            if (pref !== 'light' && pref !== 'dark' && pref !== 'system') pref = 'light';
             function apply(p) {
                 var t = p === 'system' ? (mq.matches ? 'dark' : 'light') : p;
                 d.dataset.theme = t;
@@ -49,7 +50,7 @@
             window.__theme = {
                 pref: function () { return d.dataset.themePref; },
                 set: function (p) {
-                    try { p === 'system' ? localStorage.removeItem('site-theme') : localStorage.setItem('site-theme', p); } catch (e) {}
+                    try { localStorage.setItem('site-theme', p); } catch (e) {}
                     window.dispatchEvent(new CustomEvent('themechange', { detail: apply(p) }));
                 },
             };
@@ -75,6 +76,8 @@
         <link rel="alternate" hreflang="x-default" href="{{ $alternates['nl'] }}">
     @endif
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     <link rel="preload" href="{{ asset('fonts/instrument-sans-latin-wght.woff2') }}" as="font" type="font/woff2" crossorigin>
     <meta property="og:type" content="{{ $ogType ?? 'website' }}">
     <meta property="og:site_name" content="{{ config('seo.site_name') }}">

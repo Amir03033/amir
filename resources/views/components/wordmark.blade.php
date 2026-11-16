@@ -1,2 +1,2 @@
-{{-- amirs.life wordmark: a geometric "a" in a burgundy rounded square (drawn as shapes, no font needed), and the name in ink. --}}
-<span class="wordmark-mark" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><rect width="20" height="20" rx="5.5" class="mark-bg" /><circle cx="9.4" cy="10.5" r="3.3" class="mark-a" /><path d="M12.7 6.9v7.2" class="mark-a" /></svg></span><span>amirs.life</span>
+{{-- amirs.life wordmark: a heartbeat in a burgundy rounded square (sites, and the tools that watch them), and the name in ink. --}}
+<span class="wordmark-mark" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><rect width="20" height="20" rx="5.5" class="mark-bg" /><path d="M3.5 10.5h3l1.6-4 2.6 8 1.8-5.2 1 1.2h3" class="mark-line" /></svg></span><span>amirs.life</span>

@@ -23,7 +23,7 @@ class OgImageController extends Controller
         app()->setLocale($locale);
 
         $record = $type === 'project' ? Project::published()->findOrFail($id) : Blog::published()->findOrFail($id);
-        $file = "og/v4-{$type}-{$id}-{$locale}-{$record->updated_at?->timestamp}.png";
+        $file = "og/v7-{$type}-{$id}-{$locale}-{$record->updated_at?->timestamp}.png";
         $disk = Storage::disk('public');
 
         if (! $disk->exists($file)) {
@@ -45,7 +45,7 @@ class OgImageController extends Controller
         $locale = $request->query('lang') === 'en' ? 'en' : 'nl';
         app()->setLocale($locale);
 
-        $file = "og/v4-page-{$key}-{$locale}-".md5(config('seo.name').config("seo.description.{$locale}").__("seo.pages.{$key}.title")).'.png';
+        $file = "og/v7-page-{$key}-{$locale}-".md5(config('seo.name').config("seo.description.{$locale}").__("seo.pages.{$key}.title")).'.png';
         $disk = Storage::disk('public');
 
         if (! $disk->exists($file)) {
@@ -97,22 +97,40 @@ class OgImageController extends Controller
             imagedestroy($cover);
             imagerectangle($img, $x, $y, $x + $w - 1, $y + $h - 1, $line);
             $textRight = 584;
+        } else {
+            // No screenshot: the logo large on the right, so a shared link is recognisable at a glance.
+            $this->mark($img, 848, 175, 280);
+            $textRight = 780;
         }
 
-        // Wordmark: the monogram (a geometric "a" in a burgundy rounded square, as in the nav) and the name in ink.
-        $this->monogram($img, 72, 85, 30, $accent, $paper);
+        // Wordmark: the heartbeat mark (as in the nav) and the name in ink.
+        $this->mark($img, 72, 85, 30);
         imagettftext($img, 22, 0, 114, 109, $ink, $semi, 'amirs.life');
 
         imagettftext($img, 18, 0, 72, 236, $muted, $regular, $kicker);
 
+        // Title: 56 px, or 44 px when it needs more than two lines; the subtitle only where it fits above the footer.
+        $size = 56;
+        $lines = $this->wrap($title, $semi, $size, $textRight - 72);
+        if (count($lines) > 2) {
+            $size = 44;
+            $lines = $this->wrap($title, $semi, $size, $textRight - 72);
+        }
         $y = 316;
-        foreach ($this->wrap($title, $semi, 56, $textRight - 72) as $l) {
-            imagettftext($img, 56, 0, 70, $y, $ink, $semi, $l);
-            $y += 68;
+        foreach ($lines as $l) {
+            imagettftext($img, $size, 0, 70, $y, $ink, $semi, $l);
+            $y += (int) round($size * 1.2);
         }
 
-        foreach (array_slice($this->wrap($sub, $regular, 22, $textRight - 72), 0, 2) as $l) {
-            imagettftext($img, 22, 0, 72, min($y + 18, 540), $muted, $regular, $l);
+        $y += 18;
+        $subLines = $this->wrap($sub, $regular, 22, $textRight - 72);
+        $room = max(0, min(2, (int) floor((530 - $y) / 34) + 1));
+        $shown = array_slice($subLines, 0, $room);
+        if ($shown && count($subLines) > count($shown)) {
+            $shown[count($shown) - 1] = rtrim($shown[count($shown) - 1], ' ,.;:–-').'…';
+        }
+        foreach ($shown as $l) {
+            imagettftext($img, 22, 0, 72, $y, $muted, $regular, $l);
             $y += 34;
         }
 
@@ -125,29 +143,47 @@ class OgImageController extends Controller
         return (string) ob_get_clean();
     }
 
-    /** The nav mark in GD: rounded square (radius 5.5/20 of the size) with a ring and a stem, scaled from the 20×20 SVG. */
-    private function monogram(\GdImage $img, int $x, int $y, int $size, int $fill, int $ink): void
+    /**
+     * The logo in GD: a heartbeat line in a burgundy rounded square, scaled from the 20×20 nav SVG.
+     * Drawn at 4× on its own canvas and scaled down, so the edges are smooth.
+     */
+    private function mark(\GdImage $img, int $x, int $y, int $size): void
     {
-        $u = $size / 20;
+        $k = 4;
+        $big = $size * $k;
+        $m = imagecreatetruecolor($big, $big);
+        imagealphablending($m, false);
+        imagesavealpha($m, true);
+        imagefill($m, 0, 0, imagecolorallocatealpha($m, 0, 0, 0, 127));
+        imagealphablending($m, true);
+        $fill = imagecolorallocate($m, 127, 29, 63);
+        $ink = imagecolorallocate($m, 247, 245, 241);
+
+        $u = $big / 20;
         $r = (int) round(5.5 * $u);
-        imagefilledrectangle($img, $x + $r, $y, $x + $size - $r, $y + $size, $fill);
-        imagefilledrectangle($img, $x, $y + $r, $x + $size, $y + $size - $r, $fill);
-        foreach ([[$x + $r, $y + $r], [$x + $size - $r, $y + $r], [$x + $r, $y + $size - $r], [$x + $size - $r, $y + $size - $r]] as [$cx, $cy]) {
-            imagefilledellipse($img, $cx, $cy, 2 * $r, 2 * $r, $fill);
+        imagefilledrectangle($m, $r, 0, $big - $r - 1, $big - 1, $fill);
+        imagefilledrectangle($m, 0, $r, $big - 1, $big - $r - 1, $fill);
+        foreach ([[$r, $r], [$big - $r - 1, $r], [$r, $big - $r - 1], [$big - $r - 1, $big - $r - 1]] as [$cx, $cy]) {
+            imagefilledellipse($m, $cx, $cy, 2 * $r, 2 * $r, $fill);
         }
-        $cx = (int) round($x + 9.4 * $u);
-        $cy = (int) round($y + 10.5 * $u);
-        $outer = (int) round((3.3 + 1) * 2 * $u);
-        $inner = (int) round((3.3 - 1) * 2 * $u);
-        imagefilledellipse($img, $cx, $cy, $outer, $outer, $ink);
-        imagefilledellipse($img, $cx, $cy, $inner, $inner, $fill);
-        $sx = (int) round($x + 12.7 * $u);
-        $half = (int) max(1, round($u));
-        $top = (int) round($y + 6.9 * $u);
-        $bottom = (int) round($y + 14.1 * $u);
-        imagefilledrectangle($img, $sx - $half, $top, $sx + $half, $bottom, $ink);
-        imagefilledellipse($img, $sx, $top, 2 * $half + 1, 2 * $half + 1, $ink);
-        imagefilledellipse($img, $sx, $bottom, 2 * $half + 1, 2 * $half + 1, $ink);
+
+        // M3.5 10.5 h3 l1.6-4 2.6 8 1.8-5.2 1 1.2 h3
+        $points = [[3.5, 10.5], [6.5, 10.5], [8.1, 6.5], [10.7, 14.5], [12.5, 9.3], [13.5, 10.5], [16.5, 10.5]];
+        // A round-capped stroke: stamp discs along each segment (smooth joins, no square ends).
+        $w = max(2, (int) round(1.7 * $u));
+        for ($i = 0; $i < count($points) - 1; $i++) {
+            [$x1, $y1] = $points[$i];
+            [$x2, $y2] = $points[$i + 1];
+            $steps = (int) max(1, ceil(hypot(($x2 - $x1) * $u, ($y2 - $y1) * $u)));
+            for ($t = 0; $t <= $steps; $t++) {
+                $px = ($x1 + ($x2 - $x1) * $t / $steps) * $u;
+                $py = ($y1 + ($y2 - $y1) * $t / $steps) * $u;
+                imagefilledellipse($m, (int) round($px), (int) round($py), $w, $w, $ink);
+            }
+        }
+
+        imagecopyresampled($img, $m, $x, $y, 0, 0, $size, $size, $big, $big);
+        imagedestroy($m);
     }
 
     /** @return list<string> at most 3 lines */

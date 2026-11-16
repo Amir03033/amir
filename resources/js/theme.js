@@ -1,5 +1,5 @@
-// Theme toggle: cycles system → light → dark. The pre-paint script in the layout owns window.__theme.
-const order = ['system', 'light', 'dark'];
+// Theme toggle: cycles light → dark → system (light is the default). The pre-paint script in the layout owns window.__theme.
+const order = ['light', 'dark', 'system'];
 
 export function initTheme() {
     const theme = window.__theme;

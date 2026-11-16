@@ -15,7 +15,7 @@
     .wordmark-mark { display: inline-block; width: 20px; height: 20px; color: rgb(var(--accent)); transition: transform var(--d-ui-slow) var(--ease); }
     .wordmark-mark svg { width: 100%; height: 100%; overflow: visible; }
     .wordmark-mark .mark-bg { fill: currentColor; }
-    .wordmark-mark .mark-a { fill: none; stroke: rgb(var(--bg)); stroke-width: 2; stroke-linecap: round; }
+    .wordmark-mark .mark-line { fill: none; stroke: rgb(var(--bg)); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
     .wordmark:hover .wordmark-mark { transform: rotate(-8deg); }
 
     .nav-links { display: none; align-items: center; gap: 4px; }
