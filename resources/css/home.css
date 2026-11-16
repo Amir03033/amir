@@ -206,3 +206,8 @@
     .gallery button[data-portrait] { justify-self: center; max-width: 340px; border: 1px solid rgb(var(--line)); }
     @media (min-width: 768px) { .gallery > button[data-portrait] { grid-column: auto !important; } }
 }
+
+@layer components {
+    /* Call to action block (home, end of case studies and notes) */
+    .cta { margin-inline: auto; padding-top: var(--space-stack); border-top: 1px solid rgb(var(--line)); text-align: center; }
+}

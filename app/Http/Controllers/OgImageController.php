@@ -37,7 +37,7 @@ class OgImageController extends Controller
         ]);
     }
 
-    public const PAGES = ['home', 'work', 'certificates', 'ask', 'roadmap', 'notes', 'cv', 'status', 'privacy'];
+    public const PAGES = ['home', 'work', 'certificates', 'ask', 'roadmap', 'notes', 'cv', 'status', 'privacy', 'work-with-me'];
 
     /** Share images for the static pages, in the same style, cached per page/language/version. */
     public function page(Request $request, string $key)

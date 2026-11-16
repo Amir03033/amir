@@ -50,8 +50,8 @@
             @if($jebbari = $project->jebbariUrl())
                 {{-- Built with Jebbari: link the agency and its page about this project (anchor text "Jebbari"). --}}
                 <p class="mt-6 text-center text-small text-muted" data-reveal>
-                    {!! __('seo.jebbari.built_with', ['jebbari' => '<a href="'.e(config('seo.company.url')).'" class="link" rel="noopener">Jebbari</a>']) !!}
-                    <a href="{{ $jebbari }}" class="link-arrow ml-2 text-small" rel="noopener"><span>{!! __('seo.jebbari.see_on', ['jebbari' => 'Jebbari']) !!}</span>{{ icon('arrow-up-right', 'icon-diag') }}</a>
+                    {!! __('seo.jebbari.built_with', ['jebbari' => '<a href="'.e(jebbari_url('home', 'case', content: $project->slug)).'" class="link" rel="noopener" data-track="cta_jebbari" data-track-label="case">Jebbari</a>']) !!}
+                    <a href="{{ jebbari_url($jebbari, 'case', content: $project->slug) }}" class="link-arrow ml-2 text-small" rel="noopener" data-track="cta_jebbari" data-track-label="case"><span>{!! __('seo.jebbari.see_on', ['jebbari' => 'Jebbari']) !!}</span>{{ icon('arrow-up-right', 'icon-diag') }}</a>
                 </p>
             @endif
 
@@ -130,6 +130,10 @@
                 </dialog>
             </section>
         @endif
+
+        <div class="container section !pb-0">
+            <x-cta placement="case" class="read" />
+        </div>
 
         @if($previous && $next)
             <nav class="pager mt-section" aria-label="{{ __('site.work.label') }}">

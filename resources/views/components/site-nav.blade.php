@@ -19,6 +19,8 @@
             @foreach($items as $hash => $label)
                 <a href="{{ $link($hash) }}" class="nav-link" data-nav-link="{{ $hash }}" @if($current === $hash) aria-current="page" @endif>{{ $label }}</a>
             @endforeach
+            <a href="{{ lroute('work-with-me') }}?via=nav" class="nav-link nav-link-cta" @if(request()->routeIs('work-with-me', 'en.work-with-me')) aria-current="page" @endif
+               data-track="cta_click" data-track-label="nav">{{ __('site.wwm.nav') }}</a>
         </nav>
 
         <div class="nav-tools">
@@ -39,6 +41,7 @@
             <a href="{{ $link($hash) }}" style="--i: {{ $loop->index }}" data-nav-close>{{ $label }}</a>
         @endforeach
         <a href="{{ lroute('blog.index') }}" style="--i: {{ count($items) }}">{{ __('messages.nav.blog') }}</a>
+        <a href="{{ lroute('work-with-me') }}?via=nav" style="--i: {{ count($items) + 1 }}" class="nav-sheet-cta" data-track="cta_click" data-track-label="nav">{{ __('site.wwm.nav') }}</a>
     </nav>
     <div class="container nav-sheet-foot">
         <x-lang-switch />

@@ -39,6 +39,10 @@ return [
             'title' => 'Privacy – amirs.life',
             'description' => 'What amirs.life stores, why and for how long: visit statistics without trackers, the contact form, questions and ideas.',
         ],
+        'work-with-me' => [
+            'title' => 'Work with me – Amir Jebbari through Jebbari',
+            'description' => 'Have a website, online store or application built by Amir Jebbari, founder of Jebbari in Amsterdam and Zwolle. How a project runs and how to request one.',
+        ],
         'not_found' => [
             'title' => 'Page not found – amirs.life',
             'description' => 'This page doesn’t exist. Go back to the home page of Amir Jebbari, founder of Jebbari.',
@@ -81,6 +85,7 @@ return [
             'cv' => 'CV',
             'status' => 'Status',
             'privacy' => 'Privacy',
+            'work-with-me' => 'Work with me',
         ],
         'image_alt' => ':title – share image of amirs.life',
     ],

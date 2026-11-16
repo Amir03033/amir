@@ -198,6 +198,52 @@ return [
         'status' => 'Full status page',
     ],
 
+    // "Work with me": only what jebbari.nl itself says (services, process, FAQ). No clients, no claims.
+    'wwm' => [
+        'nav' => 'Work with me',
+        'label' => 'Work with me',
+        'title' => 'Need something built?',
+        'lead' => 'I do that through Jebbari, my agency in Amsterdam and Zwolle. You work with me directly, from the first conversation to delivery.',
+        'primary' => 'Request a project',
+        'primary_note' => 'A short request form on jebbari.nl. A first conversation is free.',
+        'secondary' => 'Or email :email',
+        'who_title' => 'Who I work with',
+        'who' => [
+            'Anyone who wants a website, online store or application built, or an existing site looked after.',
+            'You don’t need to know exactly what you want. A rough outline of the problem is enough; we work it out together.',
+            'There’s no account manager in between: you talk to the person who builds it.',
+        ],
+        'what_title' => 'What Jebbari builds',
+        'services' => [
+            'website' => ['Websites', 'Fast, clean websites that show who you are and help visitors on their way.'],
+            'webapp' => ['Custom web applications', 'Software for a process or idea that no off-the-shelf tool covers.'],
+            'ecommerce' => ['Online stores', 'A store that presents your products well and keeps ordering simple.'],
+            'api' => ['APIs and integrations', 'Connecting systems and external services, so work doesn’t have to be done twice.'],
+            'maintenance' => ['Maintenance and hosting', 'Updates, security, backups and monitoring once the site is live.'],
+            'design' => ['UI/UX and product design', 'A clickable design you can judge before any code is written.'],
+            'seo' => ['SEO and speed', 'A site that is easy to find and loads fast, also on a phone.'],
+        ],
+        'more' => 'All services on jebbari.nl',
+        'how_title' => 'How a project runs',
+        'steps' => [
+            ['Understand', 'The problem first, then the solution. After a first conversation you get a proposal with a fixed scope and price.'],
+            ['Design', 'A clickable design you can judge before any code is written.'],
+            ['Build', 'Working in-between versions you can open and try yourself, so you see progress instead of promises.'],
+            ['Improve', 'Go live, measure, adjust. Software isn’t finished at launch.'],
+        ],
+        'work_title' => 'Work I’ve built',
+        'work_link' => 'See my projects',
+        'meta_title' => 'Work with me – Amir Jebbari through Jebbari',
+        'meta_description' => 'Have a website, online store or application built by Amir Jebbari, founder of Jebbari in Amsterdam and Zwolle. How a project runs and how to request one.',
+    ],
+
+    'cta' => [
+        'title' => 'Need something built?',
+        'text' => 'I do that through Jebbari, my agency in Amsterdam and Zwolle.',
+        'primary' => 'Work with me',
+        'direct' => 'Request a project directly',
+    ],
+
     'certificates' => [
         'label' => 'Certificates',
         'title' => 'Things I’ve finished.',

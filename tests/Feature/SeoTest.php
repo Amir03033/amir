@@ -353,10 +353,13 @@ class SeoTest extends TestCase
         $links = $x->query('//a[starts-with(@href, "https://jebbari.nl")]');
         $this->assertGreaterThanOrEqual(3, $links->length, 'hero, about and footer');
         foreach ($links as $a) {
-            $this->assertSame('Jebbari', trim($a->textContent));
+            // Links to the agency itself use the anchor text "Jebbari"; CTA links to its request flow say what they do.
+            if (preg_match('#^https://jebbari\.nl(/nl|/en)?/?(\?|$)#', $a->getAttribute('href'))) {
+                $this->assertSame('Jebbari', trim($a->textContent));
+            }
         }
 
-        $this->get('/project/serverscope')->assertSee('href="https://jebbari.nl/nl/werk/serverscope"', false);
+        $this->get('/project/serverscope')->assertSee('href="https://jebbari.nl/nl/werk/serverscope?utm_source=amirs.life', false);
     }
 
     public function test_no_education_age_or_internship_mentions_anywhere(): void

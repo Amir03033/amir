@@ -13,7 +13,7 @@
     <header class="page-head container">
         <p class="label" data-hero-line style="--i: 0">{{ __('messages.cv.title') }}</p>
         <h1 class="hero-type mx-auto mt-5" data-hero-line style="--i: 1">{{ config('site.name') }}</h1>
-        <p class="mx-auto mt-6 max-w-xl text-fg-2" data-hero-line style="--i: 2">{{ seo_sentence(link: true) }}</p>
+        <p class="mx-auto mt-6 max-w-xl text-fg-2" data-hero-line style="--i: 2">{{ seo_sentence(link: true, placement: 'cv') }}</p>
         <div class="no-print mt-10 flex flex-wrap justify-center gap-3" data-hero-line style="--i: 3">
             <a href="{{ lroute('cv.pdf') }}" class="btn-primary">{{ icon('file-text') }} {{ __('messages.cv.download') }}</a>
             <button type="button" onclick="window.print()" class="btn-secondary">{{ __('messages.cv.print') }}</button>

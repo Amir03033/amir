@@ -33,6 +33,7 @@
             <div class="prose-note read" data-reveal>
                 {{ review_marks(Str::markdown($blog->getTranslation('content'))) }}
             </div>
+            <x-cta placement="post" class="read mt-stack" />
             <p class="read mt-stack border-t border-line pt-8">
                 <a href="{{ lroute('blog.index') }}" class="link-arrow"><span>{{ __('site.notes.all') }}</span>{{ icon('arrow-right') }}</a>
             </p>

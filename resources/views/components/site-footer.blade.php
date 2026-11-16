@@ -14,6 +14,7 @@
         <div class="footer-row text-left {{ $mail ? '' : 'mt-0 border-t-0 pt-0' }}">
             <nav class="footer-links" aria-label="{{ __('messages.footer.nav') }}">
                 <a href="{{ lroute('home') }}#work">{{ __('messages.nav.portfolio') }}</a>
+                <a href="{{ lroute('work-with-me') }}?via=footer" data-track="cta_click" data-track-label="footer">{{ __('site.wwm.nav') }}</a>
                 <a href="{{ lroute('blog.index') }}">{{ __('messages.nav.blog') }}</a>
                 <a href="{{ lroute('roadmap') }}">Roadmap</a>
                 <a href="{{ lroute('ask') }}">{{ __('site.ask.label') }}</a>
@@ -35,7 +36,7 @@
             <p>{{ __('messages.footer.line') }}</p>
             <p>
                 @if($jebbari)
-                    {{ __('messages.footer.agency') }} <a href="{{ $jebbari }}" class="link" rel="noopener" target="_blank">Jebbari</a> ·
+                    {{ __('messages.footer.agency') }} <a href="{{ jebbari_url('home', 'footer') }}" class="link" rel="noopener" target="_blank" data-track="cta_jebbari" data-track-label="footer">Jebbari</a> ·
                 @endif
                 &copy; {{ date('Y') }} {{ config('site.name') }}
             </p>

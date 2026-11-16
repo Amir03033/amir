@@ -20,7 +20,7 @@
     $aboutPhoto = \App\Models\Setting::media('about');
     $amsterdam = now('Europe/Amsterdam');
     $facts = [
-        ['agency', $jebbari ? 'Jebbari' : null, $jebbari],
+        ['agency', $jebbari ? 'Jebbari' : null, $jebbari ? jebbari_url('home', 'about') : null],
         ['cities', __('site.about.cities_value'), null],
         ['product', 'ServerScope', config('site.serverscope.url')],
         ['since', null, null],  // missing fact
@@ -117,7 +117,7 @@
 
                 <div class="mt-10 flex flex-wrap gap-x-8 gap-y-3" data-reveal>
                     @if($jebbari)
-                        <a href="{{ $jebbari }}" class="link-arrow" rel="noopener" target="_blank"><span>{{ __('site.about.to_jebbari') }}</span>{{ icon('arrow-up-right', 'icon-diag') }}</a>
+                        <a href="{{ jebbari_url('home', 'about') }}" class="link-arrow" rel="noopener" target="_blank" data-track="cta_jebbari" data-track-label="about"><span>{{ __('site.about.to_jebbari') }}</span>{{ icon('arrow-up-right', 'icon-diag') }}</a>
                     @endif
                     <a href="{{ lroute('cv') }}" class="link-arrow"><span>{{ __('site.about.cv') }}</span>{{ icon('arrow-right') }}</a>
                 </div>
@@ -180,6 +180,13 @@
             </div>
         </section>
     @endif
+
+    {{-- Work with me: the path to Jebbari. --}}
+    <section class="section" aria-label="{{ __('site.wwm.label') }}">
+        <div class="container">
+            <x-cta placement="home" class="read" data-reveal />
+        </div>
+    </section>
 
     {{-- Contact: the big address, then the form. --}}
     <section id="contact" class="section" aria-labelledby="contact-title">

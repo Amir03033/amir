@@ -83,3 +83,9 @@
 
 @keyframes fade-in { from { opacity: 0; } }
 @keyframes rise-in { from { opacity: 0; transform: translateY(16px); } }
+
+@layer components {
+    /* "Work with me": a quiet burgundy nav item, the only accent-coloured link in the bar. */
+    .nav-link-cta, .nav-link-cta:hover, .nav-link-cta[aria-current] { color: rgb(var(--accent)); }
+    .nav-sheet-links a.nav-sheet-cta { color: rgb(var(--accent)); }
+}

@@ -53,7 +53,30 @@ return [
             'nl' => 'https://jebbari.nl/nl/over-mij',
             'en' => 'https://jebbari.nl/en/about',
         ],
+        // Real flows on jebbari.nl (checked 2026-11-16). The wizard is linked at step 1 directly, because
+        // the /nl/aanvraag → /stap/1 redirect drops query strings (and with them the UTM parameters).
+        'request' => [
+            'nl' => 'https://jebbari.nl/nl/aanvraag/stap/1',
+            'en' => 'https://jebbari.nl/en/request/step/1',
+        ],
+        'contact' => [
+            'nl' => 'https://jebbari.nl/nl/contact',
+            'en' => 'https://jebbari.nl/en/contact',
+        ],
+        // The services jebbari.nl offers (slugs per language), in the order of /diensten.
+        'services' => [
+            'website' => ['nl' => 'website-ontwikkeling', 'en' => 'website-development'],
+            'webapp' => ['nl' => 'maatwerk-webapplicaties', 'en' => 'custom-web-applications'],
+            'ecommerce' => ['nl' => 'e-commerce', 'en' => 'e-commerce'],
+            'api' => ['nl' => 'api-ontwikkeling-systeemintegraties', 'en' => 'api-development-integrations'],
+            'maintenance' => ['nl' => 'onderhoud-hosting', 'en' => 'maintenance-hosting'],
+            'design' => ['nl' => 'uiux-digitaal-productontwerp', 'en' => 'uiux-digital-product-design'],
+            'seo' => ['nl' => 'seo-websiteoptimalisatie', 'en' => 'seo-performance-optimization'],
+        ],
     ],
+
+    // UTM parameters on every link from amirs.life to jebbari.nl (utm_campaign = where the link sits).
+    'utm' => ['utm_source' => 'amirs.life', 'utm_medium' => 'portfolio'],
 
     // Profiles that are about this same person. Add the rest when known (GitHub, etc.).
     'same_as' => array_values(array_filter([

@@ -39,6 +39,10 @@ return [
             'title' => 'Privacy – amirs.life',
             'description' => 'Welke gegevens amirs.life opslaat, waarom en hoe lang: bezoekstatistieken zonder trackers, het contactformulier, vragen en ideeën.',
         ],
+        'work-with-me' => [
+            'title' => 'Werk met mij – Amir Jebbari via Jebbari',
+            'description' => 'Website, webshop of applicatie laten bouwen door Amir Jebbari, oprichter van Jebbari in Amsterdam en Zwolle. Zo loopt een project en zo vraag je het aan.',
+        ],
         'not_found' => [
             'title' => 'Pagina niet gevonden – amirs.life',
             'description' => 'Deze pagina bestaat niet. Ga terug naar de homepage van Amir Jebbari, oprichter van Jebbari.',
@@ -81,6 +85,7 @@ return [
             'cv' => 'Cv',
             'status' => 'Status',
             'privacy' => 'Privacy',
+            'work-with-me' => 'Werk met mij',
         ],
         'image_alt' => ':title – deelafbeelding van amirs.life',
     ],

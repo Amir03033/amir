@@ -198,6 +198,52 @@ return [
         'status' => 'Volledige statuspagina',
     ],
 
+    // "Werk met mij": only what jebbari.nl itself says (services, process, FAQ). No clients, no claims.
+    'wwm' => [
+        'nav' => 'Werk met mij',
+        'label' => 'Werk met mij',
+        'title' => 'Iets laten bouwen?',
+        'lead' => 'Dat doe ik via Jebbari, mijn bureau in Amsterdam en Zwolle. Je werkt direct met mij, van het eerste gesprek tot de oplevering.',
+        'primary' => 'Vraag een project aan',
+        'primary_note' => 'Een korte aanvraag op jebbari.nl. Kennismaken is vrijblijvend.',
+        'secondary' => 'Of mail naar :email',
+        'who_title' => 'Met wie ik werk',
+        'who' => [
+            'Met iedereen die een website, webshop of applicatie wil laten bouwen, of een bestaande site wil laten onderhouden.',
+            'Je hoeft niet precies te weten wat je wilt. Een ruwe schets van het probleem is genoeg; het uitwerken doen we samen.',
+            'Er zit geen accountmanager tussen: je praat met degene die het bouwt.',
+        ],
+        'what_title' => 'Wat Jebbari bouwt',
+        'services' => [
+            'website' => ['Websites', 'Snelle, nette websites die laten zien wie je bent en bezoekers verder helpen.'],
+            'webapp' => ['Webapplicaties op maat', 'Software voor een proces of idee waar geen kant-en-klare oplossing voor is.'],
+            'ecommerce' => ['Webshops', 'Een webshop die je producten goed laat zien en het bestellen eenvoudig houdt.'],
+            'api' => ['API’s en koppelingen', 'Systemen en externe diensten met elkaar verbinden, zodat werk niet dubbel hoeft.'],
+            'maintenance' => ['Onderhoud en hosting', 'Updates, beveiliging, back-ups en monitoring nadat de site live staat.'],
+            'design' => ['UI/UX en productontwerp', 'Een klikbaar ontwerp dat je kunt beoordelen voordat er code staat.'],
+            'seo' => ['SEO en snelheid', 'Een site die goed vindbaar is en snel laadt, ook op een telefoon.'],
+        ],
+        'more' => 'Alle diensten op jebbari.nl',
+        'how_title' => 'Hoe een project loopt',
+        'steps' => [
+            ['Begrijpen', 'Eerst het probleem, dan de oplossing. Na een eerste gesprek krijg je een voorstel met een vaste omschrijving en prijs.'],
+            ['Ontwerpen', 'Een klikbaar ontwerp dat je kunt beoordelen voordat er code staat.'],
+            ['Bouwen', 'Werkende tussenversies die je zelf kunt openen en proberen, zodat je voortgang ziet in plaats van beloftes.'],
+            ['Verbeteren', 'Live zetten, meten en bijsturen. Software is niet af bij de lancering.'],
+        ],
+        'work_title' => 'Werk dat ik bouwde',
+        'work_link' => 'Bekijk mijn projecten',
+        'meta_title' => 'Werk met mij – Amir Jebbari via Jebbari',
+        'meta_description' => 'Website, webshop of applicatie laten bouwen door Amir Jebbari, oprichter van Jebbari in Amsterdam en Zwolle. Zo loopt een project en zo vraag je het aan.',
+    ],
+
+    'cta' => [
+        'title' => 'Iets laten bouwen?',
+        'text' => 'Dat doe ik via Jebbari, mijn bureau in Amsterdam en Zwolle.',
+        'primary' => 'Werk met mij',
+        'direct' => 'Direct een project aanvragen',
+    ],
+
     'certificates' => [
         'label' => 'Certificaten',
         'title' => 'Wat ik afrondde.',

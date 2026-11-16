@@ -78,14 +78,14 @@ if (! function_exists('seo_sentence')) {
      * The canonical "who is Amir" sentence from config/seo.php, optionally with the company name
      * linked to jebbari.nl (anchor text always "Jebbari").
      */
-    function seo_sentence(bool $link = false, ?string $locale = null): \Illuminate\Support\HtmlString
+    function seo_sentence(bool $link = false, ?string $locale = null, string $placement = 'hero'): \Illuminate\Support\HtmlString
     {
         $locale ??= app()->getLocale();
         $sentence = e(config("seo.description.{$locale}") ?? config('seo.description.nl'));
 
         if ($link) {
             $company = e(config('seo.company.name'));
-            $anchor = '<a href="'.e(config('seo.company.url')).'" class="link" rel="noopener">'.$company.'</a>';
+            $anchor = '<a href="'.e(jebbari_url('home', $placement, $locale)).'" class="link" rel="noopener" data-track="cta_jebbari" data-track-label="'.e($placement).'">'.$company.'</a>';
             // Link the company, not the family name: "… van Jebbari," / "… of Jebbari,".
             $sentence = preg_replace('/\b(van|of) '.preg_quote($company, '/').'\b/u', '$1 '.$anchor, $sentence, 1);
         }
@@ -154,5 +154,32 @@ if (! function_exists('review_marks')) {
         return new \Illuminate\Support\HtmlString(
             preg_replace('/\[VERIFY[^\]]*\]/u', '<mark class="verify">$0</mark>', (string) $html)
         );
+    }
+}
+
+if (! function_exists('jebbari_url')) {
+    /**
+     * A link to jebbari.nl with UTM parameters. $target: 'home', 'request', 'contact', 'services'
+     * or 'service:<key>' (see config/seo.php), or a full https://jebbari.nl URL.
+     * $placement becomes utm_campaign (nav, home, case, post, footer, hero, about, work-with-me…).
+     */
+    function jebbari_url(string $target, string $placement, ?string $locale = null, ?string $content = null): string
+    {
+        $locale ??= app()->getLocale();
+        $base = rtrim((string) config('seo.company.url'), '/');
+
+        $url = match (true) {
+            str_starts_with($target, 'https://') => $target,
+            $target === 'request' => config("seo.company.request.{$locale}"),
+            $target === 'contact' => config("seo.company.contact.{$locale}"),
+            $target === 'services' => $base.($locale === 'en' ? '/en/services' : '/nl/diensten'),
+            str_starts_with($target, 'service:') => $base.($locale === 'en' ? '/en/services/' : '/nl/diensten/')
+                .config('seo.company.services.'.substr($target, 8).'.'.$locale),
+            default => $base.'/'.$locale,
+        };
+
+        $query = http_build_query(array_filter([...config('seo.utm'), 'utm_campaign' => $placement, 'utm_content' => $content]));
+
+        return $url.(str_contains($url, '?') ? '&' : '?').$query;
     }
 }

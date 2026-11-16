@@ -27,6 +27,11 @@ $pages = function () {
 };
 
 Route::group([], $pages);
+
+// "Work with me" has a translated path, so it sits outside the shared $pages group.
+Route::get('/werk-met-mij', [PortfolioController::class, 'workWithMe'])->name('work-with-me');
+Route::get('/en/work-with-me', [PortfolioController::class, 'workWithMe'])->name('en.work-with-me');
+
 Route::prefix('en')->name('en.')->group($pages);
 
 // Component overview for design review. Local only; never registered in production.

@@ -108,6 +108,13 @@ class PortfolioController extends Controller
         ]);
     }
 
+    public function workWithMe()
+    {
+        return view('work-with-me', [
+            'projects' => Project::published()->ordered()->take(3)->get(),
+        ]);
+    }
+
     public function certificates()
     {
         return view('certificates', [
@@ -159,6 +166,7 @@ class PortfolioController extends Controller
             ['work', [], $projectsAt],
             ['certificates', [], $certsAt],
             ['ask', [], $askAt],
+            ['work-with-me', [], null],
             ['roadmap', [], $roadmapAt],
             ['blog.index', [], $blogsAt],
             ['cv', [], $projectsAt],
