@@ -146,3 +146,39 @@ It already lists amirs.life. Make the line explicit:
 1. **What Jebbari is called.** jebbari.nl's meta description says "een onafhankelijk *digital studio* uit Zwolle en Amsterdam" (and "Zwolle en Amsterdam" in that order). amirs.life calls it "webbureau / web agency" in the footer and about text. Pick one term, and I'll align amirs.life.
 2. **Registered address in Amstelveen vs "Amsterdam en Zwolle".** That's fine as a postal address next to `areaServed`, but don't add Amstelveen as a "based in" city anywhere.
 3. **Organization description on jebbari.nl** starts with "Ik ben Amir Jebbari, softwaredeveloper en ondernemer…". Consider using the canonical sentence there too.
+
+## 7. Work-with-me links and UTM parameters
+
+amirs.life now sends visitors to jebbari.nl from:
+- the "Werk met mij" page;
+- a nav item;
+- the home page;
+- the footer;
+- the end of each case study and blog post.
+
+Every link carries `utm_source=amirs.life&utm_medium=portfolio&utm_campaign=<placement>`, plus `utm_content` on the work-with-me page. The placements are `work-with-me`, `home`, `hero`, `about`, `footer`, `case` and `post`.
+
+To fix on jebbari.nl (not changed from here):
+
+1. **Keep the query string on redirects.** `/nl/aanvraag` → `/nl/aanvraag/stap/1` and `/en/request` → `/en/request/step/1` drop `?utm_…`, so the source is lost. In Laravel:
+
+   ```php
+   return redirect()->to('/nl/aanvraag/stap/1'.($request->getQueryString() ? '?'.$request->getQueryString() : ''));
+   ```
+
+   Until then, amirs.life links straight to step 1.
+2. **Keep the UTMs through the wizard**, so a finished request records them. For example, store `utm_*` in the session on the first step and save it with the request.
+3. **Analytics:** check that jebbari.nl's own statistics read `utm_source=amirs.life` (amirs.life counts clicks on its side, per placement, in the `/amir` dashboard).
+
+## 8. BarberCuts and Jebbari.nl case studies
+
+amirs.life has draft case studies for BarberCuts (`/project/barbercuts`) and Jebbari.nl (`/project/jebbari`), next to ServerScope. Once they are published:
+
+- **BarberCuts** has a project page on jebbari.nl:
+  - `https://jebbari.nl/nl/werk/barbercuts-slim-afspraken-en-salonbeheer`
+  - `https://jebbari.nl/en/work/barbercuts-smart-appointment-barbershop-management`
+
+  Add the same sentence and JSON-LD as in section 4 there, with `https://amirs.life/project/barbercuts`.
+- **Jebbari.nl** has no project page on jebbari.nl itself, so nothing to add.
+- The case study's "What I learned" asks you to choose between "digital studio" and "webbureau". Whichever you pick, use it on both sites (see section 6, item 1).
+
