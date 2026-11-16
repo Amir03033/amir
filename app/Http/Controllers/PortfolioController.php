@@ -17,7 +17,7 @@ class PortfolioController extends Controller
 {
     public function index(Request $request)
     {
-        $projects = Project::ordered()->get();
+        $projects = Project::published()->ordered()->get();
         // Up to three pinned chapters: the featured ones, or simply the first three.
         $chapters = $projects->where('featured', true)->take(3);
         if ($chapters->isEmpty()) {
@@ -66,14 +66,15 @@ class PortfolioController extends Controller
 
     public function showBlog($slug)
     {
-        $blog = Blog::published()->where('slug', $slug)->firstOrFail();
+        // Drafts exist only for the logged-in owner (preview); guests get a 404.
+        $blog = Blog::query()->when(! can_preview(), fn ($q) => $q->published())->where('slug', $slug)->firstOrFail();
 
         return view('blog-show', compact('blog'));
     }
 
     public function work()
     {
-        $projects = Project::ordered()->get();
+        $projects = Project::published()->ordered()->get();
 
         return view('work', [
             'projects' => $projects,
@@ -83,12 +84,17 @@ class PortfolioController extends Controller
 
     public function showProject(Request $request, Project $project)
     {
+        abort_unless($project->is_published || can_preview(), 404);
+
         // Old links used the numeric id: send them (and search engines) to the slug URL for good.
         if ($request->route()->originalParameter('project') !== (string) $project->getRouteKey()) {
             return redirect()->to(lroute('project.show', $project), 301);
         }
 
-        $ordered = Project::ordered()->get(['id', 'slug', 'title', 'year', 'image']);
+        $ordered = Project::published()->ordered()->get(['id', 'slug', 'title', 'year', 'image']);
+        if (! $project->is_published) {
+            $ordered->push($project); // a previewed draft still gets previous/next links
+        }
         $position = $ordered->search(fn ($p) => $p->id === $project->id);
         $url = $project->hasDemo() ? $project->demo_url : null;
 
@@ -112,7 +118,7 @@ class PortfolioController extends Controller
     public function cv()
     {
         return view('cv', [
-            'projects' => Project::ordered()->get(),
+            'projects' => Project::published()->ordered()->get(),
         ]);
     }
 
@@ -123,7 +129,7 @@ class PortfolioController extends Controller
             return redirect()->lroute('cv');
         }
 
-        $projects = Project::ordered()->get();
+        $projects = Project::published()->ordered()->get();
         \App\Models\Event::record('cv_download');
 
         return \Barryvdh\DomPDF\Facade\Pdf::loadView('cv-pdf', compact('projects'))
@@ -138,7 +144,7 @@ class PortfolioController extends Controller
      */
     public function sitemap()
     {
-        $projects = Project::ordered()->get(['id', 'slug', 'updated_at']);
+        $projects = Project::published()->ordered()->get(['id', 'slug', 'updated_at']);
         $blogs = Blog::published()->get(['id', 'slug', 'updated_at', 'published_at', 'created_at']);
         $max = fn (...$dates) => collect($dates)->filter()->max();
 

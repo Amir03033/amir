@@ -182,3 +182,27 @@
     .term-dialog { width: min(calc(100vw - 32px), 720px); }
     @media (max-width: 639px) { .term-out { height: 14rem; } }
 }
+
+@layer components {
+    /* Draft preview (owner only) */
+    .draft-banner { position: relative; z-index: 45; margin-top: var(--nav-h); padding-block: 12px; background: rgb(var(--fill)); border-bottom: 1px solid rgb(var(--line)); font-size: var(--t-small); color: rgb(var(--text-2)); }
+    .draft-banner + main .page-head { padding-top: clamp(48px, 3rem + 3vw, 96px); }
+    .draft-banner-count { margin-left: 8px; color: rgb(var(--text)); font-weight: 500; }
+    mark.verify { background: #FFE58A; color: #161512; padding: 0 .2em; border-radius: 3px; }
+
+    /* Case-study text: light Markdown */
+    .case-text { font-size: var(--t-lead); line-height: 1.5; color: rgb(var(--text-2)); }
+    .case-text > * + * { margin-top: .8em; }
+    .case-text ul, .case-text ol { padding-left: 1.2em; }
+    .case-text ul { list-style: disc; }
+    .case-text ol { list-style: decimal; }
+    .case-text li + li { margin-top: .5em; }
+    .case-text li::marker { color: rgb(var(--muted)); }
+    .case-text strong { color: rgb(var(--text)); font-weight: 600; }
+    .case-text a { text-decoration: underline; text-underline-offset: .2em; text-decoration-color: rgb(var(--line-strong)); }
+
+    /* Gallery: phone screenshots keep their shape, in a narrow column with a thin outline */
+    .gallery img { height: auto; aspect-ratio: auto; }
+    .gallery button[data-portrait] { justify-self: center; max-width: 340px; border: 1px solid rgb(var(--line)); }
+    @media (min-width: 768px) { .gallery > button[data-portrait] { grid-column: auto !important; } }
+}

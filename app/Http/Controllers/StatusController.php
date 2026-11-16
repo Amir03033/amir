@@ -12,7 +12,7 @@ class StatusController extends Controller
     public function index()
     {
         // Show project names in the visitor's language (checks store one label).
-        $titles = Project::all()->filter->hasDemo()->mapWithKeys(fn ($p) => [rtrim($p->demo_url, '/') => $p->getTranslation('title')]);
+        $titles = Project::published()->get()->filter->hasDemo()->mapWithKeys(fn ($p) => [rtrim($p->demo_url, '/') => $p->getTranslation('title')]);
 
         $sites = Cache::remember('status-page-'.app()->getLocale(), 300, function () use ($titles) {
             return SiteCheck::query()

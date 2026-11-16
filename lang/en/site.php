@@ -32,6 +32,10 @@ return [
     ],
 
     'case' => [
+        'lessons' => 'Hard parts, and what I learned',
+        'status' => 'Status',
+        'status_live' => 'Live',
+        'status_building' => 'In progress',
         'crumb' => 'Work',
         'problem' => 'The problem',
         'solution' => 'What I built',
@@ -48,6 +52,12 @@ return [
         'missing_case' => 'problem, approach and result',
         'missing_meta' => 'year and role',
         'image_n' => ':name, screenshot :n',
+    ],
+
+    'preview' => [
+        'title' => 'Draft.',
+        'text' => 'Only you can see this page, because you are logged in. Guests, search engines and the sitemap can’t.',
+        'markers' => '{1} 1 [VERIFY] marker left, highlighted in yellow.|[2,*] :count [VERIFY] markers left, highlighted in yellow.',
     ],
 
     'about' => [

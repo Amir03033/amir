@@ -6,7 +6,10 @@
     $pageDescription = \App\Support\Seo::description($description ?? __('seo.pages.home.description'));
     $canonical = \App\Support\Seo::canonical();
     $alternates = \App\Support\Seo::alternates();
-    $robots = ($noindex ?? false) || \App\Support\Seo::isNoindex() ? 'noindex, follow' : 'index, follow, max-image-preview:large';
+    // A previewed draft (only the logged-in owner gets here) is never indexed and carries no structured data.
+    $isDraft = isset($draft) && $draft !== null;
+    $noindex = ($noindex ?? false) || $isDraft;
+    $robots = $noindex || \App\Support\Seo::isNoindex() ? 'noindex, follow' : 'index, follow, max-image-preview:large';
     $shareImage = $ogImage ?? \App\Models\Setting::media('og', 'images/og-default.png');
     $graph = ($noindex ?? false) ? null : \App\Support\Seo::graph([
         'type' => $pageType ?? 'WebPage',
@@ -109,6 +112,18 @@
     @yield('nav')
 @else
     <x-site-nav />
+@endif
+
+@if($isDraft)
+    <div class="draft-banner" role="status">
+        <div class="container">
+            <strong>{{ __('site.preview.title') }}</strong>
+            {{ __('site.preview.text') }}
+            @if(count($draft))
+                <span class="draft-banner-count">{{ trans_choice('site.preview.markers', count($draft), ['count' => count($draft)]) }}</span>
+            @endif
+        </div>
+    </div>
 @endif
 
 <main id="main" tabindex="-1" class="outline-none">

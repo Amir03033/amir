@@ -25,7 +25,7 @@ class LlmsController extends Controller
     private function build(bool $full): string
     {
         App::setLocale('en');
-        $projects = Project::ordered()->get();
+        $projects = Project::published()->ordered()->get();
         $notes = Blog::published()->latest('published_at')->get();
         $home = lroute('home', [], 'en');
 

@@ -123,3 +123,36 @@ if (! function_exists('image_size')) {
         });
     }
 }
+
+if (! function_exists('can_preview')) {
+    /**
+     * True for the site owner when logged in to /amir with 2FA passed: only then are drafts
+     * (projects and notes) visible on the public URLs, marked as a preview and noindex.
+     */
+    function can_preview(): bool
+    {
+        $user = auth()->user();
+        if (! $user || ! method_exists($user, 'canAccessPanel')) {
+            return false;
+        }
+
+        try {
+            $panel = \Filament\Facades\Filament::getPanel('Admin');
+        } catch (\Throwable) {
+            return false;
+        }
+
+        return $user->canAccessPanel($panel)
+            && session(\App\Http\Middleware\RequireTwoFactor::SESSION_KEY) === $user->getKey();
+    }
+}
+
+if (! function_exists('review_marks')) {
+    /** Highlight "[VERIFY: …]" markers in already-escaped HTML, so they stand out in a preview. */
+    function review_marks(string|\Illuminate\Support\HtmlString $html): \Illuminate\Support\HtmlString
+    {
+        return new \Illuminate\Support\HtmlString(
+            preg_replace('/\[VERIFY[^\]]*\]/u', '<mark class="verify">$0</mark>', (string) $html)
+        );
+    }
+}

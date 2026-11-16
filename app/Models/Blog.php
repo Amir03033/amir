@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 
 class Blog extends Model
 {
+    use \App\Models\Concerns\HasReviewMarkers;
+
     protected $fillable = [
         'slug',
         'title',
@@ -20,12 +22,14 @@ class Blog extends Model
         'published_at',
         'category',
         'tags',
+        'excerpt',
     ];
 
     protected $casts = [
         'title' => 'array',
         'content' => 'array',
         'tags' => 'array',
+        'excerpt' => 'array',
         'published_at' => 'datetime',
     ];
 
@@ -44,8 +48,22 @@ class Blog extends Model
         return $value ?? '';
     }
 
+    public function isPublishedState(): bool
+    {
+        return in_array($this->status, ['published', 'scheduled'], true);
+    }
+
+    public function reviewFields(): array
+    {
+        return ['title', 'content', 'excerpt', 'meta_title', 'meta_description', 'tags', 'category'];
+    }
+
     public function excerpt(int $limit = 180): string
     {
+        if ($own = trim((string) $this->getTranslation('excerpt'))) {
+            return Str::limit($own, $limit);
+        }
+
         return Str::limit(
             preg_replace(
                 '/\s+/',

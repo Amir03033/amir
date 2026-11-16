@@ -41,6 +41,9 @@ class Seo
 
     public static function projectTitle(Project $project): string
     {
+        if ($own = trim((string) $project->getTranslation('seo_title'))) {
+            return self::title($own);
+        }
         $name = $project->getTranslation('title');
         $long = __('seo.pages.project.title', ['title' => $name]);
 
@@ -49,6 +52,9 @@ class Seo
 
     public static function projectDescription(Project $project): string
     {
+        if ($own = trim((string) $project->getTranslation('seo_description'))) {
+            return self::description($own);
+        }
         $line = trim((string) $project->getTranslation('summary')) ?: $project->excerpt(300);
 
         return self::description(__('seo.pages.project.description', ['title' => $project->getTranslation('title'), 'line' => $line]));
@@ -204,6 +210,7 @@ class Seo
             'description' => self::projectDescription($project),
             'url' => $canonical,
             'image' => $project->coverUrl() ?: self::ogImage('project', $project->id),
+            'creativeWorkStatus' => match ($project->status) { 'live' => 'Published', 'building' => 'Incomplete', default => null },
             'dateCreated' => $project->year ? (string) $project->year : null,
             'dateModified' => $project->updated_at?->toAtomString(),
             'inLanguage' => app()->getLocale(),

@@ -22,7 +22,7 @@ class OgImageController extends Controller
         $locale = $request->query('lang') === 'en' ? 'en' : 'nl';
         app()->setLocale($locale);
 
-        $record = $type === 'project' ? Project::findOrFail($id) : Blog::published()->findOrFail($id);
+        $record = $type === 'project' ? Project::published()->findOrFail($id) : Blog::published()->findOrFail($id);
         $file = "og/v4-{$type}-{$id}-{$locale}-{$record->updated_at?->timestamp}.png";
         $disk = Storage::disk('public');
 

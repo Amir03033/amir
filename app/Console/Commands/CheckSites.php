@@ -62,7 +62,7 @@ class CheckSites extends Command
             $targets['ServerScope'] = $serverscope;
         }
 
-        foreach (Project::orderBy('sort_order')->get() as $project) {
+        foreach (Project::published()->orderBy('sort_order')->get() as $project) {
             if ($project->hasDemo()) {
                 $targets[$project->title['en'] ?? $project->getTranslation('title')] ??= $project->demo_url;
             }

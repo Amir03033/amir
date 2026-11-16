@@ -8,6 +8,7 @@
     'crumbs' => [[__('seo.breadcrumbs.notes'), lroute('blog.index')], [$blog->getTranslation('title'), \App\Support\Seo::canonical()]],
     'schema' => [\App\Support\Seo::blogPosting($blog, \App\Support\Seo::canonical())],
     'mainEntity' => \App\Support\Seo::canonical().'#article',
+    'draft' => $blog->isPublishedState() ? null : $blog->reviewMarkers(),
 ])
 
 
@@ -30,7 +31,7 @@
 
         <div class="container pb-section {{ $blog->image ? 'pt-stack' : '' }}">
             <div class="prose-note read" data-reveal>
-                {!! Str::markdown($blog->getTranslation('content')) !!}
+                {{ review_marks(Str::markdown($blog->getTranslation('content'))) }}
             </div>
             <p class="read mt-stack border-t border-line pt-8">
                 <a href="{{ lroute('blog.index') }}" class="link-arrow"><span>{{ __('site.notes.all') }}</span>{{ icon('arrow-right') }}</a>

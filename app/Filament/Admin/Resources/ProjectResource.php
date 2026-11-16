@@ -158,12 +158,14 @@ class ProjectResource extends Resource
                         Tabs::make('CaseTranslations')->tabs([
                             Tabs\Tab::make('Nederlands')->schema([
                                 Textarea::make('problem.nl')->label('Het probleem (NL)')->rows(3)->placeholder('Wat wilde de klant, en wat ging er mis zonder deze site?'),
-                                Textarea::make('solution.nl')->label('Wat ik bouwde (NL)')->rows(4)->placeholder('Welke onderdelen, welke technische keuzes?'),
+                                Textarea::make('solution.nl')->label('Wat ik bouwde (NL)')->rows(6)->placeholder('Welke onderdelen, welke technische keuzes?')->helperText('Markdown mag: lijstjes met "- ", **vet**.'),
+                                Textarea::make('lessons.nl')->label('Wat lastig was, wat ik leerde (NL)')->rows(5),
                                 Textarea::make('result.nl')->label('Resultaat (NL)')->rows(3)->placeholder('Wat is er nu beter? Liefst concreet en controleerbaar.'),
                             ]),
                             Tabs\Tab::make('English')->schema([
                                 Textarea::make('problem.en')->label('The problem (EN)')->rows(3),
-                                Textarea::make('solution.en')->label('What I built (EN)')->rows(4),
+                                Textarea::make('solution.en')->label('What I built (EN)')->rows(6),
+                                Textarea::make('lessons.en')->label('Hard parts, what I learned (EN)')->rows(5),
                                 Textarea::make('result.en')->label('Result (EN)')->rows(3),
                             ]),
                         ]),
@@ -183,6 +185,16 @@ class ProjectResource extends Resource
                             ->imageResizeTargetHeight('1600')
                             ->maxSize(8192)
                             ->panelLayout('grid'),
+                        Forms\Components\Repeater::make('gallery_alts')
+                            ->label('Alt-teksten van de galerij (in dezelfde volgorde)')
+                            ->schema([
+                                TextInput::make('nl')->label('NL')->maxLength(180),
+                                TextInput::make('en')->label('EN')->maxLength(180),
+                            ])
+                            ->columns(2)
+                            ->defaultItems(0)
+                            ->reorderable(false)
+                            ->collapsible(),
                     ]),
 
                 Forms\Components\Section::make('Links')
@@ -215,6 +227,26 @@ class ProjectResource extends Resource
                     ])
                     ->columns(2),
 
+                Forms\Components\Section::make('Publicatie & SEO')
+                    ->schema([
+                        Forms\Components\Toggle::make('is_published')
+                            ->label('Gepubliceerd')
+                            ->default(true)
+                            ->rules([\App\Filament\Admin\Support\ReviewGuard::rule(Project::class, fn ($v) => (bool) $v)])
+                            ->helperText('Uit = concept: alleen jij ziet de case (ingelogd, via "Voorbeeld"); niet in lijsten, sitemap of zoekmachines. Publiceren kan pas zonder [VERIFY]-markers.'),
+                        Forms\Components\Select::make('status')
+                            ->label('Projectstatus')
+                            ->options(['live' => 'Live', 'building' => 'In ontwikkeling'])
+                            ->placeholder('—'),
+                        TextInput::make('image_alt.nl')->label('Alt-tekst afbeelding (NL)')->maxLength(180),
+                        TextInput::make('image_alt.en')->label('Image alt text (EN)')->maxLength(180),
+                        TextInput::make('seo_title.nl')->label('SEO-titel (NL)')->maxLength(60)->helperText('Max. 60 tekens. Leeg = automatisch.'),
+                        TextInput::make('seo_title.en')->label('SEO title (EN)')->maxLength(60),
+                        Textarea::make('seo_description.nl')->label('Meta-omschrijving (NL)')->rows(2)->maxLength(155)->helperText('Max. 155 tekens. Leeg = de eerste regel.'),
+                        Textarea::make('seo_description.en')->label('Meta description (EN)')->rows(2)->maxLength(155),
+                    ])
+                    ->columns(2),
+
                 Forms\Components\Toggle::make('featured')
                     ->label('Uitgelicht project')
                     ->helperText(
@@ -237,6 +269,8 @@ class ProjectResource extends Resource
     {
         return $table
             ->columns([
+                \App\Filament\Admin\Support\ReviewGuard::markersColumn(),
+                \Filament\Tables\Columns\IconColumn::make('is_published')->label('Online')->boolean(),
                 ImageColumn::make('image')
                     ->label('')
                     ->height(44)
@@ -273,11 +307,15 @@ class ProjectResource extends Resource
             ->defaultSort('sort_order', 'asc')
 
             ->actions([
-                Tables\Actions\Action::make('view')
-                    ->label('Bekijk')
-                    ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->color('gray')
-                    ->url(fn (Project $record): string => route('project.show', $record), true),
+                \App\Filament\Admin\Support\ReviewGuard::publishAction(
+                    fn (Project $record): bool => (bool) $record->is_published,
+                    fn (Project $record) => $record->update(['is_published' => true]),
+                ),
+
+                \App\Filament\Admin\Support\ReviewGuard::previewAction(
+                    fn (Project $record): string => route('project.show', $record),
+                    fn (Project $record): bool => (bool) $record->is_published,
+                ),
 
                 Tables\Actions\EditAction::make(),
             ])

@@ -2,7 +2,7 @@
 {{-- A project's real screenshot, or a neutral typographic panel. Never a stock image. --}}
 @if($src = $project->coverUrl())
     @php([$w, $h] = image_size($src) ?? [1600, 1000])
-    <img src="{{ $src }}" width="{{ $w }}" height="{{ $h }}" alt="{{ __('site.work.screenshot_alt', ['name' => $project->getTranslation('title')]) }}"
+    <img src="{{ $src }}" width="{{ $w }}" height="{{ $h }}" alt="{{ $project->coverAlt() }}"
          {{ $attributes->merge(['class' => 'cover-img']) }}
          sizes="{{ $sizes }}" decoding="async" @if($eager) fetchpriority="high" @else loading="lazy" @endif>
 @else

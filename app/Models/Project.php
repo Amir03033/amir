@@ -9,6 +9,8 @@ use Illuminate\Support\Str;
 
 class Project extends Model
 {
+    use \App\Models\Concerns\HasReviewMarkers;
+
     protected $fillable = [
         'slug',
         'title',
@@ -28,6 +30,13 @@ class Project extends Model
         'gallery',
         'video',
         'jebbari_url',
+        'is_published',
+        'status',
+        'lessons',
+        'seo_title',
+        'seo_description',
+        'image_alt',
+        'gallery_alts',
     ];
 
     protected $casts = [
@@ -43,6 +52,12 @@ class Project extends Model
         'result' => 'array',
         'gallery' => 'array',
         'jebbari_url' => 'array',
+        'is_published' => 'boolean',
+        'lessons' => 'array',
+        'seo_title' => 'array',
+        'seo_description' => 'array',
+        'image_alt' => 'array',
+        'gallery_alts' => 'array',
     ];
 
     protected static function booted(): void
@@ -84,6 +99,23 @@ class Project extends Model
         return $this->slug ?: $this->getKey();
     }
 
+    /** Only what guests may see. Drafts stay hidden from lists, sitemap, search and llms.txt. */
+    public function scopePublished(Builder $query): Builder
+    {
+        return $query->where('is_published', true);
+    }
+
+    public function isPublishedState(): bool
+    {
+        // New records without an explicit value get the column default (published).
+        return $this->is_published ?? true;
+    }
+
+    public function reviewFields(): array
+    {
+        return ['title', 'summary', 'description', 'role', 'problem', 'solution', 'lessons', 'result', 'seo_title', 'seo_description', 'image_alt', 'gallery_alts', 'tags'];
+    }
+
     public function scopeOrdered(Builder $query): Builder
     {
         return $query->orderByDesc('featured')->orderBy('sort_order')->orderByDesc('year')->latest();
@@ -94,10 +126,10 @@ class Project extends Model
         return $this->hasMany(Testimonial::class);
     }
 
-    /** Filled case sections (problem → solution → result) in the current language. */
+    /** Filled case sections (problem → what I built → hard parts → result) in the current language. */
     public function caseBlocks(): array
     {
-        return collect(['problem', 'solution', 'result'])
+        return collect(['problem', 'solution', 'lessons', 'result'])
             ->mapWithKeys(fn ($field) => [$field => trim((string) $this->getTranslation($field))])
             ->filter()
             ->all();
@@ -170,6 +202,23 @@ class Project extends Model
     public function coverUrl(): ?string
     {
         return $this->image ? asset('storage/'.$this->image) : ($this->legacyServerScopeShots()[0] ?? null);
+    }
+
+    /** Alt text of the cover: the written one, else "Screenshot of {title}". */
+    public function coverAlt(): string
+    {
+        return trim((string) $this->getTranslation('image_alt'))
+            ?: __('site.work.screenshot_alt', ['name' => $this->getTranslation('title')]);
+    }
+
+    /** Alt text of gallery image $index in the current language. */
+    public function galleryAlt(int $index): string
+    {
+        $alts = $this->gallery_alts[$index] ?? [];
+        $locale = app()->getLocale();
+
+        return trim((string) ($alts[$locale] ?? $alts['en'] ?? $alts['nl'] ?? ''))
+            ?: __('site.case.image_n', ['name' => $this->getTranslation('title'), 'n' => $index + 1]);
     }
 
     public function host(): ?string

@@ -13,6 +13,7 @@
     'crumbs' => [[__('seo.breadcrumbs.work'), lroute('work')], [$title, \App\Support\Seo::canonical()]],
     'schema' => [\App\Support\Seo::project($project, \App\Support\Seo::canonical())],
     'mainEntity' => \App\Support\Seo::canonical().'#project',
+    'draft' => $project->is_published ? null : $project->reviewMarkers(),
 ])
 
 
@@ -32,6 +33,9 @@
                 @endif
                 @if($role || ! app()->isProduction())
                     <div><dt class="label">{{ __('site.work.role') }}</dt><dd>{{ $role }}@unless($role)<x-ph :label="__('site.work.role')" />@endunless</dd></div>
+                @endif
+                @if($project->status)
+                    <div><dt class="label">{{ __('site.case.status') }}</dt><dd>{{ __('site.case.status_'.$project->status) }}</dd></div>
                 @endif
                 <div><dt class="label">{{ __('site.work.stack') }}</dt><dd>{{ implode(', ', $project->tagList()) }}</dd></div>
                 <div><dt class="label">{{ __('site.work.link') }}</dt><dd>
@@ -62,7 +66,8 @@
                     @foreach($blocks as $key => $text)
                         <section class="case-block" data-reveal>
                             <h2 class="label">{{ __('site.case.'.$key) }}</h2>
-                            <p class="mt-4 text-lead text-fg-2">{{ $text }}</p>
+                            {{-- Light Markdown (paragraphs, lists, bold); HTML in the text is escaped. --}}
+                            <div class="case-text mt-4">{{ review_marks(Str::markdown($text, ['html_input' => 'escape', 'allow_unsafe_links' => false])) }}</div>
                         </section>
                     @endforeach
                 @else
@@ -111,9 +116,9 @@
                 <h2 id="gallery-title" class="label mb-10 text-center" data-reveal>{{ __('site.case.gallery') }}</h2>
                 <div class="gallery" data-reveal-group>
                     @foreach($gallery as $n => $src)
-                        <button type="button" data-reveal @click="show({{ $n }})" aria-label="{{ __('site.case.image_n', ['name' => $title, 'n' => $n + 1]) }}">
+                        <button type="button" data-reveal @click="show({{ $n }})" aria-label="{{ $project->galleryAlt($n) }}" @if((image_size($src)[1] ?? 0) > (image_size($src)[0] ?? 1)) data-portrait @endif>
                             @php([$gw, $gh] = image_size($src) ?? [1600, 1000])
-                            <img src="{{ $src }}" width="{{ $gw }}" height="{{ $gh }}" alt="{{ __('site.case.image_n', ['name' => $title, 'n' => $n + 1]) }}" loading="lazy" decoding="async">
+                            <img src="{{ $src }}" width="{{ $gw }}" height="{{ $gh }}" alt="{{ $project->galleryAlt($n) }}" loading="lazy" decoding="async" @if($gh > $gw) data-portrait @endif>
                         </button>
                     @endforeach
                 </div>

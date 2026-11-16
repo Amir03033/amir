@@ -32,6 +32,10 @@ return [
     ],
 
     'case' => [
+        'lessons' => 'Wat lastig was, en wat ik leerde',
+        'status' => 'Status',
+        'status_live' => 'Live',
+        'status_building' => 'In ontwikkeling',
         'crumb' => 'Werk',
         'problem' => 'Het probleem',
         'solution' => 'Wat ik bouwde',
@@ -48,6 +52,12 @@ return [
         'missing_case' => 'probleem, aanpak en resultaat',
         'missing_meta' => 'jaar en rol',
         'image_n' => ':name, screenshot :n',
+    ],
+
+    'preview' => [
+        'title' => 'Concept.',
+        'text' => 'Alleen jij ziet deze pagina, omdat je bent ingelogd. Gasten, zoekmachines en de sitemap zien hem niet.',
+        'markers' => '{1} Nog 1 [VERIFY]-marker, geel gemarkeerd.|[2,*] Nog :count [VERIFY]-markers, geel gemarkeerd.',
     ],
 
     'about' => [

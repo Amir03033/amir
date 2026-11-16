@@ -66,6 +66,12 @@ class BlogResource extends Resource
                                         $set('slug', Str::slug($state))
                                     ),
 
+                                Forms\Components\Textarea::make('excerpt.nl')
+                                    ->label('Samenvatting (NL)')
+                                    ->rows(2)
+                                    ->maxLength(300)
+                                    ->helperText('Eén of twee zinnen voor lijsten en de meta-omschrijving. Leeg = begin van de tekst.'),
+
                                 MarkdownEditor::make('content.nl')
                                     ->label('Inhoud (NL)')
                                     ->required(),
@@ -76,6 +82,11 @@ class BlogResource extends Resource
                                 TextInput::make('title.en')
                                     ->label('Title (EN)')
                                     ->required(),
+
+                                Forms\Components\Textarea::make('excerpt.en')
+                                    ->label('Excerpt (EN)')
+                                    ->rows(2)
+                                    ->maxLength(300),
 
                                 MarkdownEditor::make('content.en')
                                     ->label('Content (EN)')
@@ -113,7 +124,9 @@ class BlogResource extends Resource
                             ])
                             ->required()
                             ->default('draft')
-                            ->live(),
+                            ->live()
+                            ->rules([\App\Filament\Admin\Support\ReviewGuard::rule(Blog::class, fn ($v) => in_array($v, ['published', 'scheduled'], true))])
+                            ->helperText('Concepten zijn alleen voor jou te zien (ingelogd, via "Voorbeeld"). Publiceren kan pas als er geen [VERIFY]-markers meer in de tekst staan.'),
 
                         DateTimePicker::make('published_at')
                             ->label('Publicatiedatum')
@@ -173,6 +186,7 @@ class BlogResource extends Resource
     {
         return $table
             ->columns([
+                \App\Filament\Admin\Support\ReviewGuard::markersColumn(),
                 TextColumn::make('title.nl')
                     ->label('Titel (NL)')
                     ->searchable()
@@ -237,20 +251,15 @@ class BlogResource extends Resource
             ])
 
             ->actions([
-                Tables\Actions\Action::make('publish')
-                    ->label('Publiceer nu')
-                    ->icon('heroicon-o-rocket-launch')
-                    ->color('success')
-                    ->requiresConfirmation()
-                    ->visible(fn (Blog $record): bool => ! $record->isPublished())
-                    ->action(fn (Blog $record) => $record->update(['status' => 'published', 'published_at' => now()])),
+                \App\Filament\Admin\Support\ReviewGuard::publishAction(
+                    fn (Blog $record): bool => $record->isPublished(),
+                    fn (Blog $record) => $record->update(['status' => 'published', 'published_at' => now()]),
+                ),
 
-                Tables\Actions\Action::make('view')
-                    ->label('Bekijk')
-                    ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->color('gray')
-                    ->url(fn (Blog $record): string => route('blog.show', $record->slug), true)
-                    ->visible(fn (Blog $record): bool => $record->isPublished()),
+                \App\Filament\Admin\Support\ReviewGuard::previewAction(
+                    fn (Blog $record): string => route('blog.show', $record->slug),
+                    fn (Blog $record): bool => $record->isPublished(),
+                ),
 
                 Tables\Actions\EditAction::make(),
             ])

@@ -53,7 +53,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Project list for the terminal toy (⌘K on every page), cached per language.
         View::composer('components.terminal', function ($view) {
-            $view->with('terminalProjects', Cache::remember('terminal-projects-'.app()->getLocale(), 600, fn () => Project::ordered()->get()
+            $view->with('terminalProjects', Cache::remember('terminal-projects-'.app()->getLocale(), 600, fn () => Project::published()->ordered()->get()
                 ->map(fn ($p) => ['title' => $p->getTranslation('title'), 'line' => $p->oneLiner(), 'url' => lroute('project.show', $p)])
                 ->values()->all()));
         });
