@@ -2,7 +2,7 @@
     $title = $project->getTranslation('title');
     $role = $project->getTranslation('role');
     $blocks = $project->caseBlocks();
-    $gallery = $project->galleryUrls();
+    $gallery = $project->galleryItems();
 @endphp
 
 @extends('layouts.layout', [
@@ -112,13 +112,13 @@
         </div>
 
         @if($gallery)
-            <section class="container section !pt-24" aria-labelledby="gallery-title" x-data="{ i: 0, items: @js($gallery), show(n) { this.i = n; this.$refs.dlg.showModal(); } }">
+            <section class="container section !pt-24" aria-labelledby="gallery-title" x-data="{ i: 0, items: @js(array_map(fn ($g) => ['l' => $g['light'], 'd' => $g['dark']], $gallery)), show(n) { this.i = n; this.$refs.dlg.showModal(); }, src() { const it = this.items[this.i]; return document.documentElement.dataset.theme === 'dark' ? it.d : it.l; } }">
                 <h2 id="gallery-title" class="label mb-10 text-center" data-reveal>{{ __('site.case.gallery') }}</h2>
                 <div class="gallery" data-reveal-group>
-                    @foreach($gallery as $n => $src)
-                        <button type="button" data-reveal @click="show({{ $n }})" aria-label="{{ $project->galleryAlt($n) }}" @if((image_size($src)[1] ?? 0) > (image_size($src)[0] ?? 1)) data-portrait @endif>
-                            @php([$gw, $gh] = image_size($src) ?? [1600, 1000])
-                            <img src="{{ $src }}" width="{{ $gw }}" height="{{ $gh }}" alt="{{ $project->galleryAlt($n) }}" loading="lazy" decoding="async" @if($gh > $gw) data-portrait @endif>
+                    @foreach($gallery as $n => $item)
+                        @php([$gw, $gh] = image_size($item['light']) ?? [1600, 1000])
+                        <button type="button" data-reveal @click="show({{ $n }})" aria-label="{{ $item['alt'] }}" @if($gh > $gw) data-portrait @endif>
+                            <x-themed-img :light="$item['light']" :dark="$item['dark']" :alt="$item['alt']" />
                         </button>
                     @endforeach
                 </div>
@@ -126,7 +126,7 @@
                         @keydown.arrow-right="i = (i + 1) % items.length" @keydown.arrow-left="i = (i - 1 + items.length) % items.length"
                         @click="$event.target === $el && $el.close()">
                     <div class="dialog-head"><p class="label tabular" x-text="(i + 1) + ' / ' + items.length"></p><button type="button" class="btn-icon" @click="$refs.dlg.close()" aria-label="{{ __('messages.nav.close') }}">{{ icon('x') }}</button></div>
-                    <div class="dialog-body"><img :src="items[i]" alt="" class="w-full rounded-1"></div>
+                    <div class="dialog-body"><img :src="src()" alt="" class="w-full rounded-1"></div>
                 </dialog>
             </section>
         @endif

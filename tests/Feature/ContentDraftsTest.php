@@ -128,8 +128,15 @@ class ContentDraftsTest extends TestCase
             foreach (['nl', 'en'] as $locale) {
                 $this->assertLessThanOrEqual(160, mb_strlen($p['seo_description'][$locale]), "{$slug}.seo_description.{$locale} too long");
             }
-            foreach ($p['gallery'] as $i => [$file, $nl, $en]) {
+            foreach (array_filter([$p['image'], $p['image_dark'] ?? null]) as $file) {
                 $this->assertFileExists(database_path("seeders/media/case-studies/{$slug}/{$file}"));
+            }
+            foreach ($p['gallery'] as $i => $entry) {
+                [$file, $nl, $en] = $entry;
+                $this->assertFileExists(database_path("seeders/media/case-studies/{$slug}/{$file}"));
+                if (isset($entry[3])) {
+                    $this->assertFileExists(database_path("seeders/media/case-studies/{$slug}/{$entry[3]}"));
+                }
                 $texts["{$slug}.gallery.{$i}"] = $nl.' '.$en;
             }
         }

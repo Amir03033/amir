@@ -25,6 +25,17 @@ class ProjectResource extends Resource
      * Admin links are built from the model's route key, which is the slug (or the id when a project
      * has no slug). Accept both here, so every edit link opens the record instead of a 404.
      */
+    /** Form rows → the gallery, gallery_dark and gallery_alts columns. */
+    public static function galleryFromRows(array $data): array
+    {
+        if (array_key_exists('gallery_rows', $data)) {
+            $data = [...$data, ...Project::galleryColumns($data['gallery_rows'] ?? [])];
+            unset($data['gallery_rows']);
+        }
+
+        return $data;
+    }
+
     public static function resolveRecordRouteBinding(int|string $key): ?\Illuminate\Database\Eloquent\Model
     {
         $query = static::getEloquentQuery();
@@ -128,7 +139,7 @@ class ProjectResource extends Resource
                 Forms\Components\Section::make('Media & stack')
                     ->schema([
                         FileUpload::make('image')
-                            ->label('Afbeelding')
+                            ->label('Afbeelding (licht thema)')
                             ->image()
                             ->disk('public')
                             ->directory('projects')
@@ -139,8 +150,21 @@ class ProjectResource extends Resource
                             ->imageResizeTargetWidth('1600')
                             ->imageResizeTargetHeight('1600')
                             ->maxSize(8192)
-                            ->helperText('Echte screenshot (16:10 werkt het best). Verschijnt op de homepage, in /werk en bovenaan de case. Wordt verkleind tot max. 1600px.')
-                            ->columnSpanFull(),
+                            ->helperText('Echte screenshot (16:10 werkt het best). Verschijnt op de homepage, in /werk en bovenaan de case. Wordt verkleind tot max. 1600px.'),
+
+                        FileUpload::make('image_dark')
+                            ->label('Afbeelding (donker thema, optioneel)')
+                            ->image()
+                            ->disk('public')
+                            ->directory('projects')
+                            ->visibility('public')
+                            ->imageEditor()
+                            ->imageEditorAspectRatios(['16:10', '16:9', null])
+                            ->imageResizeMode('contain')
+                            ->imageResizeTargetWidth('1600')
+                            ->imageResizeTargetHeight('1600')
+                            ->maxSize(8192)
+                            ->helperText('Dezelfde screenshot in het donkere thema. Bezoekers met een donker thema zien deze. Heb je er maar één (licht of donker), dan wordt die altijd gebruikt.'),
 
                         FileUpload::make('video')
                             ->label('Korte video (optioneel)')
@@ -178,32 +202,42 @@ class ProjectResource extends Resource
                                 Textarea::make('result.en')->label('Result (EN)')->rows(3),
                             ]),
                         ]),
-                        FileUpload::make('gallery')
+                        Forms\Components\Repeater::make('gallery_rows')
                             ->label('Galerij')
-                            ->helperText('Extra screenshots voor de casepagina. Sleep om de volgorde te wijzigen.')
-                            ->image()
-                            ->multiple()
-                            ->reorderable()
-                            ->appendFiles()
-                            ->maxFiles(12)
-                            ->disk('public')
-                            ->directory('projects/gallery')
-                            ->visibility('public')
-                            ->imageResizeMode('contain')
-                            ->imageResizeTargetWidth('1600')
-                            ->imageResizeTargetHeight('1600')
-                            ->maxSize(8192)
-                            ->panelLayout('grid'),
-                        Forms\Components\Repeater::make('gallery_alts')
-                            ->label('Alt-teksten van de galerij (in dezelfde volgorde)')
+                            ->helperText('Eén rij per screenshot. Upload een lichte en/of een donkere versie: bezoekers zien de versie van hun thema, en als er maar één is, altijd die. Sleep om de volgorde te wijzigen.')
                             ->schema([
-                                TextInput::make('nl')->label('NL')->maxLength(180),
-                                TextInput::make('en')->label('EN')->maxLength(180),
+                                FileUpload::make('light')
+                                    ->label('Licht thema')
+                                    ->image()
+                                    ->disk('public')
+                                    ->directory('projects/gallery')
+                                    ->visibility('public')
+                                    ->imageResizeMode('contain')
+                                    ->imageResizeTargetWidth('1600')
+                                    ->imageResizeTargetHeight('1600')
+                                    ->maxSize(8192)
+                                    ->helperText('Optioneel als je een donkere hebt.'),
+                                FileUpload::make('dark')
+                                    ->label('Donker thema')
+                                    ->image()
+                                    ->disk('public')
+                                    ->directory('projects/gallery')
+                                    ->visibility('public')
+                                    ->imageResizeMode('contain')
+                                    ->imageResizeTargetWidth('1600')
+                                    ->imageResizeTargetHeight('1600')
+                                    ->maxSize(8192)
+                                    ->helperText('Optioneel als je een lichte hebt.'),
+                                TextInput::make('alt_nl')->label('Alt-tekst (NL)')->maxLength(180),
+                                TextInput::make('alt_en')->label('Alt text (EN)')->maxLength(180),
                             ])
                             ->columns(2)
                             ->defaultItems(0)
-                            ->reorderable(false)
-                            ->collapsible(),
+                            ->maxItems(12)
+                            ->reorderable()
+                            ->collapsible()
+                            ->itemLabel(fn (array $state): ?string => ($state['alt_nl'] ?? '') ?: null)
+                            ->addActionLabel('Screenshot toevoegen'),
                     ]),
 
                 Forms\Components\Section::make('Links')

@@ -24,7 +24,8 @@ export function initPreview() {
 
     rows.forEach((row) => {
         row.addEventListener('pointerenter', (e) => {
-            if (img.getAttribute('src') !== row.dataset.preview) img.src = row.dataset.preview;
+            const src = document.documentElement.dataset.theme === 'dark' ? (row.dataset.previewDark || row.dataset.preview) : row.dataset.preview;
+            if (img.getAttribute('src') !== src) img.src = src;
             x = cx = e.clientX; y = cy = e.clientY;
             move();
             box.setAttribute('data-on', '');

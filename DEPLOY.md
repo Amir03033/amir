@@ -68,7 +68,7 @@ Check what is pending first:
 php artisan migrate:status
 ```
 
-Then run the six new migrations, one by one:
+Then run the seven new migrations, one by one:
 
 | # | Command | What it does | Additive? |
 |---|---|---|---|
@@ -78,11 +78,12 @@ Then run the six new migrations, one by one:
 | 4 | `php artisan migrate --path=database/migrations/2026_11_16_000004_create_ideas_table.php --force` | New tables `ideas` and `idea_votes` (suggestions + roadmap). | Yes (new tables) |
 | 5 | `php artisan migrate --path=database/migrations/2026_11_16_000005_add_jebbari_url_to_projects_table.php --force` | Adds `projects.jebbari_url` (nullable JSON, nl/en link to the project page on jebbari.nl). | Yes |
 | 6 | `php artisan migrate --path=database/migrations/2026_11_16_000006_add_publishing_and_review_fields.php --force` | Adds `projects.is_published` (default **true**, so every existing project stays online), `status`, `lessons`, `seo_title`, `seo_description`, `image_alt`, `gallery_alts`, and `blogs.excerpt`. Each column only if it is missing. | Yes |
+| 7 | `php artisan migrate --path=database/migrations/2026_11_17_000007_add_dark_images_to_projects.php --force` | Adds `projects.image_dark` and `projects.gallery_dark` (optional dark-theme versions of the cover and gallery screenshots). | Yes |
 
-If `migrate:status` shows **older** migrations as pending too (for example `2026_11_07_100100_create_events_table`), run plain `php artisan migrate --force` instead. It runs everything pending in date order, including the six above.
+If `migrate:status` shows **older** migrations as pending too (for example `2026_11_07_100100_create_events_table`), run plain `php artisan migrate --force` instead. It runs everything pending in date order, including the seven above.
 
 ```bash
-php artisan migrate:status    # all six should now say "Ran"
+php artisan migrate:status    # all seven should now say "Ran"
 ```
 
 **Review drafts (after migration 6):** seed the four case studies (ServerScope, BarberCuts, Jebbari.nl, Irooni) and three blog posts as **unpublished drafts**, with their screenshots. Nobody but you (logged in to `/amir`) can see them until you publish each one. See REVIEW.md.
@@ -146,7 +147,7 @@ All three caches were tested on this branch: `route:cache` handles the closure r
 **Database (only if you really want to):** run this on a backup-verified database. It **deletes all questions, ideas and votes** and the new project fields (slug/year/role/summary/jebbari_url, the publishing and SEO fields) and `blogs.excerpt`:
 
 ```bash
-php artisan migrate:rollback --step=6 --force
+php artisan migrate:rollback --step=7 --force
 ```
 
 It was tested on a copy of the database: it rolls back cleanly and migrates again cleanly. Migration 1 never removes `featured`/`sort_order`.

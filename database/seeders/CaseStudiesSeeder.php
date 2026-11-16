@@ -32,7 +32,7 @@ class CaseStudiesSeeder extends Seeder
                 continue;
             }
 
-            [$image, $gallery, $alts] = $this->media($slug, $data);
+            [$image, $imageDark, $gallery, $galleryDark, $alts] = $this->media($slug, $data);
 
             $attributes = [
                 'title' => $data['title'],
@@ -51,8 +51,10 @@ class CaseStudiesSeeder extends Seeder
                 'seo_title' => $data['seo_title'],
                 'seo_description' => $data['seo_description'],
                 'image' => $image,
+                'image_dark' => $imageDark,
                 'image_alt' => $data['image_alt'],
                 'gallery' => $gallery,
+                'gallery_dark' => $galleryDark,
                 'gallery_alts' => $alts,
                 'featured' => $data['featured'],
                 'sort_order' => $data['sort_order'],
@@ -72,7 +74,9 @@ class CaseStudiesSeeder extends Seeder
     /**
      * Copy the screenshots to storage/app/public/projects/<slug>/ (same path every time).
      *
-     * @return array{0: ?string, 1: list<string>, 2: list<array{nl: string, en: string}>}
+     * Gallery entries are [file, alt NL, alt EN] or [file, alt NL, alt EN, dark file].
+     *
+     * @return array{0: ?string, 1: ?string, 2: list<string>, 3: list<?string>, 4: list<array{nl: string, en: string}>}
      */
     private function media(string $slug, array $data): array
     {
@@ -91,14 +95,23 @@ class CaseStudiesSeeder extends Seeder
         };
 
         $gallery = [];
+        $galleryDark = [];
         $alts = [];
-        foreach ($data['gallery'] as [$file, $nl, $en]) {
+        foreach ($data['gallery'] as $entry) {
+            [$file, $nl, $en] = $entry;
             if ($path = $copy($file)) {
                 $gallery[] = $path;
+                $galleryDark[] = isset($entry[3]) ? $copy($entry[3]) : null;
                 $alts[] = ['nl' => $nl, 'en' => $en];
             }
         }
 
-        return [$copy($data['image']), $gallery, $alts];
+        return [
+            $copy($data['image']),
+            isset($data['image_dark']) ? $copy($data['image_dark']) : null,
+            $gallery,
+            array_filter($galleryDark) ? $galleryDark : [],
+            $alts,
+        ];
     }
 }

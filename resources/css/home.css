@@ -213,3 +213,8 @@
     /* Call to action block (home, end of case studies and notes) */
     .cta { margin-inline: auto; padding-top: var(--space-stack); border-top: 1px solid rgb(var(--line)); text-align: center; }
 }
+
+/* Theme-specific images (x-themed-img): show the version that matches html[data-theme]. */
+:root[data-theme="dark"] .only-light,
+:root:not([data-theme="dark"]) .only-dark { display: none !important; }
+

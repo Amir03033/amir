@@ -9,7 +9,9 @@ use Illuminate\Support\Str;
 
 class Project extends Model
 {
-    use \App\Models\Concerns\HasReviewMarkers;
+    use \App\Models\Concerns\HasReviewMarkers {
+        reviewMarkers as traitReviewMarkers;
+    }
 
     protected $fillable = [
         'slug',
@@ -19,6 +21,7 @@ class Project extends Model
         'year',
         'role',
         'image',
+        'image_dark',
         'tags',
         'github_url',
         'demo_url',
@@ -28,6 +31,7 @@ class Project extends Model
         'solution',
         'result',
         'gallery',
+        'gallery_dark',
         'video',
         'jebbari_url',
         'is_published',
@@ -51,6 +55,7 @@ class Project extends Model
         'solution' => 'array',
         'result' => 'array',
         'gallery' => 'array',
+        'gallery_dark' => 'array',
         'jebbari_url' => 'array',
         'is_published' => 'boolean',
         'lessons' => 'array',
@@ -140,12 +145,44 @@ class Project extends Model
         return $this->video ? asset('storage/'.$this->video) : null;
     }
 
-    /** @return list<string> */
+    /** @return list<string> light versions (or the dark one when there is no light one) */
     public function galleryUrls(): array
     {
-        $own = collect($this->gallery ?? [])->filter()->map(fn ($path) => asset('storage/'.$path))->values()->all();
+        return array_column($this->galleryItems(), 'light');
+    }
 
-        return $own ?: $this->legacyServerScopeShots();
+    /**
+     * Gallery images with a version per theme. A missing version falls back to the other one,
+     * so 'light' and 'dark' are always set. Items with neither are skipped.
+     *
+     * @return list<array{light: string, dark: string, alt: string}>
+     */
+    public function galleryItems(): array
+    {
+        $light = array_values($this->gallery ?? []);
+        $dark = array_values($this->gallery_dark ?? []);
+        $items = [];
+
+        for ($i = 0, $n = max(count($light), count($dark)); $i < $n; $i++) {
+            $l = ($light[$i] ?? null) ?: null;
+            $d = ($dark[$i] ?? null) ?: null;
+            if (! $l && ! $d) {
+                continue;
+            }
+            $items[] = [
+                'light' => asset('storage/'.($l ?? $d)),
+                'dark' => asset('storage/'.($d ?? $l)),
+                'alt' => $this->galleryAlt($i),
+            ];
+        }
+
+        if (! $items) {
+            foreach ($this->legacyServerScopeShots() as $i => $url) {
+                $items[] = ['light' => $url, 'dark' => $url, 'alt' => $this->galleryAlt($i)];
+            }
+        }
+
+        return $items;
     }
 
     /**
@@ -201,7 +238,73 @@ class Project extends Model
      */
     public function coverUrl(): ?string
     {
-        return $this->image ? asset('storage/'.$this->image) : ($this->legacyServerScopeShots()[0] ?? null);
+        $path = $this->image ?: $this->image_dark;
+
+        return $path ? asset('storage/'.$path) : ($this->legacyServerScopeShots()[0] ?? null);
+    }
+
+    /** The dark-theme cover: its own upload, else the light one (and the other way round in coverUrl()). */
+    public function coverDarkUrl(): ?string
+    {
+        return $this->image_dark ? asset('storage/'.$this->image_dark) : $this->coverUrl();
+    }
+
+    /**
+     * Filament edits the gallery as one list of rows (light, dark, alt NL, alt EN). These two helpers
+     * convert between that list and the stored columns gallery / gallery_dark / gallery_alts.
+     *
+     * @return list<array{light: ?string, dark: ?string, alt_nl: string, alt_en: string}>
+     */
+    public static function galleryRows(array $data): array
+    {
+        $light = array_values($data['gallery'] ?? []);
+        $dark = array_values($data['gallery_dark'] ?? []);
+        $alts = array_values($data['gallery_alts'] ?? []);
+        $rows = [];
+        for ($i = 0, $n = max(count($light), count($dark)); $i < $n; $i++) {
+            $rows[] = [
+                'light' => ($light[$i] ?? null) ?: null,
+                'dark' => ($dark[$i] ?? null) ?: null,
+                'alt_nl' => (string) ($alts[$i]['nl'] ?? ''),
+                'alt_en' => (string) ($alts[$i]['en'] ?? ''),
+            ];
+        }
+
+        return $rows;
+    }
+
+    /** @return array{gallery: list<?string>, gallery_dark: list<?string>, gallery_alts: list<array{nl: string, en: string}>} */
+    public static function galleryColumns(array $rows): array
+    {
+        $out = ['gallery' => [], 'gallery_dark' => [], 'gallery_alts' => []];
+        foreach (array_values($rows) as $row) {
+            $first = fn ($v) => is_array($v) ? (array_values($v)[0] ?? null) : $v; // FileUpload state can be ['uuid' => path]
+            $light = $first($row['light'] ?? null) ?: null;
+            $dark = $first($row['dark'] ?? null) ?: null;
+            if (! $light && ! $dark) {
+                continue;
+            }
+            $out['gallery'][] = $light;
+            $out['gallery_dark'][] = $dark;
+            $out['gallery_alts'][] = ['nl' => (string) ($row['alt_nl'] ?? ''), 'en' => (string) ($row['alt_en'] ?? '')];
+        }
+        $out['gallery_dark'] = array_filter($out['gallery_dark']) ? $out['gallery_dark'] : [];
+
+        return $out;
+    }
+
+    /** Markers in the Filament form state count too (the gallery alts live in gallery_rows there). */
+    public function reviewMarkers(?array $attributes = null): array
+    {
+        if ($attributes !== null && isset($attributes['gallery_rows'])) {
+            // Every row's alt text counts, even a row whose image is still uploading or missing.
+            $attributes['gallery_alts'] = array_values(array_map(
+                fn ($row) => ['nl' => (string) ($row['alt_nl'] ?? ''), 'en' => (string) ($row['alt_en'] ?? '')],
+                (array) $attributes['gallery_rows'],
+            ));
+        }
+
+        return $this->traitReviewMarkers($attributes);
     }
 
     /** Alt text of the cover: the written one, else "Screenshot of {title}". */

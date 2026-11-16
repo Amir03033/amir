@@ -194,7 +194,15 @@ None of them shows a login with credentials, real customers, IPs or tokens. Plea
 - [ ] `home-mobile-light.webp`, `home-mobile-dark.webp`
 - [ ] `request-mobile-light.webp`
 
-Alt texts are in the "Galerij" repeater (NL/EN) and in "Publicatie & SEO" for the cover.
+**Light and dark screenshots.** ServerScope and Jebbari.nl have a dark version of the cover and of some gallery shots:
+- In dark mode visitors see the dark version, in light mode the light one.
+- A shot with only one version shows that version in both themes.
+
+In Filament:
+- **Cover:** "Afbeelding (licht thema)" and "Afbeelding (donker thema, optioneel)".
+- **Gallery:** one row per screenshot under "Galerij", each with a light upload, a dark upload and NL/EN alt texts.
+
+Alt texts are in each "Galerij" row (NL/EN) and in "Publicatie & SEO" for the cover.
 
 ---
 
