@@ -3,6 +3,41 @@
 Branch: `claude/amirs-life-redesign-mne6mv`. The Vite build is committed (`public/build`), so the server needs **no Node**.
 Nothing in this release drops or renames a table, a column or a route.
 
+## The short way: one script
+
+After every update, steps 1–3 below are one command:
+
+```bash
+cd /var/www/vhosts/amirs.life/httpdocs && bash scripts/deploy.sh
+```
+
+**Or let Plesk run it automatically on every deploy:**
+1. Go to Plesk → **Git** → your repository → **Repository settings**.
+2. Tick **Enable additional deployment actions**.
+3. Enter:
+   ```
+   bash scripts/deploy.sh
+   ```
+
+From then on, every pull or deploy in Plesk runs it. The output appears in the deployment log.
+
+The script does the following, and is safe to run as often as you like:
+1. Runs `composer install --no-dev`.
+2. When migrations are pending, saves a gzipped database dump to `storage/app/backups/` (the newest 5 are kept, and the folder is not web-accessible).
+3. Runs the migrations in maintenance mode. It always comes back up, also when a step fails.
+4. Seeds the review drafts. Anything that already exists is skipped, so it never overwrites your edits.
+5. Links `/storage` and rebuilds the caches.
+6. Runs the `chown`, but only when you run it as root over SSH. Plesk's own run already uses the right user.
+
+If something fails, it stops, prints **Deploy FAILED**, and keeps the site online. The caches are then cleared, which is fine: the site just runs uncached until the next successful run.
+
+Options, if you need them:
+- `PHP=/opt/plesk/php/8.3/bin/php bash scripts/deploy.sh`: use the PHP version of the domain if the plain `php` command is a different version. Check this with `php -v`.
+- `SKIP_BACKUP=1`: skip the database dump, for example if you just made one in Plesk.
+- `SKIP_SEED=1`: don't run the drafts seeder.
+
+The numbered steps below are what the script does by hand. They're still useful if you want to see or run one step on its own.
+
 ---
 
 ## 0. Before you deploy
