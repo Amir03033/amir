@@ -1,4 +1,4 @@
-// Entrances, once: fade + rise + slight scale (CSS in motion.css). One shared observer.
+// Entrances, once: a short fade + small rise (CSS in motion.css). One shared observer.
 export function initReveal() {
     const root = document.documentElement;
 
@@ -20,7 +20,7 @@ export function initReveal() {
             entry.target.classList.add('is-in');
             io.unobserve(entry.target);
         });
-    }, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
+    }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
 
     targets.forEach((el) => io.observe(el));
     root.classList.add('motion-ready');

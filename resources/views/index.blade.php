@@ -32,7 +32,7 @@
     {{-- Hero: one statement, the role line, a live status line and the stamp. --}}
     <section id="home" class="hero container" data-hero data-stamp-area>
         <div class="hero-imprints" data-imprints aria-hidden="true"></div>
-        <div class="hero-content" data-scrub-view="hero-exit">
+        <div class="hero-content">
             <h1 class="hero-type">
                 @foreach(__('site.hero.lines') as $line)
                     <span class="block" data-hero-line style="--i: {{ $loop->index }}">{{ $line }}</span>
@@ -45,7 +45,7 @@
         </div>
     </section>
 
-    {{-- Work: pinned chapters for the featured projects, then a quiet list. --}}
+    {{-- Work: one calm block per featured project, then a quiet list. --}}
     <section id="work" class="section" aria-labelledby="work-title">
         <div class="container">
             <x-opener id="work-title" :label="__('site.work.label')">{{ __('site.work.title') }}</x-opener>
@@ -83,11 +83,11 @@
             <figure class="about-photo mt-stack" data-reveal>
                 <picture>
                     @if($aboutPhoto)
-                        <img src="{{ $aboutPhoto }}" alt="{{ __('site.about.photo_alt') }}" width="960" height="1200" loading="lazy" decoding="async" data-scrub-view="zoom-settle">
+                        <img src="{{ $aboutPhoto }}" alt="{{ __('site.about.photo_alt') }}" width="960" height="1200" loading="lazy" decoding="async">
                     @else
                         <source type="image/avif" srcset="{{ asset('images/about/amir-640.avif') }} 640w, {{ asset('images/about/amir-960.avif') }} 960w, {{ asset('images/about/amir-1280.avif') }} 1280w" sizes="(min-width: 640px) 560px, 100vw">
                         <source type="image/webp" srcset="{{ asset('images/about/amir-640.webp') }} 640w, {{ asset('images/about/amir-960.webp') }} 960w, {{ asset('images/about/amir-1280.webp') }} 1280w" sizes="(min-width: 640px) 560px, 100vw">
-                        <img src="{{ asset('images/about/amir-960.webp') }}" alt="{{ __('site.about.photo_alt') }}" width="960" height="1200" loading="lazy" decoding="async" data-scrub-view="zoom-settle">
+                        <img src="{{ asset('images/about/amir-960.webp') }}" alt="{{ __('site.about.photo_alt') }}" width="960" height="1200" loading="lazy" decoding="async">
                     @endif
                 </picture>
             </figure>
@@ -151,7 +151,7 @@
     @if($certificates->isNotEmpty())
         <section id="certificates" class="section" aria-labelledby="cert-title">
             <div class="container read">
-                <h2 id="cert-title" class="statement text-center" data-scrub-view="dim-in">{{ __('site.certificates.title') }}</h2>
+                <h2 id="cert-title" class="statement text-center" data-reveal>{{ __('site.certificates.title') }}</h2>
                 <ul class="rule-list mt-stack" data-reveal-group>
                     @foreach($certificates->take(5) as $cert)
                         <x-certificate-row :cert="$cert" />
@@ -168,7 +168,7 @@
     @if($blogs->isNotEmpty())
         <section id="blog" class="section" aria-labelledby="notes-title">
             <div class="container read">
-                <h2 id="notes-title" class="statement text-center" data-scrub-view="dim-in">{{ __('site.notes.title') }}</h2>
+                <h2 id="notes-title" class="statement text-center" data-reveal>{{ __('site.notes.title') }}</h2>
                 <ul class="rule-list mt-stack" data-reveal-group>
                     @foreach($blogs as $blog)
                         <x-note-row :blog="$blog" />

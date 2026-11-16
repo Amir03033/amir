@@ -4,7 +4,7 @@
     @if($label)
         <p class="label mb-5" data-reveal>{{ $label }}</p>
     @endif
-    <{{ $tag }} class="statement opener {{ $wide ? 'opener-wide' : '' }}" data-scrub-view="dim-in">{{ $slot }}</{{ $tag }}>
+    <{{ $tag }} class="statement opener {{ $wide ? 'opener-wide' : '' }}" data-reveal>{{ $slot }}</{{ $tag }}>
     @if($lead)
         <p class="lead opener-lead" data-reveal>{{ $lead }}</p>
     @endif

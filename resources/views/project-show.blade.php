@@ -56,7 +56,7 @@
             @endif
 
             <figure class="case-hero mt-stack" data-reveal>
-                <x-project-cover :project="$project" :eager="true" sizes="(min-width: 1280px) 1200px, 100vw" data-scrub-view="zoom-settle" />
+                <x-project-cover :project="$project" :eager="true" sizes="(min-width: 1280px) 1200px, 100vw" />
             </figure>
         </div>
 

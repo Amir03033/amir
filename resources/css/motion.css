@@ -3,16 +3,16 @@
    Only transform and opacity ever animate.
    ------------------------------------------------------------------ */
 
-/* 1. Entrances, once. Hidden only when JS + motion are available (.js-motion is set pre-paint, with a failsafe). */
+/* 1. Entrances, once: a short fade with a small rise. Hidden only when JS + motion are available (.js-motion is set pre-paint, with a failsafe). */
 .js-motion [data-reveal] {
     transition: opacity var(--d-reveal) var(--ease), transform var(--d-reveal) var(--ease);
     transition-delay: calc(var(--i, 0) * var(--stagger));
 }
-.js-motion [data-reveal]:not(.is-in) { opacity: 0; transform: translateY(24px) scale(.98); }
+.js-motion [data-reveal]:not(.is-in) { opacity: 0; transform: translateY(10px); }
 
 /* 2. Hero lines on load: pure CSS so the LCP text starts painting immediately. */
-[data-hero-line] { animation: hero-in 900ms var(--ease) both; animation-delay: calc(var(--i, 0) * 80ms); }
-@keyframes hero-in { from { opacity: 0; transform: translateY(20px); } }
+[data-hero-line] { animation: hero-in 600ms var(--ease) both; animation-delay: calc(var(--i, 0) * 50ms); }
+@keyframes hero-in { from { opacity: 0; transform: translateY(10px); } }
 
 /* 3. Pinned stages: a tall container with a sticky 100svh stage; scroll progress drives the children. */
 .pin { position: relative; height: var(--pin-h, 180vh); }

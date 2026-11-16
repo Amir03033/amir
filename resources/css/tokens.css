@@ -76,7 +76,7 @@
     --w-content: 1200px;
     --w-read: 720px;
     --gutter: 20px;
-    --space-section: clamp(120px, 8rem + 6vw, 220px);
+    --space-section: clamp(96px, 5rem + 5vw, 168px);
     --space-stack: clamp(48px, 3rem + 3vw, 96px);
     --nav-h: 64px;
 
@@ -90,8 +90,8 @@
     --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
     --d-ui: 200ms;
     --d-ui-slow: 300ms;
-    --d-reveal: 800ms;
-    --stagger: 60ms;
+    --d-reveal: 500ms;
+    --stagger: 40ms;
 }
 
 @media (min-width: 768px) { :root { --gutter: 32px; } }
