@@ -6,26 +6,15 @@
 @endphp
 
 @extends('layouts.layout', [
-    'title' => $title.' — Amir Jebbari',
-    'description' => $project->oneLiner(),
-    'ogImage' => route('og', ['type' => 'project', 'id' => $project->id, 'lang' => app()->getLocale()]),
+    'title' => \App\Support\Seo::projectTitle($project),
+    'description' => \App\Support\Seo::projectDescription($project),
+    'ogImage' => \App\Support\Seo::ogImage('project', $project->id),
+    'ogType' => 'article',
+    'crumbs' => [[__('seo.breadcrumbs.work'), lroute('work')], [$title, \App\Support\Seo::canonical()]],
+    'schema' => [\App\Support\Seo::project($project, \App\Support\Seo::canonical())],
+    'mainEntity' => \App\Support\Seo::canonical().'#project',
 ])
 
-@push('head')
-    <script type="application/ld+json">{!! json_encode(array_filter([
-        '@context' => 'https://schema.org',
-        '@type' => 'CreativeWork',
-        'name' => $title,
-        'description' => $project->oneLiner(),
-        'url' => url()->current(),
-        'image' => $project->coverUrl(),
-        'dateCreated' => $project->year ? (string) $project->year : null,
-        'keywords' => implode(', ', $project->tagList()),
-        'inLanguage' => app()->getLocale(),
-        'sameAs' => $project->hasDemo() ? $project->demo_url : null,
-        'author' => ['@type' => 'Person', '@id' => url('/').'#person', 'name' => config('site.name'), 'url' => lroute('home')],
-    ]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
-@endpush
 
 @section('content')
     <article>

@@ -1,6 +1,9 @@
 @extends('layouts.layout', [
-    'title' => __('site.certificates.label').' — Amir Jebbari',
-    'description' => __('site.certificates.lead'),
+    'title' => __('seo.pages.certificates.title'),
+    'description' => __('seo.pages.certificates.description'),
+    'ogImage' => \App\Support\Seo::ogImage('page', 'certificates'),
+    'pageType' => 'CollectionPage',
+    'crumbs' => [[__('seo.breadcrumbs.certificates'), lroute('certificates')]],
 ])
 
 @section('content')

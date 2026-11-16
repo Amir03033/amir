@@ -27,6 +27,7 @@ class Project extends Model
         'result',
         'gallery',
         'video',
+        'jebbari_url',
     ];
 
     protected $casts = [
@@ -41,6 +42,7 @@ class Project extends Model
         'solution' => 'array',
         'result' => 'array',
         'gallery' => 'array',
+        'jebbari_url' => 'array',
     ];
 
     protected static function booted(): void
@@ -173,6 +175,14 @@ class Project extends Model
     public function host(): ?string
     {
         return $this->hasDemo() ? preg_replace('/^www\./', '', (string) parse_url($this->demo_url, PHP_URL_HOST)) : null;
+    }
+
+    /** The matching page on jebbari.nl for projects built with Jebbari, in the current language. */
+    public function jebbariUrl(): ?string
+    {
+        $url = trim((string) $this->getTranslation('jebbari_url'));
+
+        return str_starts_with($url, 'https://jebbari.nl') ? $url : null;
     }
 
     public function hasGithub(): bool

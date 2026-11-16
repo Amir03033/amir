@@ -1,6 +1,9 @@
 @extends('layouts.layout', [
-    'title' => __('messages.status.page_title').' — Amir Jebbari',
-    'description' => __('messages.status.page_intro'),
+    'title' => __('seo.pages.status.title'),
+    'description' => __('seo.pages.status.description'),
+    'ogImage' => \App\Support\Seo::ogImage('page', 'status'),
+    'noindex' => true,
+    'crumbs' => [[__('seo.breadcrumbs.status'), lroute('status')]],
 ])
 
 @section('content')

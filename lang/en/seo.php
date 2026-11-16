@@ -71,7 +71,7 @@ return [
 
     'og' => [
         'kicker' => [
-            'home' => 'amirs.life',
+            'home' => 'Founder of Jebbari',
             'work' => 'Work',
             'certificates' => 'Certificates',
             'ask' => 'Ask Amir',

@@ -23,7 +23,7 @@ class OgImageController extends Controller
         app()->setLocale($locale);
 
         $record = $type === 'project' ? Project::findOrFail($id) : Blog::published()->findOrFail($id);
-        $file = "og/v3-{$type}-{$id}-{$locale}-{$record->updated_at?->timestamp}.png";
+        $file = "og/v4-{$type}-{$id}-{$locale}-{$record->updated_at?->timestamp}.png";
         $disk = Storage::disk('public');
 
         if (! $disk->exists($file)) {
@@ -37,7 +37,39 @@ class OgImageController extends Controller
         ]);
     }
 
+    public const PAGES = ['home', 'work', 'certificates', 'ask', 'roadmap', 'notes', 'cv', 'status', 'privacy'];
+
+    /** Share images for the static pages, in the same style, cached per page/language/version. */
+    public function page(Request $request, string $key)
+    {
+        $locale = $request->query('lang') === 'en' ? 'en' : 'nl';
+        app()->setLocale($locale);
+
+        $file = "og/v3-page-{$key}-{$locale}-".md5(config('seo.name').config("seo.description.{$locale}").__("seo.pages.{$key}.title")).'.png';
+        $disk = Storage::disk('public');
+
+        if (! $disk->exists($file)) {
+            $disk->makeDirectory('og');
+            [$title, $sub] = $key === 'home'
+                ? [config('seo.name'), config("seo.description.{$locale}")]
+                : [preg_replace('/\s+[–-]\s+(Amir Jebbari|amirs\.life)$/u', '', __("seo.pages.{$key}.title")), __("seo.pages.{$key}.description")];
+            $disk->put($file, $this->card(__("seo.og.kicker.{$key}"), $title, $sub));
+        }
+
+        return response()->file($disk->path($file), ['Content-Type' => 'image/png', 'Cache-Control' => 'public, max-age=604800']);
+    }
+
     private function render(Project|Blog $record, string $type): string
+    {
+        $kicker = $type === 'project' ? __('messages.og.case') : __('messages.og.note');
+        $sub = $type === 'project'
+            ? ($record->oneLiner() ?: implode(' · ', array_slice($record->tagList(), 0, 4)))
+            : $record->publishedDate()->translatedFormat('j F Y');
+
+        return $this->card($kicker, $record->getTranslation('title'), $sub, $type === 'project' ? $this->coverImage($record) : null);
+    }
+
+    private function card(string $kicker, string $title, string $sub, ?\GdImage $cover = null): string
     {
         $img = imagecreatetruecolor(self::W, self::H);
         imagealphablending($img, true);
@@ -55,7 +87,7 @@ class OgImageController extends Controller
         $regular = resource_path('fonts/InstrumentSans-400.ttf');
 
         $textRight = 1128;
-        if ($type === 'project' && ($cover = $this->coverImage($record))) {
+        if ($cover) {
             // Screenshot as a clean crop on the right; no fake browser chrome.
             [$x, $y, $w, $h] = [640, 72, 488, 486];
             $scale = max($w / imagesx($cover), $h / imagesy($cover));
@@ -66,12 +98,6 @@ class OgImageController extends Controller
             imagerectangle($img, $x, $y, $x + $w - 1, $y + $h - 1, $line);
             $textRight = 584;
         }
-
-        $title = $record->getTranslation('title');
-        $kicker = $type === 'project' ? __('messages.og.case') : __('messages.og.note');
-        $sub = $type === 'project'
-            ? ($record->oneLiner() ?: implode(' · ', array_slice($record->tagList(), 0, 4)))
-            : $record->publishedDate()->translatedFormat('j F Y');
 
         // Wordmark: the miniature stamp (burgundy ring + dot) and the name in ink.
         imagesetthickness($img, 2);
@@ -93,7 +119,7 @@ class OgImageController extends Controller
             $y += 34;
         }
 
-        imagettftext($img, 16, 0, 72, 572, $muted, $regular, 'Amir Jebbari · '.(parse_url(config('app.url'), PHP_URL_HOST) ?: 'amirs.life'));
+        imagettftext($img, 16, 0, 72, 572, $muted, $regular, config('seo.name').' · '.config('seo.role.'.app()->getLocale()).' · amirs.life');
 
         ob_start();
         imagepng($img, null, 8);

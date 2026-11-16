@@ -1,6 +1,4 @@
-@extends('layouts.layout', ['title' => __('messages.two_factor.title').' — amirs.life'])
-
-@push('head')<meta name="robots" content="noindex">@endpush
+@extends('layouts.layout', ['title' => __('messages.two_factor.title').' – amirs.life', 'noindex' => true])
 
 @section('content')
     <section class="container flex min-h-[88svh] items-center justify-center pt-[var(--nav-h)]">

@@ -1,23 +1,15 @@
 @extends('layouts.layout', [
-    'title' => ($blog->meta_title ?: $blog->getTranslation('title')).' — Amir Jebbari',
+    'title' => \App\Support\Seo::noteTitle($blog),
     'description' => $blog->meta_description ?: $blog->excerpt(200),
-    'ogImage' => route('og', ['type' => 'blog', 'id' => $blog->id, 'lang' => app()->getLocale()]),
+    'ogImage' => \App\Support\Seo::ogImage('blog', $blog->id),
+    'ogType' => 'article',
+    'published' => $blog->publishedDate()->toAtomString(),
+    'modified' => ($blog->updated_at ?? $blog->publishedDate())->toAtomString(),
+    'crumbs' => [[__('seo.breadcrumbs.notes'), lroute('blog.index')], [$blog->getTranslation('title'), \App\Support\Seo::canonical()]],
+    'schema' => [\App\Support\Seo::blogPosting($blog, \App\Support\Seo::canonical())],
+    'mainEntity' => \App\Support\Seo::canonical().'#article',
 ])
 
-@push('head')
-    <script type="application/ld+json">{!! json_encode(array_filter([
-        '@context' => 'https://schema.org',
-        '@type' => 'BlogPosting',
-        'headline' => $blog->getTranslation('title'),
-        'description' => $blog->meta_description ?: $blog->excerpt(200),
-        'datePublished' => $blog->publishedDate()->toAtomString(),
-        'dateModified' => $blog->updated_at?->toAtomString(),
-        'url' => url()->current(),
-        'inLanguage' => app()->getLocale(),
-        'image' => $blog->image ? asset('storage/'.$blog->image) : null,
-        'author' => ['@type' => 'Person', '@id' => url('/').'#person', 'name' => config('site.name'), 'url' => lroute('home')],
-    ]), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
-@endpush
 
 @section('content')
     <article>
@@ -32,7 +24,7 @@
 
         @if($blog->image)
             <figure class="container" data-reveal>
-                <img src="{{ asset('storage/'.$blog->image) }}" alt="" class="mx-auto aspect-[16/9] w-full max-w-content rounded-1 object-cover" decoding="async" fetchpriority="high">
+                <img src="{{ asset('storage/'.$blog->image) }}" alt="{{ $blog->getTranslation('title') }}" class="mx-auto aspect-[16/9] w-full max-w-content rounded-1 object-cover" decoding="async" fetchpriority="high">
             </figure>
         @endif
 

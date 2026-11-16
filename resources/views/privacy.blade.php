@@ -1,6 +1,8 @@
 @extends('layouts.layout', [
-    'title' => __('messages.privacy.title').' — Amir Jebbari',
-    'description' => __('messages.privacy.intro'),
+    'title' => __('seo.pages.privacy.title'),
+    'description' => __('seo.pages.privacy.description'),
+    'ogImage' => \App\Support\Seo::ogImage('page', 'privacy'),
+    'crumbs' => [[__('seo.breadcrumbs.privacy'), lroute('privacy')]],
 ])
 
 @php($vars = ['name' => config('site.name'), 'email' => config('site.email'), 'days' => config('site.visits_retention_days')])

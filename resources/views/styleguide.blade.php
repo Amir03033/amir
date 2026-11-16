@@ -1,4 +1,4 @@
-@extends('layouts.layout', ['title' => 'Styleguide — amirs.life'])
+@extends('layouts.layout', ['title' => 'Styleguide – amirs.life', 'noindex' => true])
 
 {{-- Local-only review page: every Phase 1 component, in the current theme. Not linked anywhere. --}}
 @php

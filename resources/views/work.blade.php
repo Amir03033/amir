@@ -1,6 +1,10 @@
 @extends('layouts.layout', [
-    'title' => __('site.work.index_title').' — Amir Jebbari',
-    'description' => __('site.work.index_lead'),
+    'title' => __('seo.pages.work.title'),
+    'description' => __('seo.pages.work.description'),
+    'ogImage' => \App\Support\Seo::ogImage('page', 'work'),
+    'pageType' => 'CollectionPage',
+    'crumbs' => [[__('seo.breadcrumbs.work'), lroute('work')]],
+    'schema' => [\App\Support\Seo::itemList(\App\Support\Seo::canonical(), $projects->map(fn ($p) => [$p->getTranslation('title'), lroute('project.show', $p)]))],
 ])
 
 @section('content')

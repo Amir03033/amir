@@ -1,4 +1,4 @@
-@extends('layouts.layout', ['title' => '404 — amirs.life'])
+@extends('layouts.layout', ['title' => __('seo.pages.not_found.title'), 'description' => __('seo.pages.not_found.description'), 'noindex' => true])
 
 @section('content')
     <section class="container flex min-h-[88svh] flex-col items-center justify-center pt-[var(--nav-h)] text-center">

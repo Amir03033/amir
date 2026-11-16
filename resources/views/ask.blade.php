@@ -1,6 +1,9 @@
 @extends('layouts.layout', [
-    'title' => __('site.ask.label').' — Amir Jebbari',
-    'description' => __('site.ask.lead'),
+    'title' => __('seo.pages.ask.title'),
+    'description' => __('seo.pages.ask.description'),
+    'ogImage' => \App\Support\Seo::ogImage('page', 'ask'),
+    'pageType' => 'CollectionPage',
+    'crumbs' => [[__('seo.breadcrumbs.ask'), lroute('ask')]],
 ])
 
 @section('content')

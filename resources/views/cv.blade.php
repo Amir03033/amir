@@ -1,6 +1,10 @@
 @extends('layouts.layout', [
-    'title' => __('messages.cv.title').' — Amir Jebbari',
-    'description' => __('messages.cv.intro'),
+    'title' => __('seo.pages.cv.title'),
+    'description' => __('seo.pages.cv.description'),
+    'ogImage' => \App\Support\Seo::ogImage('page', 'cv'),
+    'pageType' => 'ProfilePage',
+    'ogType' => 'profile',
+    'crumbs' => [[__('seo.breadcrumbs.cv'), lroute('cv')]],
 ])
 
 @php($hasServerScope = $projects->contains(fn ($p) => $p->slug === 'serverscope'))

@@ -34,6 +34,8 @@ class ServerScopeProjectSeeder extends Seeder
             'role' => ['nl' => 'Ontwerp en bouw, van begin tot eind', 'en' => 'Design and build, end to end'],
             'tags' => implode(', ', trans('messages.serverscope.stack', [], 'en')),
             'demo_url' => config('site.serverscope.url'),
+            // ServerScope is also a Jebbari project: https://jebbari.nl/nl/werk/serverscope
+            'jebbari_url' => ['nl' => 'https://jebbari.nl/nl/werk/serverscope', 'en' => 'https://jebbari.nl/en/work/serverscope'],
             'featured' => true,
             'sort_order' => 0,
         ]);

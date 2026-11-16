@@ -1,6 +1,10 @@
 @extends('layouts.layout', [
-    'title' => __('site.notes.label').' — Amir Jebbari',
-    'description' => __('site.notes.lead'),
+    'title' => __('seo.pages.notes.title'),
+    'description' => __('seo.pages.notes.description'),
+    'ogImage' => \App\Support\Seo::ogImage('page', 'notes'),
+    'pageType' => 'CollectionPage',
+    'crumbs' => [[__('seo.breadcrumbs.notes'), lroute('blog.index')]],
+    'schema' => [\App\Support\Seo::itemList(\App\Support\Seo::canonical(), $blogs->map(fn ($b) => [$b->getTranslation('title'), lroute('blog.show', $b->slug)]))],
 ])
 
 @section('content')

@@ -71,7 +71,7 @@ return [
 
     'og' => [
         'kicker' => [
-            'home' => 'amirs.life',
+            'home' => 'Oprichter van Jebbari',
             'work' => 'Werk',
             'certificates' => 'Certificaten',
             'ask' => 'Vraag het Amir',

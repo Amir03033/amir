@@ -35,6 +35,7 @@ if (app()->environment('local')) {
 }
 
 Route::get('/sitemap.xml', [PortfolioController::class, 'sitemap'])->name('sitemap');
+Route::get('/og/page/{key}.png', [OgImageController::class, 'page'])->whereIn('key', OgImageController::PAGES)->name('og.page');
 Route::get('/og/{type}/{id}.png', OgImageController::class)->whereIn('type', ['project', 'blog'])->whereNumber('id')->name('og');
 
 Route::post('/contact', [ContactController::class, 'send'])->middleware('throttle:5,10')->name('contact.send');

@@ -1,6 +1,9 @@
 @extends('layouts.layout', [
-    'title' => __('site.ideas.roadmap_title').' — Amir Jebbari',
-    'description' => __('site.ideas.roadmap_lead'),
+    'title' => __('seo.pages.roadmap.title'),
+    'description' => __('seo.pages.roadmap.description'),
+    'ogImage' => \App\Support\Seo::ogImage('page', 'roadmap'),
+    'pageType' => 'CollectionPage',
+    'crumbs' => [[__('seo.breadcrumbs.roadmap'), lroute('roadmap')]],
 ])
 
 @section('content')

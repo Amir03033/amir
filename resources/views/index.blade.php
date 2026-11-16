@@ -1,6 +1,9 @@
 @extends('layouts.layout', [
     'title' => __('seo.pages.home.title'),
     'description' => __('seo.pages.home.description'),
+    'pageType' => 'ProfilePage',
+    'ogType' => 'profile',
+    'ogImage' => \App\Models\Setting::media('og') ?? \App\Support\Seo::ogImage('page', 'home'),
 ])
 
 @section('nav')
@@ -24,45 +27,6 @@
     ];
 @endphp
 
-@push('head')
-    <script type="application/ld+json">{!! json_encode([
-        '@context' => 'https://schema.org',
-        '@graph' => [
-            array_filter([
-                '@type' => 'Person',
-                '@id' => url('/').'#person',
-                'name' => config('site.name'),
-                'url' => $home,
-                'image' => \App\Models\Setting::media('avatar', 'images/amir-avatar.webp'),
-                'jobTitle' => app()->getLocale() === 'en' ? 'Founder' : 'Oprichter',
-                'email' => 'mailto:'.$email,
-                'worksFor' => ['@id' => url('/').'#jebbari'],
-                'sameAs' => array_values(array_filter([config('site.linkedin'), config('site.github'), $jebbari])),
-                'knowsAbout' => ['Laravel', 'PHP', 'Filament', 'Livewire', 'Web development', 'Server monitoring'],
-            ]),
-            array_filter([
-                '@type' => 'Organization',
-                '@id' => url('/').'#jebbari',
-                'name' => 'Jebbari',
-                'url' => $jebbari,
-                'email' => $email,
-                'founder' => ['@id' => url('/').'#person'],
-                'address' => [
-                    ['@type' => 'PostalAddress', 'addressLocality' => 'Zwolle', 'addressCountry' => 'NL'],
-                    ['@type' => 'PostalAddress', 'addressLocality' => 'Amsterdam', 'addressCountry' => 'NL'],
-                ],
-            ]),
-            [
-                '@type' => 'WebSite',
-                '@id' => url('/').'#website',
-                'name' => 'amirs.life',
-                'url' => $home,
-                'inLanguage' => app()->getLocale(),
-                'author' => ['@id' => url('/').'#person'],
-            ],
-        ],
-    ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG) !!}</script>
-@endpush
 
 @section('content')
     {{-- Hero: one statement, the role line, a live status line and the stamp. --}}

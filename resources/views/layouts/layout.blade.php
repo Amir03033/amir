@@ -1,6 +1,23 @@
 @php
-    $pageTitle = $title ?? __('seo.pages.home.title');
-    $pageDescription = $description ?? __('seo.pages.home.description');
+    // Per-page SEO input (all optional): $title, $description, $ogImage, $pageType, $crumbs, $schema,
+    // $mainEntity, $ogType, $noindex, $published, $modified. See SEO.md "Adding a page".
+    $locale = app()->getLocale();
+    $pageTitle = \App\Support\Seo::title($title ?? __('seo.pages.home.title'));
+    $pageDescription = \App\Support\Seo::description($description ?? __('seo.pages.home.description'));
+    $canonical = \App\Support\Seo::canonical();
+    $alternates = \App\Support\Seo::alternates();
+    $robots = ($noindex ?? false) || \App\Support\Seo::isNoindex() ? 'noindex, follow' : 'index, follow, max-image-preview:large';
+    $shareImage = $ogImage ?? \App\Models\Setting::media('og', 'images/og-default.png');
+    $graph = ($noindex ?? false) ? null : \App\Support\Seo::graph([
+        'type' => $pageType ?? 'WebPage',
+        'title' => $pageTitle,
+        'description' => $pageDescription,
+        'canonical' => $canonical,
+        'image' => $shareImage,
+        'crumbs' => $crumbs ?? [],
+        'nodes' => $schema ?? [],
+        'mainEntity' => $mainEntity ?? null,
+    ]);
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -43,23 +60,45 @@
     </script>
     <title>{{ $pageTitle }}</title>
     <meta name="description" content="{{ $pageDescription }}">
-    <meta name="author" content="{{ config('site.name') }}">
-    <link rel="canonical" href="{{ url()->current() }}">
-    <link rel="alternate" hreflang="nl" href="{{ alternate_url('nl') }}">
-    <link rel="alternate" hreflang="en" href="{{ alternate_url('en') }}">
-    <link rel="alternate" hreflang="x-default" href="{{ alternate_url('nl') }}">
+    <meta name="author" content="{{ config('seo.name') }}">
+    <meta name="robots" content="{{ $robots }}">
+    @unless($noindex ?? false)
+        <link rel="canonical" href="{{ $canonical }}">
+    @endunless
+    @if($alternates)
+        <link rel="alternate" hreflang="nl" href="{{ $alternates['nl'] }}">
+        <link rel="alternate" hreflang="en" href="{{ $alternates['en'] }}">
+        <link rel="alternate" hreflang="x-default" href="{{ $alternates['nl'] }}">
+    @endif
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="preload" href="{{ asset('fonts/instrument-sans-latin-wght.woff2') }}" as="font" type="font/woff2" crossorigin>
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="amirs.life">
+    <meta property="og:type" content="{{ $ogType ?? 'website' }}">
+    <meta property="og:site_name" content="{{ config('seo.site_name') }}">
     <meta property="og:title" content="{{ $pageTitle }}">
     <meta property="og:description" content="{{ $pageDescription }}">
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:locale" content="{{ app()->getLocale() === 'en' ? 'en_US' : 'nl_NL' }}">
-    <meta property="og:image" content="{{ $ogImage ?? \App\Models\Setting::media('og', 'images/og-default.png') }}">
+    <meta property="og:url" content="{{ $canonical }}">
+    <meta property="og:locale" content="{{ $locale === 'en' ? 'en_US' : 'nl_NL' }}">
+    <meta property="og:locale:alternate" content="{{ $locale === 'en' ? 'nl_NL' : 'en_US' }}">
+    <meta property="og:image" content="{{ $shareImage }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ __('seo.og.image_alt', ['title' => $pageTitle]) }}">
+    @if(($ogType ?? null) === 'profile')
+        <meta property="profile:first_name" content="{{ config('seo.given_name') }}">
+        <meta property="profile:last_name" content="{{ config('seo.family_name') }}">
+    @endif
+    @isset($published)
+        <meta property="article:published_time" content="{{ $published }}">
+        <meta property="article:modified_time" content="{{ $modified ?? $published }}">
+        <meta property="article:author" content="{{ \App\Support\Seo::home() }}">
+    @endisset
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $pageTitle }}">
+    <meta name="twitter:description" content="{{ $pageDescription }}">
+    <meta name="twitter:image" content="{{ $shareImage }}">
+    @if($graph)
+        <script type="application/ld+json">{!! \App\Support\Seo::json($graph) !!}</script>
+    @endif
     @stack('head')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

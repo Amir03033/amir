@@ -1,6 +1,4 @@
-@extends('layouts.layout', ['title' => 'Inloggen — amirs.life'])
-
-@push('head')<meta name="robots" content="noindex">@endpush
+@extends('layouts.layout', ['title' => __('seo.pages.login.title'), 'description' => __('seo.pages.login.description'), 'noindex' => true])
 
 @section('content')
     <section class="container flex min-h-[88svh] items-center justify-center pt-[var(--nav-h)]">
