@@ -21,8 +21,17 @@ class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    // The public site uses slugs; the admin keeps stable numeric ids in its URLs.
-    protected static ?string $recordRouteKeyName = 'id';
+    /**
+     * Admin links are built from the model's route key, which is the slug (or the id when a project
+     * has no slug). Accept both here, so every edit link opens the record instead of a 404.
+     */
+    public static function resolveRecordRouteBinding(int|string $key): ?\Illuminate\Database\Eloquent\Model
+    {
+        $query = static::getEloquentQuery();
+
+        return (clone $query)->where('slug', $key)->first()
+            ?? (ctype_digit((string) $key) ? $query->whereKey((int) $key)->first() : null);
+    }
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
