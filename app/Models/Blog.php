@@ -30,6 +30,8 @@ class Blog extends Model
         'content' => 'array',
         'tags' => 'array',
         'excerpt' => 'array',
+        'meta_title' => \App\Casts\LocalizedText::class,
+        'meta_description' => \App\Casts\LocalizedText::class,
         'published_at' => 'datetime',
     ];
 

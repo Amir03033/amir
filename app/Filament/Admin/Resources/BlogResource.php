@@ -163,20 +163,25 @@ class BlogResource extends Resource
 
                 Forms\Components\Section::make('SEO')
                     ->schema([
-                        TextInput::make('meta_title')
-                            ->label('Meta title')
+                        TextInput::make('meta_title.nl')
+                            ->label('SEO-titel (NL)')
                             ->maxLength(60)
-                            ->helperText(
-                                'Aanbevolen: ongeveer 50–60 tekens.'
-                            ),
+                            ->helperText('Max. 60 tekens. Leeg = de titel met " – Amir Jebbari".'),
 
-                        Forms\Components\Textarea::make('meta_description')
-                            ->label('Meta description')
-                            ->rows(4)
-                            ->maxLength(160)
-                            ->helperText(
-                                'Aanbevolen: ongeveer 150–160 tekens.'
-                            ),
+                        TextInput::make('meta_title.en')
+                            ->label('SEO title (EN)')
+                            ->maxLength(60),
+
+                        Forms\Components\Textarea::make('meta_description.nl')
+                            ->label('Meta-omschrijving (NL)')
+                            ->rows(3)
+                            ->maxLength(155)
+                            ->helperText('Max. 155 tekens. Leeg = de samenvatting of het begin van de tekst.'),
+
+                        Forms\Components\Textarea::make('meta_description.en')
+                            ->label('Meta description (EN)')
+                            ->rows(3)
+                            ->maxLength(155),
                     ])
                     ->columns(1),
             ]);

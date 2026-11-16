@@ -63,8 +63,8 @@ class Seo
     /** Meta description of a note: the editor's own, else the excerpt, padded with who wrote it when short. */
     public static function noteDescription(Blog $blog): string
     {
-        if ($blog->meta_description) {
-            return self::description($blog->meta_description);
+        if ($own = trim((string) $blog->getTranslation('meta_description'))) {
+            return self::description($own);
         }
         $excerpt = $blog->excerpt(200);
         $by = __('seo.pages.note.description', ['title' => $blog->getTranslation('title')]);
@@ -74,7 +74,7 @@ class Seo
 
     public static function noteTitle(Blog $blog): string
     {
-        return self::title($blog->meta_title ?: __('seo.pages.note.title', ['title' => $blog->getTranslation('title')]));
+        return self::title(trim((string) $blog->getTranslation('meta_title')) ?: __('seo.pages.note.title', ['title' => $blog->getTranslation('title')]));
     }
 
     /** The canonical URL of the current request (generated on the canonical host in production). */
