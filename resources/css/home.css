@@ -98,7 +98,8 @@
     .case-block + .case-block { margin-top: var(--space-stack); }
     .case-block p { white-space: pre-line; }
     .gallery { display: grid; gap: 24px; }
-    @media (min-width: 768px) { .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } .gallery > :nth-child(3n + 1) { grid-column: 1 / -1; } }
+    /* Desktop shots take the full width; phone shots pair up two per row. Rows never stretch an image. */
+    @media (min-width: 768px) { .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: dense; align-items: start; } .gallery > * { grid-column: 1 / -1; } }
     .gallery button { display: block; width: 100%; border-radius: var(--r-1); overflow: hidden; background: rgb(var(--fill)); }
     .gallery img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top; }
     .pager { display: grid; border-top: 1px solid rgb(var(--line)); }
@@ -205,7 +206,7 @@
     /* Gallery: phone screenshots keep their shape, in a narrow column with a thin outline */
     .gallery img { height: auto; aspect-ratio: auto; }
     .gallery button[data-portrait] { justify-self: center; max-width: 340px; border: 1px solid rgb(var(--line)); }
-    @media (min-width: 768px) { .gallery > button[data-portrait] { grid-column: auto !important; } }
+    @media (min-width: 768px) { .gallery > button[data-portrait] { grid-column: auto; } }
 }
 
 @layer components {

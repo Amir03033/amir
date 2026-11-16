@@ -32,7 +32,7 @@
                     <div><dt class="label">{{ __('site.work.year') }}</dt><dd class="tabular">{{ $project->year ?: '' }}@unless($project->year)<x-ph :label="__('site.work.year')" />@endunless</dd></div>
                 @endif
                 @if($role || ! app()->isProduction())
-                    <div><dt class="label">{{ __('site.work.role') }}</dt><dd>{{ $role }}@unless($role)<x-ph :label="__('site.work.role')" />@endunless</dd></div>
+                    <div><dt class="label">{{ __('site.work.role') }}</dt><dd>{{ review_marks(e($role ?? '')) }}@unless($role)<x-ph :label="__('site.work.role')" />@endunless</dd></div>
                 @endif
                 @if($project->status)
                     <div><dt class="label">{{ __('site.case.status') }}</dt><dd>{{ __('site.case.status_'.$project->status) }}</dd></div>
@@ -112,7 +112,7 @@
         </div>
 
         @if($gallery)
-            <section class="container section" aria-labelledby="gallery-title" x-data="{ i: 0, items: @js($gallery), show(n) { this.i = n; this.$refs.dlg.showModal(); } }">
+            <section class="container section !pt-24" aria-labelledby="gallery-title" x-data="{ i: 0, items: @js($gallery), show(n) { this.i = n; this.$refs.dlg.showModal(); } }">
                 <h2 id="gallery-title" class="label mb-10 text-center" data-reveal>{{ __('site.case.gallery') }}</h2>
                 <div class="gallery" data-reveal-group>
                     @foreach($gallery as $n => $src)
