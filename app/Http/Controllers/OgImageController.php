@@ -45,7 +45,7 @@ class OgImageController extends Controller
         $locale = $request->query('lang') === 'en' ? 'en' : 'nl';
         app()->setLocale($locale);
 
-        $file = "og/v3-page-{$key}-{$locale}-".md5(config('seo.name').config("seo.description.{$locale}").__("seo.pages.{$key}.title")).'.png';
+        $file = "og/v4-page-{$key}-{$locale}-".md5(config('seo.name').config("seo.description.{$locale}").__("seo.pages.{$key}.title")).'.png';
         $disk = Storage::disk('public');
 
         if (! $disk->exists($file)) {
@@ -99,11 +99,8 @@ class OgImageController extends Controller
             $textRight = 584;
         }
 
-        // Wordmark: the miniature stamp (burgundy ring + dot) and the name in ink.
-        imagesetthickness($img, 2);
-        imagearc($img, 87, 100, 30, 30, 0, 360, $accent);
-        imagefilledellipse($img, 87, 100, 7, 7, $accent);
-        imagesetthickness($img, 1);
+        // Wordmark: the monogram (a geometric "a" in a burgundy rounded square, as in the nav) and the name in ink.
+        $this->monogram($img, 72, 85, 30, $accent, $paper);
         imagettftext($img, 22, 0, 114, 109, $ink, $semi, 'amirs.life');
 
         imagettftext($img, 18, 0, 72, 236, $muted, $regular, $kicker);
@@ -126,6 +123,31 @@ class OgImageController extends Controller
         imagedestroy($img);
 
         return (string) ob_get_clean();
+    }
+
+    /** The nav mark in GD: rounded square (radius 5.5/20 of the size) with a ring and a stem, scaled from the 20×20 SVG. */
+    private function monogram(\GdImage $img, int $x, int $y, int $size, int $fill, int $ink): void
+    {
+        $u = $size / 20;
+        $r = (int) round(5.5 * $u);
+        imagefilledrectangle($img, $x + $r, $y, $x + $size - $r, $y + $size, $fill);
+        imagefilledrectangle($img, $x, $y + $r, $x + $size, $y + $size - $r, $fill);
+        foreach ([[$x + $r, $y + $r], [$x + $size - $r, $y + $r], [$x + $r, $y + $size - $r], [$x + $size - $r, $y + $size - $r]] as [$cx, $cy]) {
+            imagefilledellipse($img, $cx, $cy, 2 * $r, 2 * $r, $fill);
+        }
+        $cx = (int) round($x + 9.4 * $u);
+        $cy = (int) round($y + 10.5 * $u);
+        $outer = (int) round((3.3 + 1) * 2 * $u);
+        $inner = (int) round((3.3 - 1) * 2 * $u);
+        imagefilledellipse($img, $cx, $cy, $outer, $outer, $ink);
+        imagefilledellipse($img, $cx, $cy, $inner, $inner, $fill);
+        $sx = (int) round($x + 12.7 * $u);
+        $half = (int) max(1, round($u));
+        $top = (int) round($y + 6.9 * $u);
+        $bottom = (int) round($y + 14.1 * $u);
+        imagefilledrectangle($img, $sx - $half, $top, $sx + $half, $bottom, $ink);
+        imagefilledellipse($img, $sx, $top, 2 * $half + 1, 2 * $half + 1, $ink);
+        imagefilledellipse($img, $sx, $bottom, 2 * $half + 1, 2 * $half + 1, $ink);
     }
 
     /** @return list<string> at most 3 lines */

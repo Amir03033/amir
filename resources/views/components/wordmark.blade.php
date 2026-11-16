@@ -1,2 +1,2 @@
-{{-- amirs.life wordmark: a miniature of the hero stamp (burgundy ring + dot) and the name in ink. --}}
-<span class="wordmark-mark" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle cx="10" cy="10" r="8.5" /><circle cx="10" cy="10" r="2" class="fill" /></svg></span><span>amirs.life</span>
+{{-- amirs.life wordmark: a geometric "a" in a burgundy rounded square (drawn as shapes, no font needed), and the name in ink. --}}
+<span class="wordmark-mark" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><rect width="20" height="20" rx="5.5" class="mark-bg" /><circle cx="9.4" cy="10.5" r="3.3" class="mark-a" /><path d="M12.7 6.9v7.2" class="mark-a" /></svg></span><span>amirs.life</span>

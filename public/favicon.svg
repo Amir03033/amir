@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" rx="8" fill="#070c17"/>
-  <rect x=".5" y=".5" width="31" height="31" rx="7.5" fill="none" stroke="#38bdf8" stroke-opacity=".45"/>
-  <text x="16" y="21" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="700" fill="#38bdf8">AJ</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+  <style>.bg{fill:#7F1D3F}.a{fill:none;stroke:#F7F5F1;stroke-width:2;stroke-linecap:round}@media (prefers-color-scheme:dark){.bg{fill:#D8799A}.a{stroke:#121110}}</style>
+  <rect width="20" height="20" rx="5.5" class="bg"/>
+  <circle cx="9.4" cy="10.5" r="3.3" class="a"/>
+  <path d="M12.7 6.9v7.2" class="a"/>
 </svg>
