@@ -1,6 +1,6 @@
 @extends('layouts.layout', [
     'title' => \App\Support\Seo::noteTitle($blog),
-    'description' => $blog->meta_description ?: $blog->excerpt(200),
+    'description' => \App\Support\Seo::noteDescription($blog),
     'ogImage' => \App\Support\Seo::ogImage('blog', $blog->id),
     'ogType' => 'article',
     'published' => $blog->publishedDate()->toAtomString(),

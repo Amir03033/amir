@@ -54,6 +54,18 @@ class Seo
         return self::description(__('seo.pages.project.description', ['title' => $project->getTranslation('title'), 'line' => $line]));
     }
 
+    /** Meta description of a note: the editor's own, else the excerpt, padded with who wrote it when short. */
+    public static function noteDescription(Blog $blog): string
+    {
+        if ($blog->meta_description) {
+            return self::description($blog->meta_description);
+        }
+        $excerpt = $blog->excerpt(200);
+        $by = __('seo.pages.note.description', ['title' => $blog->getTranslation('title')]);
+
+        return self::description(mb_strlen($excerpt) < 80 ? trim($by.' '.$excerpt) : $excerpt);
+    }
+
     public static function noteTitle(Blog $blog): string
     {
         return self::title($blog->meta_title ?: __('seo.pages.note.title', ['title' => $blog->getTranslation('title')]));
@@ -210,7 +222,7 @@ class Seo
             '@type' => 'BlogPosting',
             '@id' => $canonical.'#article',
             'headline' => Str::limit($blog->getTranslation('title'), 110, '…'),
-            'description' => self::description($blog->meta_description ?: $blog->excerpt(200)),
+            'description' => self::noteDescription($blog),
             'datePublished' => $blog->publishedDate()->toAtomString(),
             'dateModified' => ($blog->updated_at ?? $blog->publishedDate())->toAtomString(),
             'url' => $canonical,

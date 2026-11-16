@@ -26,8 +26,11 @@ if (! function_exists('alternate_url')) {
 
         $base = str_starts_with($name, 'en.') ? substr($name, 3) : $name;
 
+        // Route::view() passes its view name/status as parameters; they are not part of the URL.
+        $params = \Illuminate\Support\Arr::except($route->parameters(), ['view', 'data', 'status', 'headers']);
+
         return Route::has($base) && Route::has('en.'.$base)
-            ? lroute($base, $route->parameters(), $locale)
+            ? lroute($base, $params, $locale)
             : lroute('home', [], $locale);
     }
 }

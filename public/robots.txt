@@ -1,7 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /ping
-Disallow: /e
 
 # Private pages (/amir, /login, two-factor) are crawlable on purpose: they answer with
 # X-Robots-Tag: noindex, which search engines can only see if they may fetch the page.

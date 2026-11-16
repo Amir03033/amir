@@ -54,6 +54,7 @@ return [
         ],
         'note' => [
             'title' => ':title – Amir Jebbari',
+            'description' => ':title – a note by Amir Jebbari, founder of Jebbari.',
         ],
     ],
 
