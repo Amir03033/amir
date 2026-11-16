@@ -4,15 +4,9 @@
 // Facts that are missing are not invented: they are placeholders (see the <x-ph> component and DEPLOY.md).
 
 return [
-    'meta' => [
-        'title' => 'Amir Jebbari — founder of Jebbari, builder of ServerScope',
-        'description' => 'The personal site of Amir Jebbari: founder of the web agency Jebbari in Zwolle and Amsterdam, builder of ServerScope, and a student. Work, notes and a place to talk back.',
-    ],
-
     'hero' => [
         // DRAFT
         'lines' => ['I build websites,', 'and sometimes the tools', 'that watch over them.'],
-        'role' => 'Founder of Jebbari · Zwolle & Amsterdam',
         'time' => 'It’s :time in Amsterdam.',
         'stamp' => 'Leave a stamp',
     ],
@@ -58,19 +52,18 @@ return [
 
     'about' => [
         'label' => 'About',
-        'title' => 'Student. Founder. Builder.', // DRAFT
+        'title' => 'Founder. Builder.', // DRAFT
         'photo_alt' => 'Amir Jebbari on a bridge in Salzburg',
         // DRAFT, built from facts already on the old site and in the brief.
-        'text' => 'I’m Amir. I run Jebbari, a web agency in Zwolle and Amsterdam, and I’m also a student.',
+        'text' => 'I’m Amir Jebbari, the founder of Jebbari, based in Amsterdam and Zwolle. I build web applications with Laravel, from the first idea to a product that runs.',
         'text_2' => 'Next to client work I build my own products. ServerScope is the biggest one: monitoring for servers and domains. It taught me what it takes to run software, not just write it.',
         'facts' => [
             'agency' => 'Agency',
             'cities' => 'Cities',
             'product' => 'Own product',
-            'study' => 'Studying',
             'since' => 'Jebbari since',
         ],
-        'cities_value' => 'Zwolle & Amsterdam',
+        'cities_value' => 'Amsterdam & Zwolle',
         'to_jebbari' => 'Visit Jebbari',
         'cv' => 'View my CV',
     ],
@@ -88,7 +81,7 @@ return [
     'ask' => [
         'label' => 'Ask Amir',
         'title' => 'Ask me something.',
-        'lead' => 'About building, running a business or studying. I answer them myself; some answers end up here.',
+        'lead' => 'About building, running a business or software. I answer them myself; some answers end up here.',
         'body' => 'Your question',
         'name' => 'Name',
         'email' => 'Email',

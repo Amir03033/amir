@@ -9,7 +9,7 @@
     <header class="page-head container">
         <p class="label" data-hero-line style="--i: 0">{{ __('messages.cv.title') }}</p>
         <h1 class="hero-type mx-auto mt-5" data-hero-line style="--i: 1">{{ config('site.name') }}</h1>
-        <p class="mt-6 text-fg-2" data-hero-line style="--i: 2">{{ __('site.hero.role') }}</p>
+        <p class="mx-auto mt-6 max-w-xl text-fg-2" data-hero-line style="--i: 2">{{ seo_sentence(link: true) }}</p>
         <div class="no-print mt-10 flex flex-wrap justify-center gap-3" data-hero-line style="--i: 3">
             <a href="{{ lroute('cv.pdf') }}" class="btn-primary">{{ icon('file-text') }} {{ __('messages.cv.download') }}</a>
             <button type="button" onclick="window.print()" class="btn-secondary">{{ __('messages.cv.print') }}</button>
@@ -18,14 +18,11 @@
 
     <div class="container pb-section">
         <div class="read">
-            @foreach(['education', 'skills', 'projects', 'contact'] as $block)
+            @foreach(['skills', 'projects', 'contact'] as $block)
                 <section class="grid gap-4 border-t border-line py-10 md:grid-cols-[10rem_1fr]" data-reveal>
                     <h2 class="label">{{ $block === 'skills' ? __('messages.skills.label') : __('messages.cv.'.$block) }}</h2>
                     <div>
                         @switch($block)
-                            @case('education')
-                                <p>{{ __('messages.cv.education_item') }}</p>
-                                @break
                             @case('skills')
                                 <div class="space-y-2 text-small">
                                     @foreach(__('messages.skills.groups') as $group)

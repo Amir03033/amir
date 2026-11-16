@@ -1,15 +1,18 @@
 <?php
 
+// Name, email, location and LinkedIn come from config/seo.php (the single source of truth).
+$seo = require __DIR__.'/seo.php';
+
 return [
-    'name' => 'Amir Jebbari',
-    // Public address everywhere on the site (footer, contact, JSON-LD, CV). Deliberately not read from .env,
-    // so no personal address can leak back in. Contact notifications are sent here too.
-    'email' => 'info@jebbari.nl',
+    'name' => $seo['name'],
+    // Public address everywhere (footer, contact, JSON-LD, CV). Not read from .env, so no personal address
+    // can leak back in. Contact notifications are sent here too.
+    'email' => $seo['email'],
     // Hidden everywhere unless a real number is set in .env.
     'phone' => env('SITE_PHONE'),
     'phone_href' => env('SITE_PHONE_HREF'),
-    'location' => 'Overijssel',
-    'linkedin' => 'https://www.linkedin.com/in/amir-jebbari-19a63b330/',
+    'location' => implode(' & ', $seo['locations']),
+    'linkedin' => $seo['same_as'][0],  // the same LinkedIn profile jebbari.nl links to
     'github' => env('SITE_GITHUB'),
     'admin_email' => env('ADMIN_EMAIL', 'hosseinjebari@gmail.com'),
 
@@ -20,7 +23,7 @@ return [
 
     // The agency. Only linked from the footer and the about section.
     'jebbari' => [
-        'url' => env('JEBBARI_URL', 'https://jebbari.nl'),
+        'url' => $seo['company']['url'],
     ],
 
     // These can also be set in Filament under "Links & instellingen", which overrides .env.

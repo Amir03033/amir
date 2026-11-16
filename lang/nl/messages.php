@@ -1,9 +1,6 @@
 <?php
 
 return [
-    'meta' => [
-        'description' => 'Amir Jebbari, Laravel-developer in Overijssel. Bouwer van ServerScope, een monitoringplatform voor servers en domeinen, en andere live Laravel-projecten.',
-    ],
     'nav' => [
         'play' => 'Speeltuin',
         'main' => 'Hoofdmenu',
@@ -21,15 +18,6 @@ return [
         'close' => 'Sluiten',
         'proof' => 'Bewijs',
         'skip' => 'Naar de inhoud',
-    ],
-    'home' => [
-        'badge' => 'Open voor stage & junior rollen',
-        'subtitle' => 'Laravel-developer',
-        'headline' => 'Ik bouw Laravel-producten en zet ze live.',
-        'text' => 'Meest recent ServerScope, een monitoringplatform voor servers en domeinen. Daarvoor live sites met login en beheeromgeving. Gevestigd in Overijssel.',
-        'cta' => 'Bekijk mijn werk',
-        'cta_cv' => 'CV',
-        'scroll' => 'scroll',
     ],
     'hero' => [
         'measured_short' => 'elke 10 min gemeten',
@@ -175,26 +163,6 @@ return [
         'decisions' => [],
         'decisions_title' => 'Keuzes die ik maakte',
     ],
-    'about' => [
-        'title' => 'Developer die oplevert',
-        'label' => 'Over mij',
-        'text' => 'Ik ben Amir, 18 jaar, student software development in Overijssel. Ik neem graag het hele traject van idee tot productie op me: het datamodel, de Laravel-backend, de frontend en de deploy. Elk project op deze pagina staat live, met login, content en een publieke URL.',
-        'text_2' => 'ServerScope leerde me wat erbij komt kijken om software te draaien in plaats van alleen te schrijven: achtergrondtaken, meldingen, documentatie, en een product begrijpelijk houden voor mensen die het niet zelf bouwden.',
-        'details' => 'Profiel',
-        'age' => 'Leeftijd',
-        'age_value' => '18',
-        'location' => 'Regio',
-        'role' => 'Focus',
-        'role_value' => 'Laravel, PHP, Livewire, Vue',
-        'availability' => 'Beschikbaar voor',
-        'availability_value' => 'Stage / junior rol',
-        'timeline_title' => 'Tot nu toe',
-        'timeline' => [
-            ['title' => 'Software Development', 'text' => 'Opleiding in Overijssel: PHP, databases, JavaScript en werken in projectteams.'],
-            ['title' => 'Eerste live klantprojecten', 'text' => 'KlusKlaar, Jungle Tuinen en MasterMind: login, contentbeheer en publieke deploys.'],
-            ['title' => 'ServerScope', 'text' => 'Mijn eigen monitoringproduct: applicatie, serveragent, meldingen, statuspagina’s en documentatie.'],
-        ],
-    ],
     'skills' => [
         'title' => 'Waar ik mee bouw',
         'label' => 'Stack',
@@ -225,9 +193,7 @@ return [
         'print' => 'Printen',
         'download' => 'Download cv (PDF)',
         'generated' => 'Gegenereerd op :date vanaf',
-        'intro' => 'Kort overzicht van opleiding, stack en projecten. Via print bewaar je het als PDF.',
-        'education' => 'Opleiding',
-        'education_item' => 'Software Development — Overijssel',
+        'intro' => 'Kort overzicht van stack en projecten. Via print bewaar je het als PDF.',
         'projects' => 'Projecten',
         'contact' => 'Contact',
     ],

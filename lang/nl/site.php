@@ -4,15 +4,9 @@
 // Facts that are missing are not invented: they are placeholders (see the <x-ph> component and DEPLOY.md).
 
 return [
-    'meta' => [
-        'title' => 'Amir Jebbari — oprichter van Jebbari, bouwer van ServerScope',
-        'description' => 'De persoonlijke site van Amir Jebbari: oprichter van webbureau Jebbari in Zwolle en Amsterdam, bouwer van ServerScope en student. Werk, notities en een plek om terug te praten.',
-    ],
-
     'hero' => [
         // DRAFT
         'lines' => ['Ik bouw websites,', 'en soms de tools', 'die ze bewaken.'],
-        'role' => 'Oprichter van Jebbari · Zwolle & Amsterdam',
         'time' => 'Het is :time in Amsterdam.',
         'stamp' => 'Zet een stempel',
     ],
@@ -58,19 +52,18 @@ return [
 
     'about' => [
         'label' => 'Over mij',
-        'title' => 'Student, oprichter, bouwer.', // DRAFT
+        'title' => 'Oprichter. Bouwer.', // DRAFT
         'photo_alt' => 'Amir Jebbari op een brug in Salzburg',
         // DRAFT, built from facts already on the old site and in the brief.
-        'text' => 'Ik ben Amir. Ik run Jebbari, een webbureau in Zwolle en Amsterdam, en daarnaast studeer ik.',
+        'text' => 'Ik ben Amir Jebbari, de oprichter van Jebbari, gevestigd in Amsterdam en Zwolle. Ik bouw webapplicaties met Laravel, van het eerste idee tot een product dat draait.',
         'text_2' => 'Naast klantwerk bouw ik eigen producten. ServerScope is de grootste: monitoring voor servers en domeinen. Het leerde me wat erbij komt kijken om software te draaien in plaats van alleen te schrijven.',
         'facts' => [
             'agency' => 'Bureau',
             'cities' => 'Steden',
             'product' => 'Eigen product',
-            'study' => 'Studie',
             'since' => 'Jebbari sinds',
         ],
-        'cities_value' => 'Zwolle & Amsterdam',
+        'cities_value' => 'Amsterdam & Zwolle',
         'to_jebbari' => 'Naar Jebbari',
         'cv' => 'Cv bekijken',
     ],
@@ -88,7 +81,7 @@ return [
     'ask' => [
         'label' => 'Vraag het Amir',
         'title' => 'Vraag me iets.',
-        'lead' => 'Over bouwen, ondernemen of studeren. Ik beantwoord ze zelf; sommige antwoorden zet ik hier neer.',
+        'lead' => 'Over bouwen, ondernemen of software. Ik beantwoord ze zelf; sommige antwoorden zet ik hier neer.',
         'body' => 'Je vraag',
         'name' => 'Naam',
         'email' => 'E-mailadres',

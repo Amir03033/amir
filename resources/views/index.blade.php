@@ -1,6 +1,6 @@
 @extends('layouts.layout', [
-    'title' => __('site.meta.title'),
-    'description' => __('site.meta.description'),
+    'title' => __('seo.pages.home.title'),
+    'description' => __('seo.pages.home.description'),
 ])
 
 @section('nav')
@@ -20,7 +20,6 @@
         ['agency', $jebbari ? 'Jebbari' : null, $jebbari],
         ['cities', __('site.about.cities_value'), null],
         ['product', 'ServerScope', config('site.serverscope.url')],
-        ['study', null, null],  // missing fact
         ['since', null, null],  // missing fact
     ];
 @endphp
@@ -75,7 +74,8 @@
                     <span class="block" data-hero-line style="--i: {{ $loop->index }}">{{ $line }}</span>
                 @endforeach
             </h1>
-            <p class="mt-8 text-small text-fg-2" data-hero-line style="--i: 3">{{ __('site.hero.role') }}</p>
+            {{-- The one-sentence summary: who, what, where. Same wording as jebbari.nl (config/seo.php). --}}
+            <p class="mx-auto mt-8 max-w-xl text-small text-fg-2" data-hero-line style="--i: 3">{{ seo_sentence(link: true) }}</p>
             <p class="status-line mt-3" data-hero-line style="--i: 4">{!! __('site.hero.time', ['time' => '<time class="tabular" datetime="'.e($amsterdam->toIso8601String()).'" data-clock="Europe/Amsterdam">'.e($amsterdam->format('H:i')).'</time>']) !!}@if($now) {{ __('messages.now.label') }} <span class="text-fg">{{ $now }}</span>@endif</p>
             <div data-hero-line style="--i: 5"><x-stamp /></div>
         </div>
@@ -130,7 +130,7 @@
 
             <div class="read mt-stack">
                 <div class="space-y-5 text-lead text-fg-2" data-reveal-group>
-                    <p data-reveal>{{ __('site.about.text') }} <x-ph label="opleiding en school" /></p>
+                    <p data-reveal>{{ __('site.about.text') }}</p>
                     <p data-reveal>{{ __('site.about.text_2') }}</p>
                 </div>
 

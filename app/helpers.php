@@ -69,3 +69,24 @@ if (! function_exists('scrub')) {
         ));
     }
 }
+
+if (! function_exists('seo_sentence')) {
+    /**
+     * The canonical "who is Amir" sentence from config/seo.php, optionally with the company name
+     * linked to jebbari.nl (anchor text always "Jebbari").
+     */
+    function seo_sentence(bool $link = false, ?string $locale = null): \Illuminate\Support\HtmlString
+    {
+        $locale ??= app()->getLocale();
+        $sentence = e(config("seo.description.{$locale}") ?? config('seo.description.nl'));
+
+        if ($link) {
+            $company = e(config('seo.company.name'));
+            $anchor = '<a href="'.e(config('seo.company.url')).'" class="link" rel="noopener">'.$company.'</a>';
+            // Link the company, not the family name: "… van Jebbari," / "… of Jebbari,".
+            $sentence = preg_replace('/\b(van|of) '.preg_quote($company, '/').'\b/u', '$1 '.$anchor, $sentence, 1);
+        }
+
+        return new \Illuminate\Support\HtmlString($sentence);
+    }
+}

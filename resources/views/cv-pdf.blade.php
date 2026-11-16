@@ -31,8 +31,7 @@
             <td width="76">@if(is_file($avatar))<img class="avatar" src="{{ $avatar }}">@endif</td>
             <td>
                 <h1>{{ config('site.name') }}</h1>
-                <div class="sub">{{ __('site.hero.role') }}</div>
-                <div class="muted" style="margin-top:4px">{{ __('messages.about.availability') }}: {{ __('messages.about.availability_value') }}</div>
+                <div class="sub">{{ config('seo.description.'.app()->getLocale()) }}</div>
             </td>
             <td align="right" class="muted">
                 <table class="contact">
@@ -46,7 +45,7 @@
     </table>
 
     <div class="section">
-        <h2>{{ __('messages.about.label') }}</h2>
+        <h2>{{ __('site.about.label') }}</h2>
         <p style="margin:0">{{ __('site.about.text') }} {{ __('site.about.text_2') }}</p>
     </div>
 
@@ -73,11 +72,6 @@
         @foreach(__('messages.skills.groups') as $group)
             <div><b>{{ $group['label'] }}:</b> {{ implode(', ', $group['items']) }}</div>
         @endforeach
-    </div>
-
-    <div class="section">
-        <h2>{{ __('messages.cv.education') }}</h2>
-        <div>{{ __('messages.cv.education_item') }}</div>
     </div>
 
     <p class="muted" style="margin-top:22px; font-size:8.5px">{{ __('messages.cv.generated', ['date' => now()->format('d-m-Y')]) }} · {{ lroute('cv') }}</p>

@@ -1,6 +1,6 @@
 @php
-    $pageTitle = $title ?? config('site.name').' — '.__('messages.home.subtitle');
-    $pageDescription = $description ?? __('messages.meta.description');
+    $pageTitle = $title ?? __('seo.pages.home.title');
+    $pageDescription = $description ?? __('seo.pages.home.description');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">

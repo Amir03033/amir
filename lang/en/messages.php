@@ -1,9 +1,6 @@
 <?php
 
 return [
-    'meta' => [
-        'description' => 'Amir Jebbari, Laravel developer in Overijssel. Builder of ServerScope, a server and domain monitoring platform, and other live Laravel projects.',
-    ],
     'nav' => [
         'play' => 'Playground',
         'main' => 'Main menu',
@@ -21,15 +18,6 @@ return [
         'close' => 'Close',
         'proof' => 'Proof',
         'skip' => 'Skip to content',
-    ],
-    'home' => [
-        'badge' => 'Open to internships & junior roles',
-        'subtitle' => 'Laravel developer',
-        'headline' => 'I build and ship Laravel products.',
-        'text' => 'Most recently ServerScope, a monitoring platform for servers and domains. Before that, live sites with authentication and admin panels. Based in Overijssel.',
-        'cta' => 'View my work',
-        'cta_cv' => 'CV',
-        'scroll' => 'scroll',
     ],
     'hero' => [
         'measured_short' => 'measured every 10 min',
@@ -175,26 +163,6 @@ return [
         'decisions' => [],
         'decisions_title' => 'Decisions I made',
     ],
-    'about' => [
-        'title' => 'Developer who ships',
-        'label' => 'About',
-        'text' => 'I am Amir, an 18-year-old software development student in Overijssel. I like owning the whole path from idea to production: the data model, the Laravel backend, the frontend, and the deploy. Every project on this page is live, with logins, content and a public URL.',
-        'text_2' => 'ServerScope taught me what it takes to run software instead of only writing it: background jobs, alerting, documentation, and keeping a product understandable for people who did not build it.',
-        'details' => 'Profile',
-        'age' => 'Age',
-        'age_value' => '18',
-        'location' => 'Location',
-        'role' => 'Focus',
-        'role_value' => 'Laravel, PHP, Livewire, Vue',
-        'availability' => 'Open to',
-        'availability_value' => 'Internship / junior role',
-        'timeline_title' => 'Path so far',
-        'timeline' => [
-            ['title' => 'Software Development', 'text' => 'Programme in Overijssel: PHP, databases, JavaScript and working in project teams.'],
-            ['title' => 'First live client projects', 'text' => 'KlusKlaar, Jungle Tuinen and MasterMind: logins, content management and public deploys.'],
-            ['title' => 'ServerScope', 'text' => 'My own monitoring product: application, server agent, alerts, status pages and docs.'],
-        ],
-    ],
     'skills' => [
         'title' => 'The tools I build with',
         'label' => 'Stack',
@@ -225,9 +193,7 @@ return [
         'print' => 'Print',
         'download' => 'Download CV (PDF)',
         'generated' => 'Generated on :date from',
-        'intro' => 'A short overview of education, stack and projects. Use print to save it as a PDF.',
-        'education' => 'Education',
-        'education_item' => 'Software Development — Overijssel',
+        'intro' => 'A short overview of stack and projects. Use print to save it as a PDF.',
         'projects' => 'Projects',
         'contact' => 'Contact',
     ],
